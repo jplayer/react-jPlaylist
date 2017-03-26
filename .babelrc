@@ -1,0 +1,16 @@
+{
+  "presets": [
+    "es2015",
+    "stage-2",
+    "react"
+  ],
+  "env": {
+    "test": {
+      "plugins": [
+        "istanbul",
+        "babel-plugin-rewire"
+      ]
+    }
+  },
+  "sourceMaps": true
+}

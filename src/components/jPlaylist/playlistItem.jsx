@@ -1,40 +1,56 @@
-/* import React from 'react';
+import React from 'react';
 import { Motion, spring } from 'react-motion';
+import { connect } from 'react-redux';
+import { actions as jPlayerActions } from 'react-jplayer';
 
-export default class extends React.Component {
+import { play } from '../../actions/actions';
+
+const currentMedia = 'jp-playlist-current';
+
+class PlaylistItemContainer extends React.Component {
+  static get propTypes() {
+    return {
+      dispatch: React.PropTypes.func.isRequired,
+      remove: React.PropTypes.func.isRequired,
+      blur: React.PropTypes.func.isRequired,
+      id: React.PropTypes.number.isRequired,
+      current: React.PropTypes.number.isRequired,
+      status: React.PropTypes.object.isRequired,
+    };
+  }
   static get defaultProps() {
     return {
       minHeight: 0,
       maxHeight: 1,
     };
   }
-  constructor(props) {
-    super(props);
-
-    this.state = {};
-    this.className = {
-      currentMedia: 'jp-playlist-current',
-    };
-  }
-  _onRemoveMediaClick = (index, event) => {
-    event.preventDefault();
+  onRemoveMediaClick = (index, e) => {
+    e.preventDefault();
 
     this.props.remove(index);
-    this.props.blur(event.target);
+    this.props.blur(e.target);
   }
-  _onMediaLinkClick = (index, event) => {
-    event.preventDefault();
+  onMediaLinkClick = (index, e) => {
+    e.preventDefault();
 
-    this.props.current !== index ? this.props.play(index) : this.props.mergeOptions({ status: { paused: false } });
-    this.props.blur(event.target);
+    if (this.props.current !== index) {
+      this.props.dispatch(play(index));
+    } else {
+      this.props.dispatch(jPlayerActions.setOption(this.props.id, 'status', {
+        ...this.props.status,
+        paused: false,
+      }));
+    }
+
+    this.props.blur(e.target);
   }
   render() {
     return (
       <div>
-        {this.props.medias.map((media, index) => {
+        {/* {this.props.medias.map((media, index) => {
           const animationHeight = media.isRemoving ? this.props.minHeight : this.props.maxHeight;
-          const mediaListClass = this.props.current === index ? this.className.currentMedia : null;
-          const mediaLinkClass = this.props.current === index ? `${this.props.itemClass} ${this.className.currentMedia}` : this.props.itemClass;
+          const mediaListClass = this.props.current === index ? currentMedia : null;
+          const mediaLinkClass = this.props.current === index ? `${this.props.itemClass} ${currentMedia}` : this.props.itemClass;
           const onRest = media.isRemoving ? () => this.props.onRest(index) : null;
 
           return (<Motion key={media.key} defaultStyle={{ heightToInterpTo: this.props.minHeight }} style={{ heightToInterpTo: spring(animationHeight, this.props.config) }} onRest={onRest}>
@@ -51,8 +67,10 @@ export default class extends React.Component {
                         }
           </Motion>);
         },
-            )}
+            )}*/}
       </div>
     );
   }
-}*/
+}
+
+export default connect()(PlaylistItemContainer);

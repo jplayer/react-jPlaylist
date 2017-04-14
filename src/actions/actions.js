@@ -6,13 +6,6 @@ export const setPlaylist = (id, playlist) => ({
   playlist,
 });
 
-export const setOption = (id, key, value) => ({
-  type: actionNames.SET_OPTION,
-  id,
-  key,
-  value,
-});
-
 export const add = (id, media, playNow) => ({
   type: actionNames.ADD,
   id,

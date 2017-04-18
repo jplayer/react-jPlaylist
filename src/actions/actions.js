@@ -1,5 +1,12 @@
 import actionNames from '../util/actionNames';
 
+export const setOption = (id, key, value) => ({
+  type: actionNames.SET_OPTION,
+  id,
+  key,
+  value,
+});
+
 export const setPlaylist = (id, playlist) => ({
   type: actionNames.SET_PLAYLIST,
   id,
@@ -17,6 +24,11 @@ export const remove = (id, index) => ({
   type: actionNames.REMOVE,
   id,
   index,
+});
+
+export const clear = id => ({
+  type: actionNames.CLEAR,
+  id,
 });
 
 export const select = (id, index) => ({

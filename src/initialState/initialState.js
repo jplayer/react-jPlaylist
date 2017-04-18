@@ -1,24 +1,4 @@
-import merge from 'lodash.merge';
+import { initialState, jPlaylistDefaultOptions } from 'react-jplayer-utils';
 
-import defaultOptions from '../util/defaultOptions';
-
-const initialState = (connectedJPlaylists) => {
-  const jPlaylistStates = {};
-  let newConnectedJPlaylists = connectedJPlaylists;
-
-  if (!Array.isArray(connectedJPlaylists)) {
-    newConnectedJPlaylists = [connectedJPlaylists];
-  }
-
-  newConnectedJPlaylists.forEach((connectedJPlaylist) => {
-    jPlaylistStates[connectedJPlaylist.options.id] = merge({}, {
-      ...defaultOptions,
-    }, connectedJPlaylist.options);
-  });
-
-  return {
-    jPlaylists: jPlaylistStates,
-  };
-};
-
-export default initialState;
+export default connectedJPlayers =>
+  initialState(connectedJPlayers, jPlaylistDefaultOptions);

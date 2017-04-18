@@ -1,9 +1,8 @@
-import React from 'react';
 import { connect } from 'react-redux';
 import { actions as jPlayerActions } from 'react-jplayer';
+import { connect as jPlayerConnect, jPlayerDefaultOptions } from 'react-jplayer-utils';
 
 import * as jPlaylistActions from '../actions/actions';
-import defaultOptions from '../util/defaultOptions';
 
 const mapStateToProps = ({ jPlaylists }, { id, ...props }) => {
   const newJPlaylists = {};
@@ -12,7 +11,7 @@ const mapStateToProps = ({ jPlaylists }, { id, ...props }) => {
     const jPlaylist = jPlaylists[jPlaylistKey];
     const options = {};
 
-    Object.keys(defaultOptions).forEach((key) => {
+    Object.keys(jPlayerDefaultOptions).forEach((key) => {
       if (jPlaylist[key] !== undefined) {
         options[key] = jPlaylist[key];
       }
@@ -46,25 +45,7 @@ const mapDispatchToProps = {
 const Connect = (jPlaylist, options) => {
   const ConnectedPlaylist = connect(mapStateToProps, mapDispatchToProps)(jPlaylist);
 
-  return class ConnectedJPlaylist extends React.Component {
-    static get jPlaylist() {
-      return jPlaylist;
-    }
-    static get options() {
-      return options;
-    }
-    static get childContextTypes() {
-      return {
-        id: React.PropTypes.string,
-      };
-    }
-    getChildContext = () => ({
-      id: options.id,
-    });
-    render() {
-      return <ConnectedPlaylist id={options.id} {...this.props} />;
-    }
-  };
+  return jPlayerConnect(jPlaylist, options, ConnectedPlaylist);
 };
 
 export default Connect;

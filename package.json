@@ -27,7 +27,7 @@
   ],
   "homepage": "https://github.com/MartinDawson/react-jPlaylist",
   "license": "MIT",
-  "main": "./lib/index.js",
+  "main": "./src/index.js",
   "files": [
     "dist",
     "lib",
@@ -132,13 +132,17 @@
     "webpack-dev-server": "^2.4.1"
   },
   "dependencies": {
+    "classnames": "^2.2.5",
     "lodash.maxby": "^4.6.0",
     "lodash.merge": "^4.6.0",
+    "prop-types": "^15.5.8",
     "react": "^15.4.1",
     "react-dom": "^15.4.1",
     "react-jplayer": "^4.0.4",
+    "react-jplayer-utils": "^1.0.0",
     "react-motion": "^0.4.7",
     "react-redux": "^5.0.2",
+    "recompose": "^0.23.1",
     "redux": "^3.6.0"
   }
 }

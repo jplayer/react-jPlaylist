@@ -1,13 +1,18 @@
 import React from 'react';
 import merge from 'lodash.merge';
-import { connect } from 'react-redux';
+import classNames from 'classnames';
 import { formats, actions as jPlayerActions } from 'react-jplayer';
+import { Motion, spring } from 'react-motion';
+import { connectWithId, classes as sharedClasses } from 'react-jplayer-utils';
+import PropTypes from 'prop-types';
 
-import Playlist from '../Playlist/playlistContainer';
+import JPlaylist from './jPlaylist';
+import PlaylistItem from '../playlistItem/playlistItemContainer';
+import classes from '../../util/classes';
 import { setOption, select, play, pause, shuffle, setPlaylist } from '../../actions/actions';
 
-const mapStateToProps = ({ jPlaylists }, { id }) => ({
-  index: jPlaylists[id].index,
+const mapStateToProps = ({ jPlaylists }, { id, children, ...attributes }) => ({
+  shuffleAnimationConfig: jPlaylists[id].shuffleAnimationConfig,
   play: jPlaylists[id].play,
   playNow: jPlaylists[id].playNow,
   autoBlur: jPlaylists[id].autoBlur,
@@ -24,62 +29,68 @@ const mapStateToProps = ({ jPlaylists }, { id }) => ({
   freeItemClass: jPlaylists[id].freeItemClass,
   removeItemClass: jPlaylists[id].removeItemClass,
   freeGroupClass: jPlaylists[id].freeGroupClass,
-  jPlaylists,
+  otherJPlaylists: Object.keys(jPlaylists).filter(key => jPlaylists[key].id !== id),
   id,
+  children,
+  attributes: {
+    ...attributes,
+    className: classNames(attributes.className, classes.PLAYLIST, {
+      [sharedClasses.HIDDEN]: jPlaylists[id].hidePlaylist,
+    }),
+  },
 });
 
 class JPlaylistContainer extends React.Component {
   static get defaultProps() {
     return {
-      itemClass: 'jp-playlist-item',
-      freeItemClass: 'jp-playlist-item-free',
-      removeItemClass: 'jp-playlist-item-remove',
-      freeGroupClass: 'jp-free-media',
+      minHeight: 0,
+      maxHeight: 1,
+      attributes: null,
+      children: null,
     };
   }
   static get propTypes() {
     return {
-      dispatch: React.PropTypes.func.isRequired,
-      id: React.PropTypes.number.isRequired,
-      index: React.PropTypes.number.isRequired,
-      play: React.PropTypes.bool.isRequired,
-      playNow: React.PropTypes.bool.isRequired,
-      autoBlur: React.PropTypes.bool.isRequired,
-      paused: React.PropTypes.bool.isRequired,
-      shuffled: React.PropTypes.bool.isRequired,
-      loop: React.PropTypes.string.isRequired,
-      shuffleOnLoop: React.PropTypes.bool.isRequired,
-      loopOnPrevious: React.PropTypes.bool.isRequired,
-      autoPlay: React.PropTypes.bool.isRequired,
-      jPlaylists: React.PropTypes.arrayOf(
-        React.PropTypes.object,
+      dispatch: PropTypes.func.isRequired,
+      id: PropTypes.number.isRequired,
+      attributes: PropTypes.object,
+      shuffled: PropTypes.bool.isRequired,
+      children: PropTypes.element,
+      minHeight: PropTypes.number,
+      maxHeight: PropTypes.number,
+      shuffleAnimationConfig: PropTypes.object.isRequired,
+      play: PropTypes.bool.isRequired,
+      playNow: PropTypes.bool.isRequired,
+      autoBlur: PropTypes.bool.isRequired,
+      paused: PropTypes.bool.isRequired,
+      loop: PropTypes.string.isRequired,
+      shuffleOnLoop: PropTypes.bool.isRequired,
+      loopOnPrevious: PropTypes.bool.isRequired,
+      autoPlay: PropTypes.bool.isRequired,
+      otherJPlaylists: PropTypes.arrayOf(
+        PropTypes.object,
       ).isRequired,
-      current: React.PropTypes.number.isRequired,
-      playlist: React.PropTypes.arrayOf(
-          React.PropTypes.shape({
-            title: React.PropTypes.string,
-            artist: React.PropTypes.string,
-            mp3: React.PropTypes.string,
-            poster: React.PropTypes.string,
-            free: React.PropTypes.bool,
+      current: PropTypes.number.isRequired,
+      playlist: PropTypes.arrayOf(
+          PropTypes.shape({
+            title: PropTypes.string,
+            artist: PropTypes.string,
+            mp3: PropTypes.string,
+            poster: PropTypes.string,
+            free: PropTypes.bool,
           }),
       ).isRequired,
-      keyBindings: React.PropTypes.object.isRequired,
-      itemClass: React.PropTypes.string,
-      freeItemClass: React.PropTypes.string,
-      removeItemClass: React.PropTypes.string,
-      freeGroupClass: React.PropTypes.string,
+      keyBindings: PropTypes.object.isRequired,
+      itemClass: PropTypes.string.isRequired,
+      freeItemClass: PropTypes.string.isRequired,
+      removeItemClass: PropTypes.string.isRequired,
+      freeGroupClass: PropTypes.string.isRequired,
     };
   }
   constructor(props, context) {
     super(props, context);
 
-    this.state = {
-      current: 0,
-    };
-    const jPlayer = document.getElementById(this.props.id);
-    this.media = jPlayer.getElementById('audio') || jPlayer.getElementById('video');
-
+    this.state = {};
     // this.playlistContainerMinHeight = this.playlistItemAnimMinHeight = 0;
     // this.playlistContainerMaxHeight = this.playlistItemAnimMaxHeight = 1;
 
@@ -91,8 +102,8 @@ class JPlaylistContainer extends React.Component {
     // }
   }
   componentWillMount() {
-    this.media.addEventListener('ended', this.playNext);
-    this.media.addEventListener('play', this.pauseOthers);
+    const playlist = this.getPlaylistShufflePositions();
+    this.props.dispatch(setPlaylist(this.props.id, playlist));
     this.props.dispatch(jPlayerActions.setOption(
       this.props.id, 'keyBindings', merge({
         next: {
@@ -119,234 +130,133 @@ class JPlaylistContainer extends React.Component {
     // });
   }
   componentDidMount() {
-    this.props.dispatch(setPlaylist(this.props.id, this.props.playlist));
+    this.media = document.querySelector(`#${this.props.id} audio`) ||
+      document.querySelector(`#${this.props.id} video`);
+
+    this.media.addEventListener('ended', this.playNext);
+    this.media.addEventListener('play', this.pauseOthers);
   }
-  componentDidUpdate(prevProps, prevState) {
-    if (!this.state.shuffling && this.state.shuffling !== prevState.shuffling) {
-      if (this.props.playNow || !this.props.paused) {
-        this.props.dispatch(play(this.props.id, 0));
-      } else {
-        this.props.dispatch(select(this.props.id, 0));
-      }
+  componentDidUpdate(prevProps) {
+    // if (!this.state.shuffling && this.state.shuffling !== prevState.shuffling) {
+    //   if (this.props.playNow || !this.props.paused) {
+    //     this.props.dispatch(play(this.props.id, 0));
+    //   } else {
+    //     this.props.dispatch(select(this.props.id, 0));
+    //   }
+    // }
+
+    // if (this.props.playlist !== prevProps.playlist && !this.state.shuffling) {
+    //   this.autoPlay();
+    // }
+
+    // if (this.props.index !== prevProps.index) {
+    //   if (!this.props.play) {
+    //     this.select();
+    //   } else {
+    //     this.play();
+    //   }
+    // }
+
+    if (this.props.current !== prevProps.current) {
+      this.setCurrentMedia();
     }
 
-    if (this.props.playlist !== prevProps.playlist && !this.state.shuffling) {
-      this.autoPlay();
-    }
-
-    if (this.props.index !== prevProps.index) {
-      if (!this.props.play) {
-        this.select();
-      } else {
-        this.play();
-      }
-    }
-
-    if (this.props.playlist !== prevProps.playlist) {
-      this.initPlaylist();
-    }
-
-    if (this.props.shuffled !== prevProps.shuffled) {
+    // if (this.props.playlist !== prevProps.playlist) {
+    //   if (this.props.playlist.length === 0) {
+    //     this.playlistCleared();
+    //   }
+    // }
+    if (this.props.shuffled !== prevProps.shuffled
+        && this.props.playlist === prevProps.playlist) {
       this.shuffle();
     }
   }
   componentWillUnmount() {
     this.media.removeEventListener('ended', this.playNext);
-    this.media.removeEventListener('ended', this.pauseOthers);
+    this.media.removeEventListener('play', this.pauseOthers);
   }
-  getFreeMediaLinks = (media) => {
-    const freeMediaLinks = [];
-    let firstMediaLinkAdded = true;
-
-    if (!media.free) return freeMediaLinks;
-
-    Object.keys(media).forEach((key) => {
-      // Check the property is a media format
-      if (formats[key]) {
-        const value = media[key];
-
-        if (firstMediaLinkAdded) {
-          firstMediaLinkAdded = false;
-        } else {
-          freeMediaLinks.push(', ');
-        }
-        freeMediaLinks.push(
-          <a
-            key={this.freeMediaLinkIndex += 1}
-            className={this.props.freeItemClass}
-            href={value} tabIndex="-1"
-          >
-            {key}
-          </a>,
-        );
-      }
-    });
-
-    return freeMediaLinks;
-  }
+  getPlaylistShufflePositions = () => this.props.playlist.map((media, index) => ({
+    ...media,
+    shufflePosition: index,
+  }))
+  setCurrentMedia = () => this.props.dispatch(jPlayerActions
+    .setMedia(this.props.id, this.props.playlist[this.props.current]));
   playNext = () => this.next()
   pauseOthers = () => {
-    this.props.jPlaylists.forEach((jPlaylist) => {
-      if (jPlaylist.id !== this.props.id) {
-        this.props.dispatch(pause(jPlaylist.id));
-      }
-    });
+    this.props.otherJPlaylists.forEach(jPlaylist =>
+      this.props.dispatch(pause(jPlaylist.id)));
   }
-  initPlaylist = () => {
-    this.props.dispatch(jPlayerActions.setOption('current', 0));
-    this.props.dispatch(jPlayerActions.setOption('shuffled', false));
-    this.originalPlaylist = [...this.props.playlist];
+  // add = (media, playNow) => {
+  //   media.key = maxBy(this.props.playlist, 'key').key + 1;
 
-    for (let i = 0; i < this.originalPlaylist.length; i += 1) {
-      this.originalPlaylist[i].key = i;
-      this.originalPlaylist[i].freeMediaLinks = this.getFreeMediaLinks(this.originalPlaylist[i]);
-    }
+  //   this.props.dispatch(setOption(this.props.id, 'originalPlaylist',
+  //     [
+  //       ...this.props.originalPlaylist,
+  //       media,
+  //     ]));
+  //   // this.props.addUniqueToArray(constants.keys.PLAYLIST_CLASS, media);
 
-    this.props.dispatch(jPlayerActions.setOption('playlist', this.originalPlaylist));
-  }
-  add = (media, playNow) => {
-    media.freeMediaLinks = this.getFreeMediaLinks(media);
-    media.key = maxBy(this.props.playlist, 'key').key + 1;
-
-    this.originalPlaylist.push(media);
-    // this.props.addUniqueToArray(constants.keys.PLAYLIST_CLASS, media);
-
-    if (playNow) {
-      this.props.dispatch(play(this.props.playlist.length - 1));
-    } else if (this.originalPlaylist.length === 1) {
-      this.props.dispatch(select(0));
-    }
-  }
-  remove = (index) => {
-    if (index === undefined) {
-      this.initPlaylist(this.props);
-      this.props.dispatch(jPlayerActions.clearMedia);
-    } else {
-      const playlist = [...this.props.playlist];
-      playlist[index].isRemoving = true;
-
-      this.props.dispatch(setOption('playlist', playlist));
-    }
-    this.setState({ removing: true });
+  //   if (playNow) {
+  //     this.props.dispatch(play(this.props.id, this.props.playlist.length - 1));
+  //   } else if (this.props.originalPlaylist.length === 1) {
+  //     this.props.dispatch(select(this.props.id, 0));
+  //   }
+  // }
+  playlistCleared = () => {
+    this.initPlaylist();
+    this.props.dispatch(jPlayerActions.clearMedia(this.props.id));
   }
   select = () => {
-    if (this.props.index >= 0 && this.props.index < this.props.playlist.length) {
-      this.props.dispatch(jPlayerActions.setOption('current', this.props.index));
-      this.props.dispatch(jPlayerActions.setMedia(this.props.playlist[this.props.index]));
-    } else {
-      this.props.dispatch(jPlayerActions.setOption('current', 0));
-    }
+    // if (this.props.current >= 0 && this.props.current < this.props.playlist.length) {
+    //   this.props.dispatch(setOption(this.props.id, 'current', this.props.index));
+    //   this.props.dispatch(jPlayerActions.setMedia(this.props.playlist[this.props.index]));
+    // } else {
+    //   this.props.dispatch(setOption(this.props.id, 'current', 0));
+    // }
   }
-  play = () => {
-    if (this.props.index >= 0 && this.props.index < this.props.playlist.length) {
-      if (this.props.playlist.length) {
-        this.props.dispatch(select(this.props.index));
-        this.props.dispatch(jPlayerActions.play);
-      }
-    } else if (this.props.index === undefined) {
-      this.props.dispatch(jPlayerActions.play);
-    }
-  }
-  next = () => {
-    if (this.props.loop === 'loop') {
-      this.props.dispatch(play(this.props.current));
-    }
-    if (this.props.loop === 'loop-playlist') {
-      // See if we need to shuffle before looping to start, and only shuffle if more than 1 item.
-      if (this.props.index === 0 && this.props.shuffled &&
-          this.props.shuffleOnLoop && this.props.playlist.length > 1) {
-        // Shuffle and play the media now
-        this.props.dispatch(shuffle(true, true));
-      } else {
-        this.props.dispatch(play(this.props.index));
-      }
-    } else if (this.props.index > 0) {
-      // The index will be zero if it just looped round
-      this.props.dispatch(play(this.props.index));
-    }
-  }
-  previous = () => {
-    if ((this.props.loop === 'loop-playlist' && this.props.loopOnPrevious)
-        || this.props.index < this.props.playlist.length - 1) {
-      this.props.dispatch(play(this.props.index));
-    }
-  }
-  shuffle = () => this.setState({ shuffling: true });
-  autoPlay = () => {
-    if (this.props.autoPlay) {
-      this.props.dispatch(play(this.props.current));
-    } else {
-      this.props.dispatch(select(this.props.current));
-    }
-  }
-  removeAnimationCallback = (index) => {
+  // play = () => {
+  //   if (this.props.index >= 0 && this.props.index < this.props.playlist.length) {
+  //     if (this.props.playlist.length) {
+  //       this.props.dispatch(select(this.props.id, this.props.index));
+  //       this.props.dispatch(jPlayerActions.play(this.props.id));
+  //     }
+  //   } else if (this.props.index === undefined) {
+  //     this.props.dispatch(jPlayerActions.play(this.props.id));
+  //   }
+  // }
+  // autoPlay = () => {
+  //   if (this.props.autoPlay) {
+  //     this.props.dispatch(play(this.props.id, this.props.current));
+  //   } else {
+  //     this.props.dispatch(select(this.props.id, this.props.current));
+  //   }
+  // }
+  shuffle = () => {
     if (this.props.shuffled) {
-      const item = this.props.playlist[index];
+      const shuffledPlaylist = [...this.props.playlist].sort(() => 0.5 - Math.random());
 
-      for (let i = 0; i < this.originalPlaylist.length; i += 1) {
-        if (this.originalPlaylist[i].key === item.key) {
-          this.originalPlaylist.splice(i, 1);
-          break;
-        }
-      }
+      this.props.dispatch(setPlaylist(this.props.id, shuffledPlaylist));
     } else {
-      this.originalPlaylist.splice(index, 1);
-    }
-
-    // this.props.removeFromArrayByIndex(constants.keys.PLAYLIST, index);
-
-    if (this.originalPlaylist.length) {
-      if (index === this.props.current) {
-        const current = (index < this.originalPlaylist.length) ? this.props.current
-          : this.originalPlaylist.length - 1;
-
-        // To cope when last element being selected when it was removed
-        this.props.dispatch(jPlayerActions.setOption('current', current));
-        this.props.dispatch(select(current));
-      } else if (index < this.props.current) {
-        this.props.dispatch(jPlayerActions.setOption('current', this.props.current -= 1));
-      }
-    } else {
-      this.props.dispatch(setOption('current', 0));
-      this.props.dispatch(setOption('shuffled', false));
-      this.props.dispatch(jPlayerActions.clearMedia);
-    }
-
-    this.setState({ removing: false });
-  }
-  shuffleAnimationCallback = () => {
-    if (this.state.shuffling) {
-      if (this.props.shuffled) {
-        const shuffledPlaylist = [...this.props.playlist].sort(() => 0.5 - Math.random());
-
-        this.props.dispatch(setOption('playlist', shuffledPlaylist));
-      } else {
-        this.props.dispatch(setOption('playlist', this.originalPlaylist));
-      }
-      this.setState({ shuffling: false });
-    }
-  }
-  blur = (element) => {
-    if (this.props.autoBlur) {
-      element.blur();
+      const originalPlaylist = [...this.props.playlist];
+      originalPlaylist.sort((a, b) => a.shufflePosition - b.shufflePosition);
+      this.props.dispatch(setPlaylist(this.props.id, originalPlaylist));
     }
   }
   render() {
-    // const MediaAnimationConfig = this.state.removing ? this.props.removeAnimation
-    // : this.props.addAnimation;
-
     return (
-      <div className="jp-playlist" />
+      <JPlaylist
+        playlist={this.props.playlist} attributes={this.props.attributes}
+      >
+        {this.props.children}
+      </JPlaylist>
     );
   }
 }
-
-{ /* <Playlist shuffling={this.state.shuffling} config={this.props.shuffleAnimation} onRest={this.shuffleAnimationCallback}>
-          <PlaylistItem
-            medias={this.props.playlist} current={this.props.current} config={MediaAnimationConfig} onRest={this._removeAnimationCallback}
-            removeItemClass={this.props.removeItemClass} freeGroupClass={this.props.freeGroupClass} itemClass={this.props.itemClass} enableRemoveControls={this.props.enableRemoveControls}
-            remove={this.remove} blur={this.blur} play={this.play} mergeOptions={this.mergeOptions}
-          />
-</Playlist>*/ }
-
-export default connect(mapStateToProps)(JPlaylistContainer);
+{/*<Playlist shuffling={this.state.shuffling} config={this.props.shuffleAnimation} onRest={this.shuffleAnimationCallback}>
+  <PlaylistItem
+    medias={this.props.playlist} current={this.props.current} config={MediaAnimationConfig} onRest={this._removeAnimationCallback}
+    removeItemClass={this.props.removeItemClass} freeGroupClass={this.props.freeGroupClass} itemClass={this.props.itemClass} enableRemoveControls={this.props.enableRemoveControls}
+    remove={this.remove} blur={this.blur} play={this.play} mergeOptions={this.mergeOptions}
+  />
+</Playlist>*/}
+export default connectWithId(mapStateToProps)(JPlaylistContainer);

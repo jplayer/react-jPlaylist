@@ -1,20 +1,19 @@
-import maxBy from 'lodash.maxby';
 import { constants } from 'react-jplayer';
+import { updateObject } from 'react-jplayer-utils';
 
 import actionNames from '../util/actionNames';
-import updateObject from '../util/updateObject';
 
 const add = ({ media }, playNow) => {
   const newMedia = { ...media };
 
   addFreeMediaLinks(media);
-  newMedia.key = maxBy(this.props.playlist, 'key').key + 1;
+  newMedia.key = maxBy(jPlaylist.playlist, 'key').key + 1;
 
   this.original.push(media);
-  this.props.addUniqueToArray(constants.keys.PLAYLIST_CLASS, media);
+  jPlaylist.addUniqueToArray(constants.keys.PLAYLIST_CLASS, media);
 
   if (playNow) {
-    this.play(this.props.playlist.length - 1);
+    this.play(jPlaylist.playlist.length - 1);
   } else if (this.original.length === 1) {
     this.select(0);
   }
@@ -22,29 +21,27 @@ const add = ({ media }, playNow) => {
   return media;
 };
 
-const remove = ({ playlist }, index) => {
-  const newPlaylist = [...playlist];
+const remove = (jPlaylist, { index }) => {
+  const newPlaylist = [...jPlaylist.playlist];
 
-  if (index === undefined) {
-    this._initPlaylist([]);
-    this.context.clearMedia();
-  } else {
-    newPlaylist[index].isRemoving = true;
+  newPlaylist[index].isRemoving = true;
 
-    this.props.setOption('playlist', playlist);
-  }
-  this.setState({ removing: true });
-
-  return playlist;
+  return updateObject(jPlaylist, {
+    playlist: newPlaylist,
+  });
 };
 
-const select = (jPlaylist, { index }) => updateObject(jPlaylist, {
-  index: (index < 0) ? jPlaylist.original.length + index : index,
+const clear = jPlaylist => updateObject(jPlaylist, {
+  playlist: [],
+});
+
+const select = (jPlaylist, { current = jPlaylist.current }) => updateObject(jPlaylist, {
+  current: (current < 0) ? jPlaylist.original.length + current : current,
 });
 
 // Negative index relates to end of array.
-const play = (jPlaylist, { index }) => updateObject(jPlaylist, {
-  index: (index < 0) ? jPlaylist.original.length + index : index,
+const play = (jPlaylist, { current = jPlaylist.current }) => updateObject(jPlaylist, {
+  current: (current < 0) ? jPlaylist.original.length + current : current,
   paused: false,
 });
 
@@ -52,46 +49,103 @@ const pause = jPlaylist => updateObject(jPlaylist, {
   paused: true,
 });
 
-const next = jPlaylist => updateObject(jPlaylist, {
-  index: jPlaylist.current + 1 < jPlaylist.playlist.length ? jPlaylist.current + 1 : 0,
-});
-
-const previous = jPlaylist => updateObject(jPlaylist, {
-  index: jPlaylist.current - 1 >= 0 ? jPlaylist.current - 1 : jPlaylist.playlist.length - 1,
-});
-
 const shuffle = (jPlaylist, { shuffled, playNow }) => updateObject(jPlaylist, {
   shuffled: shuffled === undefined ? !jPlaylist.shuffled : shuffled,
   playNow,
 });
 
-const setPlaylist = (jPlaylist, { playlist }) => updateObject(jPlaylist, {
+const next = (jPlaylist) => {
+  let newJPlaylist = {
+    ...jPlaylist,
+    current: jPlaylist.current + 1 < jPlaylist.playlist.length ?
+      jPlaylist.current + 1 : 0,
+  };
+
+  if (newJPlaylist.loop === 'loop-playlist') {
+    // See if we need to shuffle before looping to start, and only shuffle if more than 1 item.
+    if (newJPlaylist.current === 0 && newJPlaylist.shuffled &&
+        newJPlaylist.shuffleOnLoop && newJPlaylist.playlist.length > 1) {
+      // Shuffle and play the media now
+      newJPlaylist = {
+        ...shuffle(newJPlaylist, true, true),
+      };
+    } else {
+      newJPlaylist = {
+        ...play(newJPlaylist, newJPlaylist),
+      };
+    }
+  } else if (newJPlaylist.current > 0) {
+    // The index will be zero if it just looped round
+    newJPlaylist = {
+      ...play(newJPlaylist, newJPlaylist),
+    };
+  }
+
+  return newJPlaylist;
+};
+
+const previous = (jPlaylist) => {
+  let newJPlaylist = {
+    ...jPlaylist,
+    current: jPlaylist.current - 1 >= 0 ? jPlaylist.current - 1
+      : jPlaylist.playlist.length - 1,
+  };
+
+  if ((newJPlaylist.loop === 'loop-playlist' && newJPlaylist.loopOnPrevious)
+      || newJPlaylist.current < newJPlaylist.playlist.length - 1) {
+    newJPlaylist = {
+      ...play(newJPlaylist, newJPlaylist),
+    };
+  }
+
+  return newJPlaylist;
+};
+
+const setPlaylist = (jPlaylist, { playlist }) =>
+updateObject(jPlaylist, {
+  current: 0,
+  shuffled: false,
   playlist,
 });
 
-const jPlaylistReducer = (state, action) => {
+const updatePlaylist = (jPlaylist, action) => {
   switch (action.type) {
+    case actionNames.SET_OPTION:
+      return updateObject(jPlaylist, { [action.key]: action.value });
     case actionNames.SET_PLAYLIST:
-      return setPlaylist(state[action.id], action);
+      return setPlaylist(jPlaylist, action);
     case actionNames.ADD:
-      return add(state[action.id], action);
+      return add(jPlaylist, action);
     case actionNames.REMOVE:
-      return remove(state[action.id], action);
+      return remove(jPlaylist, action);
+    case actionNames.CLEAR:
+      return clear(jPlaylist, action);
     case actionNames.SELECT:
-      return select(state[action.id], action);
+      return select(jPlaylist, action);
     case actionNames.PLAY:
-      return play(state[action.id], action);
+      return play(jPlaylist, action);
     case actionNames.PAUSE:
-      return pause(state[action.id], action);
+      return pause(jPlaylist, action);
     case actionNames.SHUFFLE:
-      return shuffle(state[action.id], action);
+      return shuffle(jPlaylist, action);
     case actionNames.NEXT:
-      return next(state[action.id], action);
+      return next(jPlaylist, action);
     case actionNames.PREVIOUS:
-      return previous(state[action.id], action);
+      return previous(jPlaylist, action);
     default:
-      return state;
+      return null;
   }
+};
+
+const jPlaylistReducer = (state = {}, action) => {
+  const jPlaylist = updatePlaylist(state[action.id], action);
+
+  if (jPlaylist !== null) {
+    return updateObject(state, {
+      [action.id]: jPlaylist,
+    });
+  }
+  return state;
 };
 
 export default jPlaylistReducer;

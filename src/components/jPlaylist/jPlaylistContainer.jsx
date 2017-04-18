@@ -252,11 +252,11 @@ class JPlaylistContainer extends React.Component {
     );
   }
 }
-{/*<Playlist shuffling={this.state.shuffling} config={this.props.shuffleAnimation} onRest={this.shuffleAnimationCallback}>
+{ /* <Playlist shuffling={this.state.shuffling} config={this.props.shuffleAnimation} onRest={this.shuffleAnimationCallback}>
   <PlaylistItem
     medias={this.props.playlist} current={this.props.current} config={MediaAnimationConfig} onRest={this._removeAnimationCallback}
     removeItemClass={this.props.removeItemClass} freeGroupClass={this.props.freeGroupClass} itemClass={this.props.itemClass} enableRemoveControls={this.props.enableRemoveControls}
     remove={this.remove} blur={this.blur} play={this.play} mergeOptions={this.mergeOptions}
   />
-</Playlist>*/}
+</Playlist>*/ }
 export default connectWithId(mapStateToProps)(JPlaylistContainer);

@@ -10,9 +10,8 @@ import PlaylistItem from './playlistItem';
 
 const currentMedia = 'jp-playlist-current';
 
-const mapStateToProps = ({ jPlayers, jPlaylists }, { id, index, children }) => ({
+const mapStateToProps = ({ jPlayers, jPlaylists }, { id, children }) => ({
   autoBlur: jPlaylists[id].autoBlur,
-  media: jPlayers[id].media,
   current: jPlaylists[id].current,
   playlistItemAnimationConfig: jPlaylists[id].playlistItemAnimationConfig,
   shuffled: jPlaylists[id].shuffled,
@@ -30,7 +29,6 @@ class PlaylistItemContainer extends React.Component {
       autoBlur: PropTypes.bool.isRequired,
       minHeight: PropTypes.number.isRequired,
       maxHeight: PropTypes.number.isRequired,
-      media: PropTypes.object.isRequired,
       playlistItemAnimationConfig: PropTypes.object.isRequired,
       shuffled: PropTypes.bool.isRequired,
       playlist: PropTypes.arrayOf(
@@ -43,7 +41,6 @@ class PlaylistItemContainer extends React.Component {
         }),
       ).isRequired,
       itemClass: React.PropTypes.string.isRequired,
-      index: React.PropTypes.number.isRequired,
     };
   }
   static get defaultProps() {

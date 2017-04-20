@@ -102,8 +102,7 @@ class JPlaylistContainer extends React.Component {
     // }
   }
   componentWillMount() {
-    const playlist = this.getPlaylistShufflePositions();
-    this.props.dispatch(setPlaylist(this.props.id, playlist));
+    this.props.dispatch(setPlaylist(this.props.id, this.initPlaylist()));
     this.props.dispatch(jPlayerActions.setOption(
       this.props.id, 'keyBindings', merge({
         next: {
@@ -175,12 +174,13 @@ class JPlaylistContainer extends React.Component {
     this.media.removeEventListener('ended', this.playNext);
     this.media.removeEventListener('play', this.pauseOthers);
   }
-  getPlaylistShufflePositions = () => this.props.playlist.map((media, index) => ({
-    ...media,
-    shufflePosition: index,
-  }))
   setCurrentMedia = () => this.props.dispatch(jPlayerActions
     .setMedia(this.props.id, this.props.playlist[this.props.current]));
+  initPlaylist = () => this.props.playlist.map((media, index) => ({
+    ...media,
+    id: index,
+    shufflePosition: index,
+  }))
   playNext = () => this.next()
   pauseOthers = () => {
     this.props.otherJPlaylists.forEach(jPlaylist =>
@@ -203,7 +203,6 @@ class JPlaylistContainer extends React.Component {
   //   }
   // }
   playlistCleared = () => {
-    this.initPlaylist();
     this.props.dispatch(jPlayerActions.clearMedia(this.props.id));
   }
   select = () => {

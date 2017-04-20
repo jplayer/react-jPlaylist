@@ -3,19 +3,12 @@ import PropTypes from 'prop-types';
 
 import PlaylistItem from '../playlistItem/playlistItemContainer';
 
-let key = 0;
-
 const JPlaylist = ({ playlist, children, attributes }) => (
   <ul {...attributes}>
-    {playlist.map((_, index) => {
-      key += 1;
-
-      return (
-        <PlaylistItem key={key} index={index}>
-          {children}
-        </PlaylistItem>
-      );
-    })
+    {playlist.map((media) => {debugger; return(
+      <PlaylistItem key={media.id} index={media.id}>
+        {children}
+      </PlaylistItem>)})
     }
   </ul>
 );
@@ -28,6 +21,7 @@ JPlaylist.propTypes = {
         artist: PropTypes.string,
         sources: PropTypes.arrayOf(PropTypes.string).isRequired,
         poster: PropTypes.string,
+        id: PropTypes.number.isRequired,
         free: PropTypes.bool,
       }),
   ).isRequired,

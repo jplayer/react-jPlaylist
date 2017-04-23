@@ -5,10 +5,10 @@ import PlaylistItem from '../playlistItem/playlistItemContainer';
 
 const JPlaylist = ({ playlist, children, attributes }) => (
   <ul {...attributes}>
-    {playlist.map((media) => {debugger; return(
-      <PlaylistItem key={media.id} index={media.id}>
+    {playlist.map((media, index) => (
+      <PlaylistItem key={media.id} index={index}>
         {children}
-      </PlaylistItem>)})
+      </PlaylistItem>))
     }
   </ul>
 );

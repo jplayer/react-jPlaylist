@@ -50,36 +50,6 @@ class PlaylistItemContainer extends React.Component {
       attributes: null,
     };
   }
-  componentWillReceiveProps(nextProps) {
-    nextProps.playlist.forEach((media, index) => {
-      if (media.isRemoving) {
-        this.remove(index);
-      }
-    });
-  }
-  remove = (index) => {
-    const playlist = [...this.props.playlist];
-
-    playlist.splice(index, 1);
-    this.props.dispatch(setPlaylist(this.props.id, playlist));
-
-    if (playlist.length) {
-      if (index === this.props.current) {
-        const current = (index < playlist.length) ? this.props.current
-          : playlist.length - 1;
-
-        // To cope when last element being selected when it was removed
-        this.props.dispatch(setOption(this.props.id, 'current', current));
-        this.props.dispatch(select(this.props.id, current));
-      } else if (index < this.props.current) {
-        this.props.dispatch(setOption(this.props.id, 'current', this.props.current -= 1));
-      }
-    } else {
-      this.props.dispatch(setOption(this.props.id, 'current', 0));
-      this.props.dispatch(setOption(this.props.id, 'shuffled', false));
-      this.props.dispatch(jPlayerActions.clearMedia(this.props.id));
-    }
-  }
   render() {
     // const mediaListClass = this.props.current === this.props.index ?
     //   this.className.currentMedia : null;

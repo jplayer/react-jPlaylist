@@ -102,7 +102,6 @@ class JPlaylistContainer extends React.Component {
     // }
   }
   componentWillMount() {
-    this.props.dispatch(setPlaylist(this.props.id, this.initPlaylist()));
     this.props.dispatch(jPlayerActions.setOption(
       this.props.id, 'keyBindings', merge({
         next: {
@@ -119,6 +118,8 @@ class JPlaylistContainer extends React.Component {
         },
       }, this.props.keyBindings),
     ));
+
+    this.props.dispatch(jPlayerActions.setMedia(this.props.id, this.props.playlist[0]));
 
     // this.props.setOption('onResize', () => {
     // const method = this.props.fullScreen ? this.props.removeFromArrayByValue
@@ -169,6 +170,12 @@ class JPlaylistContainer extends React.Component {
         && this.props.playlist === prevProps.playlist) {
       this.shuffle();
     }
+
+    this.props.playlist.forEach((media, index) => {
+      if (media.isRemoving) {
+        this.remove(index);
+      }
+    });
   }
   componentWillUnmount() {
     this.media.removeEventListener('ended', this.playNext);
@@ -230,6 +237,29 @@ class JPlaylistContainer extends React.Component {
   //     this.props.dispatch(select(this.props.id, this.props.current));
   //   }
   // }
+  remove = (index) => {
+    const playlist = [...this.props.playlist];
+
+    playlist.splice(index, 1);
+    this.props.dispatch(setPlaylist(this.props.id, playlist));
+
+    if (playlist.length) {
+      if (index === this.props.current) {
+        const current = (index < playlist.length) ? this.props.current
+          : playlist.length - 1;
+
+        // To cope when last element being selected when it was removed
+        this.props.dispatch(setOption(this.props.id, 'current', current));
+        this.props.dispatch(select(this.props.id, current));
+      } else if (index < this.props.current) {
+        this.props.dispatch(setOption(this.props.id, 'current', this.props.current -= 1));
+      }
+    } else {
+      this.props.dispatch(setOption(this.props.id, 'current', 0));
+      this.props.dispatch(setOption(this.props.id, 'shuffled', false));
+      this.props.dispatch(jPlayerActions.clearMedia(this.props.id));
+    }
+  }
   shuffle = () => {
     if (this.props.shuffled) {
       const shuffledPlaylist = [...this.props.playlist].sort(() => 0.5 - Math.random());

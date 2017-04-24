@@ -28,7 +28,7 @@ const mapStateToProps = ({ jPlaylists }, { id, children, customStates, ...attrib
   freeItemClass: jPlaylists[id].freeItemClass,
   removeItemClass: jPlaylists[id].removeItemClass,
   freeGroupClass: jPlaylists[id].freeGroupClass,
-  otherJPlaylists: Object.keys(jPlaylists).filter(key => jPlaylists[key].id !== id),
+  otherJPlaylists: Object.keys(jPlaylists).filter(key => key !== id),
   id,
   children,
   attributes,
@@ -271,18 +271,15 @@ class JPlaylistContainer extends React.Component {
     playlist.splice(index, 1);
     this.props.dispatch(setPlaylist(this.props.id, playlist));
 
-    if (index === this.props.current) {
-      this.props.dispatch(jPlayerActions.setMedia(this.props.id, playlist[index]));
-    }
-
     if (playlist.length) {
-      if (index === this.props.current) {
+      if (index === this.props.current) {debugger
         const current = (index < playlist.length) ? this.props.current
           : playlist.length - 1;
 
         // To cope when last element being selected when it was removed
         this.props.dispatch(select(this.props.id, current));
-      } else if (index < this.props.current) {
+        this.props.dispatch(jPlayerActions.setMedia(this.props.id, playlist[current]));
+      } else if (index < this.props.current) {debugger
         this.props.dispatch(select(this.props.id, this.props.current -= 1));
       }
     } else {

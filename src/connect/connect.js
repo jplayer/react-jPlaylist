@@ -1,40 +1,30 @@
 import { connect } from 'react-redux';
 import { actions as jPlayerActions } from 'react-jplayer';
-import { connect as jPlayerConnect, jPlayerDefaultOptions } from 'react-jplayer-utils';
+import { connect as jPlayerConnect } from 'react-jplayer-utils';
+import getConnectedJPlayers from 'react-jplayer/src/util/getConnectedJPlayers';
+import merge from 'lodash.merge';
 
 import * as jPlaylistActions from '../actions/actions';
+import getConnectedJPlaylists from '../util/getConnectedJPlaylists';
 
-const mapStateToProps = ({ jPlaylists }, { id, ...props }) => {
-  const newJPlaylists = {};
+const mapStateToProps = ({ jPlayers, jPlaylists }, { id, ...props }) => {
+  const newJPlaylists = merge({},
+    getConnectedJPlayers(jPlayers),
+    getConnectedJPlaylists(jPlaylists),
+  );
+  const { [id]: jPlaylist, ...otherJPlayers } = newJPlaylists;
 
-  Object.keys(jPlaylists).forEach((jPlaylistKey) => {
-    const jPlaylist = jPlaylists[jPlaylistKey];
-    const options = {};
-
-    Object.keys(jPlayerDefaultOptions).forEach((key) => {
-      if (jPlaylist[key] !== undefined) {
-        options[key] = jPlaylist[key];
-      }
-    });
-
-    newJPlaylists[jPlaylistKey] = {
-      options,
-    };
-  });
-
-  const { [id]: jPlaylist, ...otherJPlaylists } = newJPlaylists;
-
-  const returnedJPlaylists = {
+  const returnedJPlaylist = {
     ...props,
     ...jPlaylist,
     id,
   };
 
-  if (Object.keys(otherJPlaylists).some(otherJPlaylist => otherJPlaylist)) {
-    returnedJPlaylists.jPlaylists = otherJPlaylists;
+  if (Object.keys(otherJPlayers).some(otherJPlayer => otherJPlayer)) {
+    returnedJPlaylist.jPlayers = otherJPlayers;
   }
 
-  return returnedJPlaylists;
+  return returnedJPlaylist;
 };
 
 const mapDispatchToProps = {
@@ -42,10 +32,10 @@ const mapDispatchToProps = {
   ...jPlaylistActions,
 };
 
-const Connect = (jPlaylist, options) => {
+const Connect = (jPlaylist, options, playlistOptions) => {
   const ConnectedPlaylist = connect(mapStateToProps, mapDispatchToProps)(jPlaylist);
 
-  return jPlayerConnect(jPlaylist, options, ConnectedPlaylist);
+  return jPlayerConnect(jPlaylist, { options, playlistOptions }, ConnectedPlaylist);
 };
 
 export default Connect;

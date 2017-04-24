@@ -6,4 +6,8 @@ export default {
   PLAYLIST: 'jp-playlist',
   REMOVE: 'jp-remove',
   MEDIA_LINK: 'jp-media-link',
+  CURRENT: 'jp-current',
+  states: {
+    LOOPED_PLAYLIST: 'jp-state-looped-playlist',
+  },
 };

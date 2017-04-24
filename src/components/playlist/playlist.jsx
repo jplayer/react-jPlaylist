@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import PlaylistItem from '../playlistItem/playlistItemContainer';
 
-const JPlaylist = ({ playlist, children, attributes }) => (
+const Playlist = ({ playlist, children, attributes }) => (
   <ul {...attributes}>
     {playlist.map((media, index) => (
       <PlaylistItem key={media.id} index={index}>
@@ -13,7 +13,7 @@ const JPlaylist = ({ playlist, children, attributes }) => (
   </ul>
 );
 
-JPlaylist.propTypes = {
+Playlist.propTypes = {
   attributes: PropTypes.object.isRequired,
   playlist: PropTypes.arrayOf(
       PropTypes.shape({
@@ -28,4 +28,4 @@ JPlaylist.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-export default JPlaylist;
+export default Playlist;

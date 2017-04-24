@@ -6,20 +6,20 @@ import MediaLink from './mediaLink';
 
 const mapStateToProps = ({ jPlaylists }, { index, id, children, ...attributes }) => ({
   current: jPlaylists[id].current,
+  id,
   index,
   children,
   attributes,
 });
 
-const mergeProps = ({ current, index, ...stateProps }, { dispatch }, { id }) => ({
-  onClick: () => {
+const mapDispatchToProps = dispatch => ({
+  onClick: (id, current, index) => {
     if (current !== index) {
       dispatch(play(id, index));
     } else {
       dispatch(jPlayerActions.play(id));
     }
   },
-  ...stateProps,
 });
 
-export default connectWithIndex(mapStateToProps, null, mergeProps)(MediaLink);
+export default connectWithIndex(mapStateToProps, mapDispatchToProps)(MediaLink);

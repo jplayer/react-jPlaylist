@@ -3,13 +3,13 @@ import { remove } from '../../actions/actions';
 import Remove from './remove';
 
 const mapStateToProps = ({ jPlaylists }, { id, index, ...attributes }) => ({
+  id,
   index,
   attributes,
 });
 
-const mergeProps = ({ index, ...stateProps }, { dispatch }, { id }) => ({
-  onClick: () => dispatch(remove(id, index)),
-  ...stateProps,
+const mapDispatchToProps = dispatch => ({
+  onClick: (id, index) => dispatch(remove(id, index)),
 });
 
-export default connectWithIndex(mapStateToProps, null, mergeProps)(Remove);
+export default connectWithIndex(mapStateToProps, mapDispatchToProps)(Remove);

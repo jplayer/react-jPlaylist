@@ -35,13 +35,14 @@ const clear = jPlaylist => updateObject(jPlaylist, {
   playlist: [],
 });
 
-const select = (jPlaylist, { current = jPlaylist.current }) => updateObject(jPlaylist, {
-  current: (current < 0) ? jPlaylist.original.length + current : current,
+// Negative index relates to the end of the array
+const select = (jPlaylist, { index }) => updateObject(jPlaylist, {
+  current: (index < 0) ? jPlaylist.original.length + index : index,
 });
 
-// Negative index relates to end of array.
-const play = (jPlaylist, { current = jPlaylist.current }) => updateObject(jPlaylist, {
-  current: (current < 0) ? jPlaylist.original.length + current : current,
+// Negative index relates to the end of the array
+const play = (jPlaylist, { index = jPlaylist.current }) => updateObject(jPlaylist, {
+  current: (index < 0) ? jPlaylist.original.length + index : index,
   paused: false,
 });
 
@@ -55,51 +56,18 @@ const shuffle = (jPlaylist, { shuffled, playNow }) => updateObject(jPlaylist, {
 });
 
 const next = (jPlaylist) => {
-  let newJPlaylist = {
-    ...jPlaylist,
+  const current = jPlaylist.loop === 'loop-playlist' ? 0 : jPlaylist.current;
+
+  return updateObject(jPlaylist, {
     current: jPlaylist.current + 1 < jPlaylist.playlist.length ?
-      jPlaylist.current + 1 : 0,
-  };
-
-  if (newJPlaylist.loop === 'loop-playlist') {
-    // See if we need to shuffle before looping to start, and only shuffle if more than 1 item.
-    if (newJPlaylist.current === 0 && newJPlaylist.shuffled &&
-        newJPlaylist.shuffleOnLoop && newJPlaylist.playlist.length > 1) {
-      // Shuffle and play the media now
-      newJPlaylist = {
-        ...shuffle(newJPlaylist, true, true),
-      };
-    } else {
-      newJPlaylist = {
-        ...play(newJPlaylist, newJPlaylist),
-      };
-    }
-  } else if (newJPlaylist.current > 0) {
-    // The index will be zero if it just looped round
-    newJPlaylist = {
-      ...play(newJPlaylist, newJPlaylist),
-    };
-  }
-
-  return newJPlaylist;
+      jPlaylist.current + 1 : current,
+  });
 };
 
-const previous = (jPlaylist) => {
-  let newJPlaylist = {
-    ...jPlaylist,
-    current: jPlaylist.current - 1 >= 0 ? jPlaylist.current - 1
-      : jPlaylist.playlist.length - 1,
-  };
-
-  if ((newJPlaylist.loop === 'loop-playlist' && newJPlaylist.loopOnPrevious)
-      || newJPlaylist.current < newJPlaylist.playlist.length - 1) {
-    newJPlaylist = {
-      ...play(newJPlaylist, newJPlaylist),
-    };
-  }
-
-  return newJPlaylist;
-};
+const previous = jPlaylist => updateObject(jPlaylist, {
+  current: jPlaylist.current - 1 >= 0 ? jPlaylist.current - 1
+    : jPlaylist.playlist.length - 1,
+});
 
 const setPlaylist = (jPlaylist, { playlist }) =>
 updateObject(jPlaylist, {

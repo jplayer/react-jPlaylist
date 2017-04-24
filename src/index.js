@@ -3,9 +3,11 @@ import reducer from './reducer/reducer';
 import * as actions from './actions/actions';
 import connect from './connect/connect';
 import JPlaylist from './components/jPlaylist/jPlaylistContainer';
+import Playlist from './components/playlist/playlistContainer';
 import Shuffle from './components/shuffle/shuffleContainer';
 import Previous from './components/previous/previousContainer';
 import Next from './components/next/nextContainer';
+import Repeat from './components/repeat/repeatContainer';
 import TogglePlaylist from './components/togglePlaylist/togglePlaylistContainer';
 import Remove from './components/remove/removeContainer';
 import MediaLink from './components/mediaLink/mediaLinkContainer';
@@ -18,9 +20,11 @@ export {
   actions,
   connect,
   JPlaylist,
+  Playlist,
   Shuffle,
   Previous,
   Next,
+  Repeat,
   TogglePlaylist,
   Remove,
   MediaLink,

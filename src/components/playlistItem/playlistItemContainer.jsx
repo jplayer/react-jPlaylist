@@ -10,13 +10,15 @@ import PlaylistItem from './playlistItem';
 
 const currentMedia = 'jp-playlist-current';
 
-const mapStateToProps = ({ jPlayers, jPlaylists }, { id, children }) => ({
+const mapStateToProps = ({ jPlayers, jPlaylists }, { id, index }) => ({
   autoBlur: jPlaylists[id].autoBlur,
   current: jPlaylists[id].current,
   playlistItemAnimationConfig: jPlaylists[id].playlistItemAnimationConfig,
   shuffled: jPlaylists[id].shuffled,
   playlist: jPlaylists[id].playlist,
   itemClass: jPlaylists[id].itemClass,
+  index,
+  id,
 });
 
 class PlaylistItemContainer extends React.Component {
@@ -25,6 +27,8 @@ class PlaylistItemContainer extends React.Component {
       children: React.PropTypes.node.isRequired,
       dispatch: PropTypes.func.isRequired,
       id: PropTypes.number.isRequired,
+      index: PropTypes.number.isRequired,
+      onClick: PropTypes.func.isRequired,
       current: PropTypes.number.isRequired,
       autoBlur: PropTypes.bool.isRequired,
       minHeight: PropTypes.number.isRequired,
@@ -51,38 +55,14 @@ class PlaylistItemContainer extends React.Component {
     };
   }
   render() {
-    // const mediaListClass = this.props.current === this.props.index ?
-    //   this.className.currentMedia : null;
-    // const mediaLinkClass = this.props.current === this.props.index ?
-    //   `${this.props.itemClass} ${this.className.currentMedia}` : this.props.itemClass;
+    const isCurrent = this.props.current === this.props.index;
 
     return (
-      <PlaylistItem>
+      <PlaylistItem isCurrent={isCurrent}>
         {this.props.children}
       </PlaylistItem>
     );
   }
 }
-/* {this.props.medias.map((media, index) => {
-  const animationHeight = media.isRemoving ? this.props.minHeight : this.props.maxHeight;
-  const mediaListClass = this.props.current === index ? currentMedia : null;
-  const mediaLinkClass = this.props.current === index ? `${this.props.itemClass} ${currentMedia}` : this.props.itemClass;
-  const onRest = media.isRemoving ? () => this.props.onRest(index) : null;
-
-  return (<Motion key={media.key} defaultStyle={{ heightToInterpTo: this.props.minHeight }} style={{ heightToInterpTo: spring(animationHeight, this.props.config) }} onRest={onRest}>
-    {values =>
-      <li className={mediaListClass} style={{ transform: `scaleY(${values.heightToInterpTo})`, transformOrigin: '50% top' }}>
-        {this.props.enableRemoveControls && <a href="javascript:;" className={this.props.removeItemClass} onClick={this._onRemoveMediaClick.bind(this, index)}>&times;</a>}
-        {media.free && <span className={this.props.freeGroupClass}>({media.freeMediaLinks})</span>}
-        <a href="javascript:;" className={mediaLinkClass} onClick={this._onMediaLinkClick.bind(this, index)} tabIndex="0">
-          <img src={media.poster} />
-          {media.title}
-          {media.artist && <span className="jp-artist">by {media.artist}</span>}
-        </a>
-      </li>
-                }
-  </Motion>);
-},
-    )}*/
 
 export default connectWithId(mapStateToProps)(passWithIndex(PlaylistItemContainer));

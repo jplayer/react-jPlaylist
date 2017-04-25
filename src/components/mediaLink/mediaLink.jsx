@@ -5,7 +5,7 @@ import classes from '../../util/classes';
 
 const MediaLink = ({ onClick, id, current, index, children, attributes }) => (
   <button
-    className={classes.MEDIA_LINK} onClick={() => onClick(id, current, index)} 
+    className={classes.MEDIA_LINK} onClick={() => onClick(id, current, index)}
     {...attributes}
   >
     {children}

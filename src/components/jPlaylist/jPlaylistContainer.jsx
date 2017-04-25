@@ -162,7 +162,8 @@ class JPlaylistContainer extends React.Component {
     //   }
     // }
 
-    if (this.props.current !== prevProps.current) {
+    if (this.props.playlist[this.props.current].id !==
+      prevProps.playlist[prevProps.current].id) {
       this.props.dispatch(jPlayerActions
         .setMedia(this.props.id, this.props.playlist[this.props.current]));
       this.handlePlaylistLooped();
@@ -178,8 +179,14 @@ class JPlaylistContainer extends React.Component {
     //   }
     // }
 
-    if (this.props.shuffled !== prevProps.shuffled
-        && this.props.playlist === prevProps.playlist) {
+    if (this.props.playNow !== prevProps.playNow) {
+      if (this.props.playNow) {
+        this.props.dispatch(play(this.props.id));
+      }
+      this.props.dispatch(setOption(this.props.id, 'playNow', false));
+    }
+
+    if (this.props.shuffled !== prevProps.shuffled) {
       this.shuffle();
     }
 
@@ -211,53 +218,14 @@ class JPlaylistContainer extends React.Component {
       this.props.dispatch(play(this.props.id));
     }
   }
-  initPlaylist = () => this.props.playlist.map((media, index) => ({
-    ...media,
-    id: index,
-    shufflePosition: index,
-  }))
   playNext = () => this.props.dispatch(next(this.props.id))
   pauseOthers = () => {
     this.props.otherJPlaylists.forEach(jPlaylist =>
       this.props.dispatch(pause(jPlaylist.id)));
   }
-  // add = (media, playNow) => {
-  //   media.key = maxBy(this.props.playlist, 'key').key + 1;
-
-  //   this.props.dispatch(setOption(this.props.id, 'originalPlaylist',
-  //     [
-  //       ...this.props.originalPlaylist,
-  //       media,
-  //     ]));
-  //   // this.props.addUniqueToArray(constants.keys.PLAYLIST_CLASS, media);
-
-  //   if (playNow) {
-  //     this.props.dispatch(play(this.props.id, this.props.playlist.length - 1));
-  //   } else if (this.props.originalPlaylist.length === 1) {
-  //     this.props.dispatch(select(this.props.id, 0));
-  //   }
-  // }
   playlistCleared = () => {
     this.props.dispatch(jPlayerActions.clearMedia(this.props.id));
   }
-  select = () => {
-    // if (this.props.current >= 0 && this.props.current < this.props.playlist.length) {
-    //   this.props.dispatch(setOption(this.props.id, 'current', this.props.index));
-    //   this.props.dispatch(jPlayerActions.setMedia(this.props.playlist[this.props.index]));
-    // } else {
-    //   this.props.dispatch(setOption(this.props.id, 'current', 0));
-    // }
-  }
-  // play = () => {
-  //   if (this.props.index >= 0 && this.props.index < this.props.playlist.length) {
-  //     if (this.props.playlist.length) {
-  //       this.props.dispatch(select(this.props.id, this.props.index));
-  //       this.props.dispatch(jPlayerActions.play(this.props.id));
-  //     }
-  //   } else if (this.props.index === undefined) {
-  //     this.props.dispatch(jPlayerActions.play(this.props.id));
-  //   }
-  // }
   // autoPlay = () => {
   //   if (this.props.autoPlay) {
   //     this.props.dispatch(play(this.props.id, this.props.current));
@@ -272,16 +240,16 @@ class JPlaylistContainer extends React.Component {
     this.props.dispatch(setPlaylist(this.props.id, playlist));
 
     if (playlist.length) {
-      if (index === this.props.current) {debugger
+      if (index === this.props.current) {
         const current = (index < playlist.length) ? this.props.current
           : playlist.length - 1;
 
         // To cope when last element being selected when it was removed
         this.props.dispatch(select(this.props.id, current));
-        this.props.dispatch(jPlayerActions.setMedia(this.props.id, playlist[current]));
-      } else if (index < this.props.current) {debugger
-        this.props.dispatch(select(this.props.id, this.props.current -= 1));
       }
+      // else if (index < this.props.current) {
+      //   this.props.dispatch(select(this.props.id, this.props.current -= 1));
+      // }
     } else {
       this.props.dispatch(select(this.props.id, 0));
       this.props.dispatch(setOption(this.props.id, 'shuffled', false));
@@ -292,9 +260,11 @@ class JPlaylistContainer extends React.Component {
       const shuffledPlaylist = [...this.props.playlist].sort(() => 0.5 - Math.random());
 
       this.props.dispatch(setPlaylist(this.props.id, shuffledPlaylist));
+      this.props.dispatch(setOption(this.props.id, 'shuffled', true));
     } else {
-      const originalPlaylist = [...this.props.playlist];
-      originalPlaylist.sort((a, b) => a.shufflePosition - b.shufflePosition);
+      const originalPlaylist = [...this.props.playlist].sort((a, b) => (
+        a.shufflePosition - b.shufflePosition
+      ));
       this.props.dispatch(setPlaylist(this.props.id, originalPlaylist));
     }
   }

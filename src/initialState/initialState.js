@@ -1,4 +1,5 @@
 import { initialState, jPlaylistDefaultOptions, jPlaylistDefaultStatus } from 'react-jplayer-utils';
+import shortid from 'shortid';
 
 export default (connectedJPlaylists) => {
   const jPlaylists = initialState(connectedJPlaylists, {
@@ -9,7 +10,8 @@ export default (connectedJPlaylists) => {
   Object.keys(jPlaylists).forEach((key) => {
     jPlaylists[key].playlist = jPlaylists[key].playlist.map((media, index) => ({
       ...media,
-      id: index,
+      id: shortid.generate(),
+      shufflePosition: index,
     }));
   });
 

@@ -1,24 +1,32 @@
-import { constants } from 'react-jplayer';
 import { updateObject } from 'react-jplayer-utils';
+import maxBy from 'lodash.maxby';
+import shortid from 'shortid';
 
 import actionNames from '../util/actionNames';
 
-const add = ({ media }, playNow) => {
-  const newMedia = { ...media };
-
-  addFreeMediaLinks(media);
-  newMedia.key = maxBy(jPlaylist.playlist, 'key').key + 1;
-
-  this.original.push(media);
-  jPlaylist.addUniqueToArray(constants.keys.PLAYLIST_CLASS, media);
+const add = (jPlaylist, { media, playNow }) => {
+  const newMedia = {
+    ...media,
+    id: shortid.generate(),
+    shufflePosition: maxBy(jPlaylist.playlist, 'shufflePosition').shufflePosition + 1,
+  };
+  const playlist = [
+    ...jPlaylist.playlist,
+    newMedia,
+  ];
+  let current;
 
   if (playNow) {
-    this.play(jPlaylist.playlist.length - 1);
-  } else if (this.original.length === 1) {
-    this.select(0);
+    current = playlist.length - 1;
+  } else if (playlist.length === 1) {
+    current = 0;
   }
 
-  return media;
+  return updateObject(jPlaylist, {
+    playlist,
+    playNow,
+    current,
+  });
 };
 
 const remove = (jPlaylist, { index }) => {
@@ -69,11 +77,14 @@ const previous = jPlaylist => updateObject(jPlaylist, {
     : jPlaylist.playlist.length - 1,
 });
 
-const setPlaylist = (jPlaylist, { playlist }) =>
-updateObject(jPlaylist, {
+const setPlaylist = (jPlaylist, { playlist }) => updateObject(jPlaylist, {
   current: 0,
   shuffled: false,
-  playlist,
+  playlist: playlist.map((media, index) => ({
+    ...media,
+    // id: index,
+    shufflePosition: !jPlaylist.shuffled ? index : media.shufflePosition,
+  })),
 });
 
 const updatePlaylist = (jPlaylist, action) => {

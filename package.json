@@ -143,6 +143,7 @@
     "react-motion": "^0.4.7",
     "react-redux": "^5.0.2",
     "recompose": "^0.23.1",
-    "redux": "^3.6.0"
+    "redux": "^3.6.0",
+    "shortid": "^2.2.8"
   }
 }

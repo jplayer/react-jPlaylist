@@ -17,4 +17,17 @@
     background-color: #e5e5e5;
     border: solid 2px #d6d6d6;
   }
+  &.jp-state-looped-playlist {
+    .jp-repeat {
+      position: relative;
+      i:first-child {
+        &:before {
+          content: '\f0c9';
+        }
+        font-size: 11px;
+        right: 0;
+        position: absolute;
+      }
+    }
+  }
 }

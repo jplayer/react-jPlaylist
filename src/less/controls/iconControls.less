@@ -1,10 +1,23 @@
 @import '~react-jplayer/src/less/mixins';
 
-.jp-icon-controls {
-  button.jp-previous,
-  button.jp-next,
-  button.jp-shuffle,
-  button.jp-toggle-playlist {
-    .icon;
+.jp-jplayer {
+  .jp-icon-controls {
+    .jp-state-shuffled& {
+      .jp-shuffle {
+        color: @iconToggledColour;
+      }
+    }
+    .jp-state-looped&,
+    .jp-state-looped-playlist& {
+      .jp-repeat {
+        color: @iconToggledColour;
+      }
+    }
+    .jp-previous,
+    .jp-next,
+    .jp-shuffle,
+    .jp-toggle-playlist {
+      .icon;
+    }
   }
 }

@@ -9,5 +9,6 @@ export default {
   CURRENT: 'jp-current',
   states: {
     LOOPED_PLAYLIST: 'jp-state-looped-playlist',
+    SHUFFLED: 'jp-state-shuffled',
   },
 };

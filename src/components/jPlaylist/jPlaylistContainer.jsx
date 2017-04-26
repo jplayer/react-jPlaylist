@@ -20,7 +20,6 @@ const mapStateToProps = ({ jPlaylists }, { id, children, customStates, ...attrib
   loop: jPlaylists[id].loop,
   shuffleOnLoop: jPlaylists[id].shuffleOnLoop,
   loopOnPrevious: jPlaylists[id].loopOnPrevious,
-  autoPlay: jPlaylists[id].autoPlay,
   current: jPlaylists[id].current,
   playlist: jPlaylists[id].playlist,
   keyBindings: jPlaylists[id].keyBindings,
@@ -34,6 +33,7 @@ const mapStateToProps = ({ jPlaylists }, { id, children, customStates, ...attrib
   attributes,
   customStates: {
     [classes.states.LOOPED_PLAYLIST]: jPlaylists[id].loop === 'loop-playlist',
+    [classes.states.SHUFFLED]: jPlaylists[id].shuffled,
     ...customStates,
   },
 });
@@ -65,7 +65,6 @@ class JPlaylistContainer extends React.Component {
       loop: PropTypes.string.isRequired,
       shuffleOnLoop: PropTypes.bool.isRequired,
       loopOnPrevious: PropTypes.bool.isRequired,
-      autoPlay: PropTypes.bool.isRequired,
       otherJPlaylists: PropTypes.arrayOf(
         PropTypes.object,
       ).isRequired,
@@ -142,26 +141,6 @@ class JPlaylistContainer extends React.Component {
     this.media.addEventListener('play', this.pauseOthers);
   }
   componentDidUpdate(prevProps) {
-    // if (!this.state.shuffling && this.state.shuffling !== prevState.shuffling) {
-    //   if (this.props.playNow || !this.props.paused) {
-    //     this.props.dispatch(play(this.props.id, 0));
-    //   } else {
-    //     this.props.dispatch(select(this.props.id, 0));
-    //   }
-    // }
-
-    // if (this.props.playlist !== prevProps.playlist && !this.state.shuffling) {
-    //   this.autoPlay();
-    // }
-
-    // if (this.props.index !== prevProps.index) {
-    //   if (!this.props.play) {
-    //     this.select();
-    //   } else {
-    //     this.play();
-    //   }
-    // }
-
     if (this.props.playlist[this.props.current].id !==
       prevProps.playlist[prevProps.current].id) {
       this.props.dispatch(jPlayerActions
@@ -172,12 +151,6 @@ class JPlaylistContainer extends React.Component {
     if (this.props.loop !== prevProps.loop) {
       this.setLoop();
     }
-
-    // if (this.props.playlist !== prevProps.playlist) {
-    //   if (this.props.playlist.length === 0) {
-    //     this.playlistCleared();
-    //   }
-    // }
 
     if (this.props.playNow !== prevProps.playNow) {
       if (this.props.playNow) {
@@ -226,32 +199,23 @@ class JPlaylistContainer extends React.Component {
   playlistCleared = () => {
     this.props.dispatch(jPlayerActions.clearMedia(this.props.id));
   }
-  // autoPlay = () => {
-  //   if (this.props.autoPlay) {
-  //     this.props.dispatch(play(this.props.id, this.props.current));
-  //   } else {
-  //     this.props.dispatch(select(this.props.id, this.props.current));
-  //   }
-  // }
   remove = (index) => {
     const playlist = [...this.props.playlist];
-
     playlist.splice(index, 1);
     this.props.dispatch(setPlaylist(this.props.id, playlist));
 
     if (playlist.length) {
-      if (index === this.props.current) {
-        const current = (index < playlist.length) ? this.props.current
-          : playlist.length - 1;
+      let current = this.props.current;
 
+      if (index === this.props.current) {
         // To cope when last element being selected when it was removed
-        this.props.dispatch(select(this.props.id, current));
+        current = (index < playlist.length) ? this.props.current
+          : playlist.length - 1;
+      } else if (index < this.props.current) {
+        current -= 1;
       }
-      // else if (index < this.props.current) {
-      //   this.props.dispatch(select(this.props.id, this.props.current -= 1));
-      // }
+      this.props.dispatch(select(this.props.id, current));
     } else {
-      this.props.dispatch(select(this.props.id, 0));
       this.props.dispatch(setOption(this.props.id, 'shuffled', false));
     }
   }

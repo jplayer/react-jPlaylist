@@ -51,17 +51,24 @@ const select = (jPlaylist, { index }) => updateObject(jPlaylist, {
 // Negative index relates to the end of the array
 const play = (jPlaylist, { index = jPlaylist.current }) => updateObject(jPlaylist, {
   current: (index < 0) ? jPlaylist.original.length + index : index,
-  paused: false,
 });
 
-const pause = jPlaylist => updateObject(jPlaylist, {
-  paused: true,
-});
+const shuffle = (jPlaylist, { shuffled = !jPlaylist.shuffled, playNow }) => {
+  let playlist;
 
-const shuffle = (jPlaylist, { shuffled, playNow }) => updateObject(jPlaylist, {
-  shuffled: shuffled === undefined ? !jPlaylist.shuffled : shuffled,
-  playNow,
-});
+  if (shuffled) {
+    playlist = [...jPlaylist.playlist].sort(() => 0.5 - Math.random());
+  } else {
+    playlist = [...jPlaylist.playlist].sort((a, b) => (
+        a.shufflePosition - b.shufflePosition));
+  }
+
+  return updateObject(jPlaylist, {
+    playlist,
+    shuffled,
+    playNow,
+  });
+};
 
 const next = (jPlaylist) => {
   const current = jPlaylist.loop === 'loop-playlist' ? 0 : jPlaylist.current;
@@ -69,13 +76,23 @@ const next = (jPlaylist) => {
   return updateObject(jPlaylist, {
     current: jPlaylist.current + 1 < jPlaylist.playlist.length ?
       jPlaylist.current + 1 : current,
+    playNow: true,
   });
 };
 
-const previous = jPlaylist => updateObject(jPlaylist, {
-  current: jPlaylist.current - 1 >= 0 ? jPlaylist.current - 1
-    : jPlaylist.playlist.length - 1,
-});
+const previous = (jPlaylist) => {
+  let current = jPlaylist.loopOnPrevious ? jPlaylist.playlist.length - 1
+    : jPlaylist.current;
+
+  if (jPlaylist.current - 1 >= 0) {
+    current = jPlaylist.current - 1;
+  }
+
+  return updateObject(jPlaylist, {
+    current,
+    playNow: true,
+  });
+};
 
 const setPlaylist = (jPlaylist, { playlist }) => updateObject(jPlaylist, {
   current: 0,
@@ -103,8 +120,6 @@ const updatePlaylist = (jPlaylist, action) => {
       return select(jPlaylist, action);
     case actionNames.PLAY:
       return play(jPlaylist, action);
-    case actionNames.PAUSE:
-      return pause(jPlaylist, action);
     case actionNames.SHUFFLE:
       return shuffle(jPlaylist, action);
     case actionNames.NEXT:

@@ -43,11 +43,6 @@ export const play = (id, index) => ({
   index,
 });
 
-export const pause = id => ({
-  type: actionNames.PAUSE,
-  id,
-});
-
 export const shuffle = (id, shuffled, playNow) => ({
   type: actionNames.SHUFFLE,
   id,

@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 
 import classes from '../../util/classes';
 import getLoopState from '../../util/getLoopState';
-import { setOption, select, next, play, pause, shuffle, setPlaylist } from '../../actions/actions';
+import { setOption, select, next, play, shuffle, setPlaylist } from '../../actions/actions';
 
 const mapStateToProps = ({ jPlaylists }, { id, children, customStates, ...attributes }) => ({
   shuffleAnimationConfig: jPlaylists[id].shuffleAnimationConfig,
@@ -53,6 +53,7 @@ class JPlaylistContainer extends React.Component {
       id: PropTypes.number.isRequired,
       attributes: PropTypes.object,
       shuffled: PropTypes.bool.isRequired,
+      shuffledPlaylist: PropTypes.array.isRequired,
       children: PropTypes.ele,
       customStates: React.PropTypes.object,
       minHeight: PropTypes.number,
@@ -142,25 +143,21 @@ class JPlaylistContainer extends React.Component {
   }
   componentDidUpdate(prevProps) {
     if (this.props.playlist[this.props.current].id !==
-      prevProps.playlist[prevProps.current].id) {
+      prevProps.playlist[prevProps.current].id) {debugger
       this.props.dispatch(jPlayerActions
         .setMedia(this.props.id, this.props.playlist[this.props.current]));
       this.handlePlaylistLooped();
+
+      if (this.props.playNow !== prevProps.playNow) {
+        if (this.props.playNow) {
+          this.props.dispatch(jPlayerActions.play(this.props.id));
+        }
+        this.props.dispatch(setOption(this.props.id, 'playNow', false));
+      }
     }
 
     if (this.props.loop !== prevProps.loop) {
       this.setLoop();
-    }
-
-    if (this.props.playNow !== prevProps.playNow) {
-      if (this.props.playNow) {
-        this.props.dispatch(play(this.props.id));
-      }
-      this.props.dispatch(setOption(this.props.id, 'playNow', false));
-    }
-
-    if (this.props.shuffled !== prevProps.shuffled) {
-      this.shuffle();
     }
 
     this.props.playlist.forEach((media, index) => {
@@ -188,13 +185,12 @@ class JPlaylistContainer extends React.Component {
         // Shuffle and play the media now
         this.props.dispatch(shuffle(this.props.id, true, true));
       }
-      this.props.dispatch(play(this.props.id));
     }
   }
   playNext = () => this.props.dispatch(next(this.props.id))
   pauseOthers = () => {
     this.props.otherJPlaylists.forEach(jPlaylist =>
-      this.props.dispatch(pause(jPlaylist.id)));
+      this.props.dispatch(jPlayerActions.pause(jPlaylist.id)));
   }
   playlistCleared = () => {
     this.props.dispatch(jPlayerActions.clearMedia(this.props.id));
@@ -217,19 +213,6 @@ class JPlaylistContainer extends React.Component {
       this.props.dispatch(select(this.props.id, current));
     } else {
       this.props.dispatch(setOption(this.props.id, 'shuffled', false));
-    }
-  }
-  shuffle = () => {
-    if (this.props.shuffled) {
-      const shuffledPlaylist = [...this.props.playlist].sort(() => 0.5 - Math.random());
-
-      this.props.dispatch(setPlaylist(this.props.id, shuffledPlaylist));
-      this.props.dispatch(setOption(this.props.id, 'shuffled', true));
-    } else {
-      const originalPlaylist = [...this.props.playlist].sort((a, b) => (
-        a.shufflePosition - b.shufflePosition
-      ));
-      this.props.dispatch(setPlaylist(this.props.id, originalPlaylist));
     }
   }
   render() {

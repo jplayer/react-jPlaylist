@@ -6,7 +6,6 @@ export default {
   CLEAR: 'CLEAR',
   SELECT: 'SELECT',
   PLAY: 'PLAY',
-  PAUSE: 'PAUSE',
   SHUFFLE: 'SHUFFLE',
   NEXT: 'NEXT',
   PREVIOUS: 'PREVIOUS',

@@ -77,15 +77,6 @@ describe('jPlaylist actions', () => {
     expect(actions.play(id, index)).toEqual(expectedAction);
   });
 
-  it('handles pause', () => {
-    const expectedAction = {
-      type: actionNames.PAUSE,
-      id,
-    };
-
-    expect(actions.pause(id)).toEqual(expectedAction);
-  });
-
   it('handles shuffle', () => {
     const shuffled = true;
     const playNow = true;

@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 
 import classes from '../../util/classes';
 
-const TogglePlaylist = ({ onClick, hidePlaylist, id, children, attributes }) => (
+const TogglePlaylist = ({ togglePlaylist, hidePlaylist, id, children, attributes }) => (
   <button
     className={classes.TOGGLE_PLAYLIST}
-    onClick={() => onClick(id, hidePlaylist)}
+    onClick={() => togglePlaylist(id, hidePlaylist)}
     {...attributes}
   >
     {children}
@@ -17,7 +17,7 @@ TogglePlaylist.propTypes = {
   hidePlaylist: PropTypes.bool.isRequired,
   attributes: PropTypes.object.isRequired,
   children: PropTypes.node.isRequired,
-  onClick: PropTypes.func.isRequired,
+  togglePlaylist: PropTypes.func.isRequired,
   id: PropTypes.string.isRequired,
 };
 

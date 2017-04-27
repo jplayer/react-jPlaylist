@@ -8,8 +8,6 @@ const mapStateToProps = ({ jPlaylists }, { id, children, ...attributes }) => ({
   attributes,
 });
 
-const mapDispatchToProps = dispatch => ({
-  onClick: id => dispatch(shuffle(id)),
-});
-
-export default connectWithId(mapStateToProps, mapDispatchToProps)(Shuffle);
+export default connectWithId(mapStateToProps, {
+  shuffle,
+})(Shuffle);

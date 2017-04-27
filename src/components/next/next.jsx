@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 
 import classes from '../../util/classes';
 
-const Next = ({ onClick, id, children, attributes }) => (
-  <button className={classes.NEXT} onClick={() => onClick(id)} {...attributes}>
+const Next = ({ next, id, children, attributes }) => (
+  <button className={classes.NEXT} onClick={() => next(id)} {...attributes}>
     {children}
   </button>
 );
@@ -12,7 +12,7 @@ const Next = ({ onClick, id, children, attributes }) => (
 Next.propTypes = {
   attributes: PropTypes.object.isRequired,
   children: PropTypes.node.isRequired,
-  onClick: PropTypes.func.isRequired,
+  next: PropTypes.func.isRequired,
   id: PropTypes.string.isRequired,
 };
 

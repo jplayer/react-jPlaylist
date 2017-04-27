@@ -9,8 +9,6 @@ const mapStateToProps = ({ jPlaylists }, { id, children, ...attributes }) => ({
   attributes,
 });
 
-const mapDispatchToProps = dispatch => ({
-  onClick: (id, hidePlaylist) => dispatch(setOption(id, 'hidePlaylist', !hidePlaylist)),
-});
-
-export default connectWithId(mapStateToProps, mapDispatchToProps)(TogglePlaylist);
+export default connectWithId(mapStateToProps, {
+  togglePlaylist: (id, hidePlaylist) => setOption(id, 'hidePlaylist', !hidePlaylist),
+})(TogglePlaylist);

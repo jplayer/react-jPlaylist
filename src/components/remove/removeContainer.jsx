@@ -8,8 +8,6 @@ const mapStateToProps = ({ jPlaylists }, { id, index, ...attributes }) => ({
   attributes,
 });
 
-const mapDispatchToProps = dispatch => ({
-  onClick: (id, index) => dispatch(remove(id, index)),
-});
-
-export default connectWithIndex(mapStateToProps, mapDispatchToProps)(Remove);
+export default connectWithIndex(mapStateToProps, {
+  remove,
+})(Remove);

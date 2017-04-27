@@ -11,8 +11,6 @@ const mapStateToProps = ({ jPlaylists }, { id, children, ...attributes }) => ({
   attributes,
 });
 
-const mapDispatchToProps = dispatch => ({
-  onClick: (id, loop) => dispatch(setOption(id, 'loop', getLoopState(loop))),
-});
-
-export default connectWithId(mapStateToProps, mapDispatchToProps)(Repeat);
+export default connectWithId(mapStateToProps, {
+  onClick: (id, loop) => setOption(id, 'loop', getLoopState(loop)),
+})(Repeat);

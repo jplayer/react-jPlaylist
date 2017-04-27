@@ -8,8 +8,6 @@ const mapStateToProps = ({ jPlaylists }, { id, children, ...attributes }) => ({
   attributes,
 });
 
-const mapDispatchToProps = dispatch => ({
-  onClick: id => dispatch(next(id)),
-});
-
-export default connectWithId(mapStateToProps, mapDispatchToProps)(Next);
+export default connectWithId(mapStateToProps, {
+  next,
+})(Next);

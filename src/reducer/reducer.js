@@ -51,6 +51,7 @@ const select = (jPlaylist, { index }) => updateObject(jPlaylist, {
 // Negative index relates to the end of the array
 const play = (jPlaylist, { index = jPlaylist.current }) => updateObject(jPlaylist, {
   current: (index < 0) ? jPlaylist.original.length + index : index,
+  playNow: true,
 });
 
 const shuffle = (jPlaylist, { shuffled = !jPlaylist.shuffled, playNow }) => {
@@ -72,11 +73,16 @@ const shuffle = (jPlaylist, { shuffled = !jPlaylist.shuffled, playNow }) => {
 
 const next = (jPlaylist) => {
   const current = jPlaylist.loop === 'loop-playlist' ? 0 : jPlaylist.current;
+  const isWithinPlaylist = jPlaylist.current + 1 < jPlaylist.playlist.length;
+  let playNow = true;
+
+  if (!isWithinPlaylist && jPlaylist.loop === 'off') {
+    playNow = false;
+  }
 
   return updateObject(jPlaylist, {
-    current: jPlaylist.current + 1 < jPlaylist.playlist.length ?
-      jPlaylist.current + 1 : current,
-    playNow: true,
+    current: isWithinPlaylist ? jPlaylist.current + 1 : current,
+    playNow,
   });
 };
 

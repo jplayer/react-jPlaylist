@@ -1,5 +1,4 @@
 import { connectWithIndex } from 'react-jplayer-utils';
-import { actions as jPlayerActions } from 'react-jplayer';
 
 import { play } from '../../actions/actions';
 import MediaLink from './mediaLink';
@@ -17,7 +16,7 @@ const mapDispatchToProps = dispatch => ({
     if (current !== index) {
       dispatch(play(id, index));
     } else {
-      dispatch(jPlayerActions.play(id));
+      dispatch(play(id));
     }
   },
 });

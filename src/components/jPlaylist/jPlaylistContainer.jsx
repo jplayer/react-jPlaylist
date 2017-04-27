@@ -1,32 +1,21 @@
 import React from 'react';
 import merge from 'lodash.merge';
-import classNames from 'classnames';
 import { JPlayer, actions as jPlayerActions } from 'react-jplayer';
-import { Motion, spring } from 'react-motion';
-import { connectWithId, classes as sharedClasses } from 'react-jplayer-utils';
+import { connectWithId } from 'react-jplayer-utils';
 import PropTypes from 'prop-types';
 
 import classes from '../../util/classes';
 import getLoopState from '../../util/getLoopState';
-import { setOption, select, next, play, shuffle, setPlaylist } from '../../actions/actions';
+import { setOption, select, next, shuffle, setPlaylist } from '../../actions/actions';
 
 const mapStateToProps = ({ jPlaylists }, { id, children, customStates, ...attributes }) => ({
-  shuffleAnimationConfig: jPlaylists[id].shuffleAnimationConfig,
-  play: jPlaylists[id].play,
   playNow: jPlaylists[id].playNow,
-  autoBlur: jPlaylists[id].autoBlur,
-  paused: jPlaylists[id].paused,
   shuffled: jPlaylists[id].shuffled,
   loop: jPlaylists[id].loop,
   shuffleOnLoop: jPlaylists[id].shuffleOnLoop,
-  loopOnPrevious: jPlaylists[id].loopOnPrevious,
   current: jPlaylists[id].current,
   playlist: jPlaylists[id].playlist,
   keyBindings: jPlaylists[id].keyBindings,
-  itemClass: jPlaylists[id].itemClass,
-  freeItemClass: jPlaylists[id].freeItemClass,
-  removeItemClass: jPlaylists[id].removeItemClass,
-  freeGroupClass: jPlaylists[id].freeGroupClass,
   otherJPlaylists: Object.keys(jPlaylists).filter(key => key !== id),
   id,
   children,
@@ -41,8 +30,6 @@ const mapStateToProps = ({ jPlaylists }, { id, children, customStates, ...attrib
 class JPlaylistContainer extends React.Component {
   static get defaultProps() {
     return {
-      minHeight: 0,
-      maxHeight: 1,
       attributes: null,
       customStates: null,
     };
@@ -52,20 +39,12 @@ class JPlaylistContainer extends React.Component {
       dispatch: PropTypes.func.isRequired,
       id: PropTypes.number.isRequired,
       attributes: PropTypes.object,
+      children: PropTypes.node.isRequired,
       shuffled: PropTypes.bool.isRequired,
-      shuffledPlaylist: PropTypes.array.isRequired,
-      children: PropTypes.ele,
       customStates: React.PropTypes.object,
-      minHeight: PropTypes.number,
-      maxHeight: PropTypes.number,
-      shuffleAnimationConfig: PropTypes.object.isRequired,
-      play: PropTypes.bool.isRequired,
       playNow: PropTypes.bool.isRequired,
-      autoBlur: PropTypes.bool.isRequired,
-      paused: PropTypes.bool.isRequired,
       loop: PropTypes.string.isRequired,
       shuffleOnLoop: PropTypes.bool.isRequired,
-      loopOnPrevious: PropTypes.bool.isRequired,
       otherJPlaylists: PropTypes.arrayOf(
         PropTypes.object,
       ).isRequired,
@@ -80,25 +59,7 @@ class JPlaylistContainer extends React.Component {
           }),
       ).isRequired,
       keyBindings: PropTypes.object.isRequired,
-      itemClass: PropTypes.string.isRequired,
-      freeItemClass: PropTypes.string.isRequired,
-      removeItemClass: PropTypes.string.isRequired,
-      freeGroupClass: PropTypes.string.isRequired,
     };
-  }
-  constructor(props, context) {
-    super(props, context);
-
-    this.state = {};
-    // this.playlistContainerMinHeight = this.playlistItemAnimMinHeight = 0;
-    // this.playlistContainerMaxHeight = this.playlistItemAnimMaxHeight = 1;
-
-    this.freeMediaLinkIndex = 0;
-
-    // Put the title in its initial display state
-    // if (!this.props.fullScreen) {
-    //   this.setState(state => addUniqueToArray(state.detailsClass, constants.classes.HIDDEN));
-    // }
   }
   componentWillMount() {
     this.props.dispatch(jPlayerActions.setOption(this.props.id, 'keyBindings', merge({
@@ -125,14 +86,6 @@ class JPlaylistContainer extends React.Component {
     }, this.props.keyBindings)));
 
     this.props.dispatch(jPlayerActions.setMedia(this.props.id, this.props.playlist[0]));
-
-    // this.props.setOption('onResize', () => {
-    // const method = this.props.fullScreen ? this.props.removeFromArrayByValue
-    // : this.props.addUniqueToArray;
-
-    //   this.setState(state => method(state.detailsClass, constants.classes.HIDDEN));
-    //   this._trigger(this.props.onResize);
-    // });
   }
   componentDidMount() {
     this.media = document.querySelector(`#${this.props.id} audio`) ||
@@ -141,19 +94,19 @@ class JPlaylistContainer extends React.Component {
     this.media.addEventListener('ended', this.playNext);
     this.media.addEventListener('play', this.pauseOthers);
   }
+  componentWillReceiveProps(nextProps) {
+    if (this.props.playlist[this.props.current].id !==
+        nextProps.playlist[nextProps.current].id) {
+      this.props.dispatch(jPlayerActions.setMedia(
+        nextProps.id,
+        nextProps.playlist[nextProps.current],
+      ));
+    }
+  }
   componentDidUpdate(prevProps) {
     if (this.props.playlist[this.props.current].id !==
-      prevProps.playlist[prevProps.current].id) {debugger
-      this.props.dispatch(jPlayerActions
-        .setMedia(this.props.id, this.props.playlist[this.props.current]));
+        prevProps.playlist[prevProps.current].id) {
       this.handlePlaylistLooped();
-
-      if (this.props.playNow !== prevProps.playNow) {
-        if (this.props.playNow) {
-          this.props.dispatch(jPlayerActions.play(this.props.id));
-        }
-        this.props.dispatch(setOption(this.props.id, 'playNow', false));
-      }
     }
 
     if (this.props.loop !== prevProps.loop) {
@@ -165,6 +118,15 @@ class JPlaylistContainer extends React.Component {
         this.remove(index, this.props.current);
       }
     });
+
+    if (this.props.playNow !== prevProps.playNow) {
+      if (this.props.playNow) {
+        this.props.dispatch(jPlayerActions.play(this.props.id));
+      } else {
+        this.props.dispatch(jPlayerActions.pause(this.props.id));
+      }
+      this.props.dispatch(setOption(this.props.id, 'playNow', false));
+    }
   }
   componentWillUnmount() {
     this.media.removeEventListener('ended', this.playNext);
@@ -191,9 +153,6 @@ class JPlaylistContainer extends React.Component {
   pauseOthers = () => {
     this.props.otherJPlaylists.forEach(jPlaylist =>
       this.props.dispatch(jPlayerActions.pause(jPlaylist.id)));
-  }
-  playlistCleared = () => {
-    this.props.dispatch(jPlayerActions.clearMedia(this.props.id));
   }
   remove = (index) => {
     const playlist = [...this.props.playlist];

@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 
 import classes from '../../util/classes';
 
-const Shuffle = ({ onClick, id, children, attributes }) => (
-  <button className={classes.SHUFFLE} onClick={() => onClick(id)} {...attributes}>
+const Shuffle = ({ shuffle, id, children, attributes }) => (
+  <button className={classes.SHUFFLE} onClick={() => shuffle(id)} {...attributes}>
     {children}
   </button>
 );
@@ -12,7 +12,7 @@ const Shuffle = ({ onClick, id, children, attributes }) => (
 Shuffle.propTypes = {
   attributes: PropTypes.object.isRequired,
   children: PropTypes.node.isRequired,
-  onClick: PropTypes.func.isRequired,
+  shuffle: PropTypes.func.isRequired,
   id: PropTypes.string.isRequired,
 };
 

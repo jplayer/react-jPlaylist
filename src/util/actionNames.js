@@ -1,6 +1,6 @@
-export default {
+const actionNames = {
   SET_PLAYLIST: 'SET_PLAYLIST',
-  SET_OPTION: 'SET_JPLAYLIST_OPTION',
+  SET_OPTION: 'SET_OPTION',
   ADD: 'ADD',
   REMOVE: 'REMOVE',
   CLEAR: 'CLEAR',
@@ -10,3 +10,11 @@ export default {
   NEXT: 'NEXT',
   PREVIOUS: 'PREVIOUS',
 };
+
+const playlistActionNames = {};
+
+Object.keys(actionNames).forEach((key) => {
+  playlistActionNames[key] = `PLAYLIST_${actionNames[key]}`;
+});
+
+export default actionNames;

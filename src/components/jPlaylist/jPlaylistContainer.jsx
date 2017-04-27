@@ -104,11 +104,6 @@ class JPlaylistContainer extends React.Component {
     }
   }
   componentDidUpdate(prevProps) {
-    if (this.props.playlist[this.props.current].id !==
-        prevProps.playlist[prevProps.current].id) {
-      this.handlePlaylistLooped();
-    }
-
     if (this.props.loop !== prevProps.loop) {
       this.setLoop();
     }
@@ -119,13 +114,14 @@ class JPlaylistContainer extends React.Component {
       }
     });
 
-    if (this.props.playNow !== prevProps.playNow) {
-      if (this.props.playNow) {
-        this.props.dispatch(jPlayerActions.play(this.props.id));
-      } else {
-        this.props.dispatch(jPlayerActions.pause(this.props.id));
-      }
+    if (this.props.playNow) {
+      this.props.dispatch(jPlayerActions.play(this.props.id));
       this.props.dispatch(setOption(this.props.id, 'playNow', false));
+    }
+
+    if (this.props.playlist[this.props.current].id !==
+      prevProps.playlist[prevProps.current].id) {
+      this.handlePlaylistLooped(prevProps);
     }
   }
   componentWillUnmount() {
@@ -139,11 +135,11 @@ class JPlaylistContainer extends React.Component {
       this.props.dispatch(jPlayerActions.setOption(this.props.id, 'loop', false));
     }
   }
-  handlePlaylistLooped = () => {
+  handlePlaylistLooped = (prevProps) => {
     if (this.props.loop === 'loop-playlist') {
       // See if we need to shuffle before looping to start, and only shuffle if more than 1 item.
-      if (this.props.current === 0 && this.props.shuffled &&
-          this.props.shuffleOnLoop && this.props.playlist.length > 1) {
+      if (this.props.current === 0 && prevProps.current === prevProps.playlist.length - 1 &&
+          this.props.shuffled && this.props.shuffleOnLoop && this.props.playlist.length > 1) {
         // Shuffle and play the media now
         this.props.dispatch(shuffle(this.props.id, true, true));
       }

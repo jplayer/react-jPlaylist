@@ -5,10 +5,12 @@ import shortid from 'shortid';
 import actionNames from '../util/actionNames';
 
 const add = (jPlaylist, { media, playNow }) => {
+  const highestMediaShufflePosition = maxBy(jPlaylist.playlist, 'shufflePosition');
   const newMedia = {
     ...media,
     id: shortid.generate(),
-    shufflePosition: maxBy(jPlaylist.playlist, 'shufflePosition').shufflePosition + 1,
+    shufflePosition: highestMediaShufflePosition !== undefined ?
+                      highestMediaShufflePosition.shufflePosition + 1 : 0,
   };
   const playlist = [
     ...jPlaylist.playlist,
@@ -30,12 +32,28 @@ const add = (jPlaylist, { media, playNow }) => {
 };
 
 const remove = (jPlaylist, { index }) => {
-  const newPlaylist = [...jPlaylist.playlist];
+  const playlist = [...jPlaylist.playlist];
+  let current = jPlaylist.current;
+  let shuffled = jPlaylist.shuffled;
 
-  newPlaylist[index].isRemoving = true;
+  playlist.splice(index, 1);
+
+  if (playlist.length) {
+    if (index === jPlaylist.current) {
+      // To cope when last element being selected when it was removed
+      current = (index < playlist.length) ? jPlaylist.current
+        : playlist.length - 1;
+    } else if (index < jPlaylist.current) {
+      current -= 1;
+    }
+  } else {
+    shuffled = false;
+  }
 
   return updateObject(jPlaylist, {
-    playlist: newPlaylist,
+    playlist,
+    current,
+    shuffled,
   });
 };
 
@@ -105,8 +123,8 @@ const setPlaylist = (jPlaylist, { playlist }) => updateObject(jPlaylist, {
   shuffled: false,
   playlist: playlist.map((media, index) => ({
     ...media,
-    // id: index,
-    shufflePosition: !jPlaylist.shuffled ? index : media.shufflePosition,
+    id: shortid.generate(),
+    shufflePosition: index,
   })),
 });
 

@@ -6,26 +6,37 @@ import PropTypes from 'prop-types';
 
 import classes from '../../util/classes';
 import getLoopState from '../../util/getLoopState';
-import { setOption, select, next, shuffle, setPlaylist } from '../../actions/actions';
+import { setOption, next, shuffle } from '../../actions/actions';
 
-const mapStateToProps = ({ jPlaylists }, { id, children, customStates, ...attributes }) => ({
-  playNow: jPlaylists[id].playNow,
-  shuffled: jPlaylists[id].shuffled,
-  loop: jPlaylists[id].loop,
-  shuffleOnLoop: jPlaylists[id].shuffleOnLoop,
-  current: jPlaylists[id].current,
-  playlist: jPlaylists[id].playlist,
-  keyBindings: jPlaylists[id].keyBindings,
-  otherJPlaylists: Object.keys(jPlaylists).filter(key => key !== id),
-  id,
-  children,
-  attributes,
-  customStates: {
-    [classes.states.LOOPED_PLAYLIST]: jPlaylists[id].loop === 'loop-playlist',
-    [classes.states.SHUFFLED]: jPlaylists[id].shuffled,
-    ...customStates,
-  },
-});
+const mapStateToProps = ({ jPlaylists }, { id, children, customStates, ...attributes }) => {
+  const current = jPlaylists[id].current;
+  const playlist = jPlaylists[id].playlist;
+  let currentMediaId;
+
+  if (playlist[current] !== undefined) {
+    currentMediaId = playlist[current].id;
+  }
+
+  return {
+    playNow: jPlaylists[id].playNow,
+    shuffled: jPlaylists[id].shuffled,
+    loop: jPlaylists[id].loop,
+    shuffleOnLoop: jPlaylists[id].shuffleOnLoop,
+    keyBindings: jPlaylists[id].keyBindings,
+    otherJPlaylists: Object.keys(jPlaylists).filter(key => key !== id),
+    currentMediaId,
+    playlist,
+    current,
+    id,
+    children,
+    attributes,
+    customStates: {
+      [classes.states.LOOPED_PLAYLIST]: jPlaylists[id].loop === 'loop-playlist',
+      [classes.states.SHUFFLED]: jPlaylists[id].shuffled,
+      ...customStates,
+    },
+  };
+};
 
 class JPlaylistContainer extends React.Component {
   static get defaultProps() {
@@ -41,6 +52,7 @@ class JPlaylistContainer extends React.Component {
       attributes: PropTypes.object,
       children: PropTypes.node.isRequired,
       shuffled: PropTypes.bool.isRequired,
+      currentMediaId: PropTypes.number.isRequired,
       customStates: React.PropTypes.object,
       playNow: PropTypes.bool.isRequired,
       loop: PropTypes.string.isRequired,
@@ -95,12 +107,15 @@ class JPlaylistContainer extends React.Component {
     this.media.addEventListener('play', this.pauseOthers);
   }
   componentWillReceiveProps(nextProps) {
-    if (this.props.playlist[this.props.current].id !==
-        nextProps.playlist[nextProps.current].id) {
+    if (nextProps.playlist.length > 0 &&
+        this.props.currentMediaId !== nextProps.currentMediaId) {
       this.props.dispatch(jPlayerActions.setMedia(
         nextProps.id,
         nextProps.playlist[nextProps.current],
       ));
+    } else if (nextProps.playlist.length === 0 &&
+        this.props.playlist.length > nextProps.playlist.length) {
+      this.props.dispatch(jPlayerActions.clearMedia(nextProps.id));
     }
   }
   componentDidUpdate(prevProps) {
@@ -108,19 +123,12 @@ class JPlaylistContainer extends React.Component {
       this.setLoop();
     }
 
-    this.props.playlist.forEach((media, index) => {
-      if (media.isRemoving) {
-        this.remove(index, this.props.current);
-      }
-    });
-
     if (this.props.playNow) {
       this.props.dispatch(jPlayerActions.play(this.props.id));
       this.props.dispatch(setOption(this.props.id, 'playNow', false));
     }
 
-    if (this.props.playlist[this.props.current].id !==
-      prevProps.playlist[prevProps.current].id) {
+    if (this.props.currentMediaId !== prevProps.currentMediaId) {
       this.handlePlaylistLooped(prevProps);
     }
   }
@@ -149,26 +157,6 @@ class JPlaylistContainer extends React.Component {
   pauseOthers = () => {
     this.props.otherJPlaylists.forEach(jPlaylist =>
       this.props.dispatch(jPlayerActions.pause(jPlaylist.id)));
-  }
-  remove = (index) => {
-    const playlist = [...this.props.playlist];
-    playlist.splice(index, 1);
-    this.props.dispatch(setPlaylist(this.props.id, playlist));
-
-    if (playlist.length) {
-      let current = this.props.current;
-
-      if (index === this.props.current) {
-        // To cope when last element being selected when it was removed
-        current = (index < playlist.length) ? this.props.current
-          : playlist.length - 1;
-      } else if (index < this.props.current) {
-        current -= 1;
-      }
-      this.props.dispatch(select(this.props.id, current));
-    } else {
-      this.props.dispatch(setOption(this.props.id, 'shuffled', false));
-    }
   }
   render() {
     return (

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import classes from '../../util/classes';
 
 const Shuffle = ({ shuffle, id, children, attributes }) => (
-  <button className={classes.SHUFFLE} onClick={() => shuffle(id)} {...attributes}>
+  <button className={classes.SHUFFLE} onClick={() => shuffle(id, undefined, true)} {...attributes}>
     {children}
   </button>
 );

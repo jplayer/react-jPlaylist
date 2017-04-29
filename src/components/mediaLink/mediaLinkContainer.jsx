@@ -3,8 +3,7 @@ import { connectWithIndex } from 'react-jplayer-utils';
 import { play } from '../../actions/actions';
 import MediaLink from './mediaLink';
 
-const mapStateToProps = ({ jPlaylists }, { index, id, children, ...attributes }) => ({
-  current: jPlaylists[id].current,
+const mapStateToProps = ({ jPlaylists }, { id, index, children, ...attributes }) => ({
   id,
   index,
   children,
@@ -12,13 +11,7 @@ const mapStateToProps = ({ jPlaylists }, { index, id, children, ...attributes })
 });
 
 const mapDispatchToProps = dispatch => ({
-  onClick: (id, current, index) => {
-    if (current !== index) {
-      dispatch(play(id, index));
-    } else {
-      dispatch(play(id));
-    }
-  },
+  play: (id, index) => dispatch(play(id, index)),
 });
 
 export default connectWithIndex(mapStateToProps, mapDispatchToProps)(MediaLink);

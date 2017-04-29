@@ -5,17 +5,6 @@ import actionNames from '../util/actionNames';
 describe('jPlaylist actions', () => {
   const id = 'jPlaylist-1';
 
-  it('handles setPlaylist', () => {
-    const playlist = [{ mp3: 'test.mp3' }];
-    const expectedAction = {
-      type: actionNames.SET_PLAYLIST,
-      id,
-      playlist,
-    };
-
-    expect(actions.setPlaylist(id, playlist)).toEqual(expectedAction);
-  });
-
   it('handles setOption', () => {
     const key = 'loopOnPrevious';
     const value = true;
@@ -28,6 +17,17 @@ describe('jPlaylist actions', () => {
     };
 
     expect(actions.setOption(id, key, value)).toEqual(expectedAction);
+  });
+
+  it('handles setPlaylist', () => {
+    const playlist = [{ mp3: 'test.mp3' }];
+    const expectedAction = {
+      type: actionNames.SET_PLAYLIST,
+      id,
+      playlist,
+    };
+
+    expect(actions.setPlaylist(id, playlist)).toEqual(expectedAction);
   });
 
   it('handles add', () => {
@@ -53,6 +53,15 @@ describe('jPlaylist actions', () => {
     };
 
     expect(actions.remove(id, index)).toEqual(expectedAction);
+  });
+
+  it('handles clear', () => {
+    const expectedAction = {
+      type: actionNames.CLEAR,
+      id,
+    };
+
+    expect(actions.clear(id)).toEqual(expectedAction);
   });
 
   it('handles select', () => {

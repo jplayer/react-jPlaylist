@@ -17,4 +17,4 @@ Object.keys(actionNames).forEach((key) => {
   playlistActionNames[key] = `PLAYLIST_${actionNames[key]}`;
 });
 
-export default actionNames;
+export default playlistActionNames;

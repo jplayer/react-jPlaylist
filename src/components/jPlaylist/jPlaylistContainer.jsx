@@ -6,9 +6,10 @@ import PropTypes from 'prop-types';
 
 import classes from '../../util/classes';
 import getLoopState from '../../util/getLoopState';
-import { setOption, next, shuffle } from '../../actions/actions';
+import { setOption, next, previous, shuffle } from '../../actions/actions';
 
-const mapStateToProps = ({ jPlaylists }, { id, children, customStates, ...attributes }) => {
+const mapStateToProps = ({ jPlayers, jPlaylists }, { id, children, customStates,
+keyBindings, ...attributes }) => {
   const current = jPlaylists[id].current;
   const playlist = jPlaylists[id].playlist;
   let currentMediaId;
@@ -22,8 +23,9 @@ const mapStateToProps = ({ jPlaylists }, { id, children, customStates, ...attrib
     shuffled: jPlaylists[id].shuffled,
     loop: jPlaylists[id].loop,
     shuffleOnLoop: jPlaylists[id].shuffleOnLoop,
-    keyBindings: jPlaylists[id].keyBindings,
+    focused: jPlayers[id].focused,
     otherJPlaylists: Object.keys(jPlaylists).filter(key => key !== id),
+    keyBindings,
     currentMediaId,
     playlist,
     current,
@@ -38,23 +40,52 @@ const mapStateToProps = ({ jPlaylists }, { id, children, customStates, ...attrib
   };
 };
 
+const mergeProps = (stateProps, { dispatch }) => ({
+  ...stateProps,
+  dispatch,
+  keyBindings: merge({
+    next: {
+      key: 221, // ]
+      fn: () => dispatch(next(stateProps.id)),
+    },
+    previous: {
+      key: 219, // [
+      fn: () => dispatch(previous(stateProps.id)),
+    },
+    shuffle: {
+      key: 83, // s
+      fn: () => dispatch(shuffle(stateProps.id, undefined, true)),
+    },
+    loop: {
+      key: 76, // l
+      fn: () => {
+        const loop = getLoopState(stateProps.loop);
+
+        dispatch(setOption(stateProps.id, 'loop', loop));
+      },
+    },
+  }, stateProps.keyBindings),
+});
+
 class JPlaylistContainer extends React.Component {
   static get defaultProps() {
     return {
       attributes: null,
       customStates: null,
+      playNow: false,
+      currentMediaId: null,
     };
   }
   static get propTypes() {
     return {
       dispatch: PropTypes.func.isRequired,
-      id: PropTypes.number.isRequired,
+      id: PropTypes.string.isRequired,
       attributes: PropTypes.object,
       children: PropTypes.node.isRequired,
       shuffled: PropTypes.bool.isRequired,
-      currentMediaId: PropTypes.number.isRequired,
-      customStates: React.PropTypes.object,
-      playNow: PropTypes.bool.isRequired,
+      currentMediaId: PropTypes.string,
+      customStates: PropTypes.object,
+      playNow: PropTypes.bool,
       loop: PropTypes.string.isRequired,
       shuffleOnLoop: PropTypes.bool.isRequired,
       otherJPlaylists: PropTypes.arrayOf(
@@ -74,29 +105,6 @@ class JPlaylistContainer extends React.Component {
     };
   }
   componentWillMount() {
-    this.props.dispatch(jPlayerActions.setOption(this.props.id, 'keyBindings', merge({
-      next: {
-        key: 221, // ]
-        fn: () => this.next(),
-      },
-      previous: {
-        key: 219, // [
-        fn: () => this.previous(),
-      },
-      shuffle: {
-        key: 83, // s
-        fn: () => this.shuffle(),
-      },
-      loop: { // TODO: Might be overwriten if user sets it after has mounted
-        key: 76, // l
-        fn: () => {
-          const loop = getLoopState(this.props.loop);
-
-          this.props.dispatch(setOption(this.props.id, 'loop', loop));
-        },
-      },
-    }, this.props.keyBindings)));
-
     this.props.dispatch(jPlayerActions.setMedia(this.props.id, this.props.playlist[0]));
   }
   componentDidMount() {
@@ -160,11 +168,14 @@ class JPlaylistContainer extends React.Component {
   }
   render() {
     return (
-      <JPlayer customStates={this.props.customStates} {...this.props.attributes}>
+      <JPlayer
+        customStates={this.props.customStates} keyBindings={this.props.keyBindings}
+        {...this.props.attributes}
+      >
         {this.props.children}
       </JPlayer>
     );
   }
 }
 
-export default connectWithId(mapStateToProps)(JPlaylistContainer);
+export default connectWithId(mapStateToProps, null, mergeProps)(JPlaylistContainer);

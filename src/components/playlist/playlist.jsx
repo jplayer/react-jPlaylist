@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import formatPropTypes from 'react-jplayer/src/util/formatPropTypes';
 
 import PlaylistItem from '../playlistItem/playlistItemContainer';
 
@@ -19,9 +20,9 @@ Playlist.propTypes = {
       PropTypes.shape({
         title: PropTypes.string,
         artist: PropTypes.string,
-        sources: PropTypes.arrayOf(PropTypes.string).isRequired,
+        sources: PropTypes.shape(formatPropTypes).isRequired,
         poster: PropTypes.string,
-        id: PropTypes.number.isRequired,
+        id: PropTypes.string.isRequired,
         free: PropTypes.bool,
       }),
   ).isRequired,

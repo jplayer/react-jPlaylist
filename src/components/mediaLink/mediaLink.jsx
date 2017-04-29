@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 
 import classes from '../../util/classes';
 
-const MediaLink = ({ onClick, id, current, index, children, attributes }) => (
+const MediaLink = ({ play, id, index, children, attributes }) => (
   <button
-    className={classes.MEDIA_LINK} onClick={() => onClick(id, current, index)}
+    className={classes.MEDIA_LINK} onClick={() => play(id, index)}
     {...attributes}
   >
     {children}
@@ -14,11 +14,10 @@ const MediaLink = ({ onClick, id, current, index, children, attributes }) => (
 
 MediaLink.propTypes = {
   id: PropTypes.string.isRequired,
-  current: PropTypes.number.isRequired,
   index: PropTypes.number.isRequired,
   attributes: PropTypes.object.isRequired,
   children: PropTypes.node.isRequired,
-  onClick: PropTypes.func.isRequired,
+  play: PropTypes.func.isRequired,
 };
 
 export default MediaLink;

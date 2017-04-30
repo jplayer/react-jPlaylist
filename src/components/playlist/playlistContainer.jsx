@@ -6,7 +6,6 @@ import Playlist from './playlist';
 
 const mapStateToProps = ({ jPlaylists }, { id, children, ...attributes }) => ({
   playlist: jPlaylists[id].playlist,
-  id,
   children,
   attributes: {
     ...attributes,

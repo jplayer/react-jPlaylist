@@ -2,19 +2,18 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import expect, { createSpy } from 'expect';
 
-import MediaLink from './mediaLink';
+import Previous from './previous';
 import classes from '../../util/classes';
 
 const setup = () => {
   const props = {
     id: 'jPlaylist-1',
-    index: 0,
-    play: createSpy(),
+    previous: createSpy(),
     children: 'test',
     'data-test': 'test',
   };
 
-  const wrapper = shallow(<MediaLink {...props} />);
+  const wrapper = shallow(<Previous {...props} />);
 
   return {
     props,
@@ -22,7 +21,7 @@ const setup = () => {
   };
 };
 
-describe('MediaLink', () => {
+describe('Previous', () => {
   let wrapper;
   let props;
 
@@ -31,8 +30,9 @@ describe('MediaLink', () => {
 
     wrapper.simulate('click');
 
-    expect(wrapper.hasClass(classes.MEDIA_LINK)).toBeTruthy();
-    expect(props.play).toHaveBeenCalledWith(props.id, props.index);
+    expect(wrapper.prop('children')).toBe(props.children);
+    expect(wrapper.hasClass(classes.PREVIOUS)).toBeTruthy();
+    expect(props.previous).toHaveBeenCalledWith(props.id);
     expect(wrapper.prop('data-test')).toBe(props['data-test']);
   });
 });

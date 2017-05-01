@@ -24,7 +24,6 @@ keyBindings, ...attributes }) => {
     loop: jPlaylists[id].loop,
     shuffleOnLoop: jPlaylists[id].shuffleOnLoop,
     focused: jPlayers[id].focused,
-    otherJPlaylists: Object.keys(jPlaylists).filter(key => key !== id),
     keyBindings,
     currentMediaId,
     playlist,
@@ -88,9 +87,6 @@ class JPlaylistContainer extends React.Component {
       playNow: PropTypes.bool,
       loop: PropTypes.string.isRequired,
       shuffleOnLoop: PropTypes.bool.isRequired,
-      otherJPlaylists: PropTypes.arrayOf(
-        PropTypes.object,
-      ).isRequired,
       current: PropTypes.number.isRequired,
       playlist: PropTypes.arrayOf(
           PropTypes.shape({
@@ -112,7 +108,6 @@ class JPlaylistContainer extends React.Component {
       document.querySelector(`#${this.props.id} video`);
 
     this.media.addEventListener('ended', this.playNext);
-    this.media.addEventListener('play', this.pauseOthers);
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.playlist.length > 0 &&
@@ -142,7 +137,6 @@ class JPlaylistContainer extends React.Component {
   }
   componentWillUnmount() {
     this.media.removeEventListener('ended', this.playNext);
-    this.media.removeEventListener('play', this.pauseOthers);
   }
   setLoop = () => {
     if (this.props.loop === 'loop') {
@@ -162,10 +156,6 @@ class JPlaylistContainer extends React.Component {
     }
   }
   playNext = () => this.props.dispatch(next(this.props.id))
-  pauseOthers = () => {
-    this.props.otherJPlaylists.forEach(jPlaylist =>
-      this.props.dispatch(jPlayerActions.pause(jPlaylist.id)));
-  }
   render() {
     return (
       <JPlayer

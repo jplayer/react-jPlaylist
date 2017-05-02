@@ -1,4 +1,4 @@
-import actionNames from '../util/actionNames';
+import { actionNames } from '../util/constants';
 
 export const setOption = (id, key, value) => ({
   type: actionNames.SET_OPTION,

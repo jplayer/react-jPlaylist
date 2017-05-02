@@ -1,6 +1,7 @@
 import expect from 'expect';
+
 import * as actions from './actions';
-import actionNames from '../util/actionNames';
+import { actionNames } from '../util/constants';
 
 describe('jPlaylist actions', () => {
   const id = 'jPlaylist-1';

@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import expect from 'expect';
 
 import PlaylistItem from './playlistItem';
-import classes from '../../util/classes';
+import { classes } from '../../util/constants';
 
 const setup = (newProps) => {
   const props = {

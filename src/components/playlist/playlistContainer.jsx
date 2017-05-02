@@ -1,7 +1,7 @@
 import { connectWithId, classes as sharedClasses } from 'react-jplayer-utils';
 import classNames from 'classnames';
 
-import classes from '../../util/classes';
+import { classes } from '../../util/constants';
 import Playlist from './playlist';
 
 const mapStateToProps = ({ jPlaylists }, { id, children, ...attributes }) => ({

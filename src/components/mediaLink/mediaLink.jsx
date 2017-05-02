@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import classes from '../../util/classes';
+import { classes } from '../../util/constants';
 
 const MediaLink = ({ play, id, index, children, ...attributes }) => (
   <button

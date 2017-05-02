@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import expect, { createSpy } from 'expect';
 
 import MediaLink from './mediaLink';
-import classes from '../../util/classes';
+import { classes } from '../../util/constants';
 
 const setup = () => {
   const props = {

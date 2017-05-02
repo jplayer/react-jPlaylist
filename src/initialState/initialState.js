@@ -1,10 +1,12 @@
-import { initialState, jPlaylistDefaultOptions, jPlaylistDefaultStatus } from 'react-jplayer-utils';
 import shortid from 'shortid';
+import { initialState } from 'react-jplayer-utils';
+
+import { defaultOptions, defaultStatus } from '../util/constants';
 
 export default (connectedJPlaylists) => {
   const jPlaylists = initialState(connectedJPlaylists, {
-    ...jPlaylistDefaultOptions,
-    ...jPlaylistDefaultStatus,
+    ...defaultStatus,
+    ...defaultOptions,
   }, 'playlistOptions');
 
   Object.keys(jPlaylists).forEach((key) => {

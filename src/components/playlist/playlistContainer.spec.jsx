@@ -1,7 +1,7 @@
 import expect from 'expect';
 import { classes as sharedClasses } from 'react-jplayer-utils';
 
-import classes from '../../util/classes';
+import { classes } from '../../util/constants';
 import mockJPlaylist from '../../util/mockData/mockJPlaylist';
 import { __get__ } from './playlistContainer';
 import setup from './playlist.spec';

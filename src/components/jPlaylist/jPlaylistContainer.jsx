@@ -4,7 +4,7 @@ import { JPlayer, actions as jPlayerActions } from 'react-jplayer';
 import { connectWithId } from 'react-jplayer-utils';
 import PropTypes from 'prop-types';
 
-import classes from '../../util/classes';
+import { classes } from '../../util/constants';
 import getLoopState from '../../util/getLoopState';
 import { setOption, next, previous, shuffle } from '../../actions/actions';
 

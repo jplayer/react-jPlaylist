@@ -2,7 +2,7 @@ import { updateObject } from 'react-jplayer-utils';
 import maxBy from 'lodash.maxby';
 import shortid from 'shortid';
 
-import actionNames from '../util/actionNames';
+import { actionNames } from '../util/constants';
 
 const add = (jPlaylist, { media, playNow }) => {
   const highestMediaShufflePosition = maxBy(jPlaylist.playlist, 'shufflePosition');

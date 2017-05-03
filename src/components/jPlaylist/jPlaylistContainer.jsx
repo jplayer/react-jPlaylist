@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 
 import { classes } from '../../util/constants';
 import getLoopState from '../../util/getLoopState';
-import { setOption, next, previous, shuffle } from '../../actions/actions';
+import { setOption, setPlaylist, next, previous, shuffle } from '../../actions/actions';
 
 const mapStateToProps = ({ jPlayers, jPlaylists }, { id, children, customStates,
 keyBindings, ...attributes }) => {
@@ -101,6 +101,7 @@ class JPlaylistContainer extends React.Component {
     };
   }
   componentWillMount() {
+    this.props.dispatch(setPlaylist(this.props.id, this.props.playlist));
     this.props.dispatch(jPlayerActions.setMedia(this.props.id, this.props.playlist[0]));
   }
   componentDidMount() {

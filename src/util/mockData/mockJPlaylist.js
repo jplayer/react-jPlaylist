@@ -1,9 +1,9 @@
 import shortid from 'shortid';
+import { defaultStatus, defaultOptions } from '../constants';
 
 export default {
-  hidePlaylist: false,
-  loop: false,
-  current: 0,
+  ...defaultStatus,
+  ...defaultOptions,
   playlist: [
     {
       title: 'Bubble',

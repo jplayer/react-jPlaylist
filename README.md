@@ -60,7 +60,7 @@ Deep merges the options that you passed into the [`connect`](#) function with re
 
 (object): The initial state for the jPlaylists(s) that needs to be passed to the Redux store.
 
-#### `reducer` : Required
+#### `reducer()` : Required
 The jPlaylist reducer that will be called whenever a jPlaylist function is dispatched. Must be passed to your store named 'jPlaylists'.
 
 #### `connect(jPlaylist, options, jPlaylistOptions)` : Required

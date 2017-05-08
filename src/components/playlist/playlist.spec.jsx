@@ -4,11 +4,11 @@ import expect from 'expect';
 
 import Playlist from './playlist';
 import PlaylistItem from '../playlistItem/playlistItemContainer';
-import mockJPlaylist from '../../util/mockData/mockJPlaylist';
+import mockJPlaylistOptions from '../../util/mockData/mockJPlaylistOptions';
 
 const setup = () => {
   const props = {
-    playlist: mockJPlaylist.playlist,
+    playlist: mockJPlaylistOptions.playlist,
     children: 'test',
     attributes: {
       'data-test': 'test',

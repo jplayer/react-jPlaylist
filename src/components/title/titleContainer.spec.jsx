@@ -1,6 +1,6 @@
 import expect from 'expect';
 
-import mockJPlaylist from '../../util/mockData/mockJPlaylist';
+import mockJPlaylistOptions from '../../util/mockData/mockJPlaylistOptions';
 import { __get__ } from './titleContainer';
 
 const mapStateToProps = __get__('mapStateToProps');
@@ -17,7 +17,7 @@ describe('Titleontainer', () => {
 
   beforeEach(() => {
     jPlaylists = {
-      [id]: mockJPlaylist,
+      [id]: mockJPlaylistOptions,
     };
   });
 
@@ -40,7 +40,7 @@ describe('Titleontainer', () => {
       id,
       index,
     });
-    const media = mockJPlaylist.playlist[0];
+    const media = mockJPlaylistOptions.playlist[0];
 
     expect(stateProps.children).toBe(`${media.artist} - ${media.title}`);
   });
@@ -52,7 +52,7 @@ describe('Titleontainer', () => {
       id,
       index,
     });
-    const media = mockJPlaylist.playlist[0];
+    const media = mockJPlaylistOptions.playlist[0];
 
     expect(stateProps.children).toBe(`${media.artist}`);
   });
@@ -64,7 +64,7 @@ describe('Titleontainer', () => {
       id,
       index,
     });
-    const media = mockJPlaylist.playlist[0];
+    const media = mockJPlaylistOptions.playlist[0];
 
     expect(stateProps.children).toBe(`${media.title}`);
   });

@@ -1,6 +1,6 @@
 import expect from 'expect';
 
-import mockJPlaylist from '../../util/mockData/mockJPlaylist';
+import mockJPlaylistOptions from '../../util/mockData/mockJPlaylistOptions';
 import { __get__ } from './posterContainer';
 
 const mapStateToProps = __get__('mapStateToProps');
@@ -15,7 +15,7 @@ describe('PosterContainer', () => {
 
   beforeEach(() => {
     jPlaylists = {
-      [id]: mockJPlaylist,
+      [id]: mockJPlaylistOptions,
     };
   });
 
@@ -28,7 +28,7 @@ describe('PosterContainer', () => {
     });
 
     expect(stateProps).toEqual({
-      src: mockJPlaylist.playlist[index].poster,
+      src: mockJPlaylistOptions.playlist[index].poster,
       attributes,
     });
   });

@@ -2,7 +2,7 @@ import expect from 'expect';
 import { classes as sharedClasses } from 'react-jplayer-utils';
 
 import { classes } from '../../util/constants';
-import mockJPlaylist from '../../util/mockData/mockJPlaylist';
+import mockJPlaylistOptions from '../../util/mockData/mockJPlaylistOptions';
 import { __get__ } from './playlistContainer';
 import setup from './playlist.spec';
 
@@ -16,7 +16,7 @@ describe('PlaylistContainer', () => {
 
   beforeEach(() => {
     jPlaylists = {
-      [id]: mockJPlaylist,
+      [id]: mockJPlaylistOptions,
     };
   });
 

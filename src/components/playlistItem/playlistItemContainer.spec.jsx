@@ -1,6 +1,6 @@
 import expect from 'expect';
 
-import mockJPlaylist from '../../util/mockData/mockJPlaylist';
+import mockJPlaylistOptions from '../../util/mockData/mockJPlaylistOptions';
 import { __get__ } from './playlistItemContainer';
 import setup from './playlistItem.spec';
 
@@ -14,7 +14,7 @@ describe('PlaylistItemContainer', () => {
 
   beforeEach(() => {
     jPlaylists = {
-      [id]: mockJPlaylist,
+      [id]: mockJPlaylistOptions,
     };
   });
 

@@ -6,7 +6,7 @@ export default (connectedJPlaylists) => {
   const jPlaylists = initialState(connectedJPlaylists, {
     ...defaultStatus,
     ...defaultOptions,
-  }, 'playlistOptions');
+  }, 'jPlaylistOptions');
 
   return jPlaylists;
 };

@@ -4,13 +4,13 @@ import { connect as jPlayerConnect } from 'react-jplayer-utils';
 
 import * as jPlaylistActions from '../actions/actions';
 
-const Connect = (jPlaylist, options, playlistOptions) => {
+const Connect = (jPlaylist, options, jPlaylistOptions) => {
   const ConnectedPlaylist = connect(state => state, {
     ...jPlayerActions,
     ...jPlaylistActions,
   })(jPlaylist);
 
-  return jPlayerConnect(jPlaylist, { options, playlistOptions }, ConnectedPlaylist);
+  return jPlayerConnect(jPlaylist, { options, jPlaylistOptions }, ConnectedPlaylist);
 };
 
 export default Connect;

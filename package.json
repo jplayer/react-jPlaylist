@@ -34,7 +34,7 @@
     "src"
   ],
   "scripts": {
-    "lint": "eslint --fix --ext .jsx,.js ./examples ./src",
+    "lint": "eslint --fix --ext .jsx,.js ./src",
     "coverage": "cross-env BABEL_ENV=test nyc mocha src/**/*.spec.{js,jsx} --opts ./mocha.opts",
     "test": "cross-env BABEL_ENV=test mocha src/**/*.spec.{js,jsx} --opts ./mocha.opts",
     "test:watch": "npm test -- -w",

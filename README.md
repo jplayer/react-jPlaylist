@@ -57,6 +57,7 @@ Deep merges the options that you passed into the [`connect`](#) function with re
 1. `jPlaylist(s)` (array or single react element): Accepts either an array of jPlaylists or a single jPlaylist. 
 
 **Returns**
+
 (object): The initial state for the jPlaylists(s) that needs to be passed to the Redux store.
 
 #### `reducer` : Required
@@ -71,6 +72,7 @@ Connects your jPlaylist to the jPlayer store by wrapping Redux's original connec
 2. `jPlaylistOptions` (object): The [jPlaylist options](#) that you want the jPlaylist to be initialized with.
 
 **Returns**
+
 (function): A component that wraps your jPlaylist. This means that you can use Redux original connect to wrap this connect with as well if you wanted to pass aditional Redux data from the store to your jPlaylist.
 
 **Static Properties**

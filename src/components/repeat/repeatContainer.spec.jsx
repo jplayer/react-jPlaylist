@@ -6,10 +6,6 @@ import { __get__ } from './repeatContainer';
 const mapStateToProps = __get__('mapStateToProps');
 
 const id = 'jPlaylist-1';
-const attributes = {
-  'data-test': 'test',
-};
-const children = 'test';
 
 describe('RepeatContainer', () => {
   let jPlaylists;
@@ -21,17 +17,10 @@ describe('RepeatContainer', () => {
   });
 
   it('mapStateToProps', () => {
-    const stateProps = mapStateToProps({ jPlaylists }, {
-      id,
-      children,
-      ...attributes,
-    });
+    const stateProps = mapStateToProps({ jPlaylists }, { id });
 
     expect(stateProps).toEqual({
       loop: mockJPlaylist.loop,
-      id,
-      children,
-      attributes,
     });
   });
 });

@@ -17,8 +17,8 @@ export default {
   entry: {
     'js/jPlaylist.js': './src/index.js',
     'js/jPlaylist.min.js': './src/index.js',
-    'css/jPlaylist.css': './src/less/jPlaylist.less',
-    'css/jPlaylist.min.css': './src/less/jPlaylist.less',
+    'css/controls/iconControls.css': './src/less/controls/iconControls.less',
+    'css/controls/iconControls.min.css': './src/less/controls/iconControls.less',
     'css/skins/sleek.css': './src/less/skins/sleek.less',
     'css/skins/sleek.min.css': './src/less/skins/sleek.less',
   },

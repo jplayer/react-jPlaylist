@@ -105,6 +105,7 @@ Sets the playlist of the jPlaylist. You don't need to use this on jPlaylist load
 **Arguments**
 1. `id` (string): Id of the jPlaylist to apply this to.
 2. `playlist` (array of objects): The new playlist which will be set to your jPlaylist.
+
 Example:
 ```
 [
@@ -128,6 +129,7 @@ Adds the media to the end of the playlist.
 **Arguments**
 1. `id` (string): Id of the jPlaylist to apply this to.
 2. `media` (object): The media to be added to your playlist.
+
 Example:
 ```
 {

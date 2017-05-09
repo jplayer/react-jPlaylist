@@ -190,12 +190,12 @@ Plays the previous media item in the playlist.
 You specify these values on a functions static property that must be called `options` as shown in the [example](https://github.com/MartinDawson/react-jPlayer#most-basic-setup). Properties in this object are used to initialize the jPlayer. They are deep merged with the default values.
 
 ##### `loopOnPrevious` (bool)
-Default: "true"
+Default: true
 
-The playlist will loop back to the end when calling [`previous()`](#);
+The playlist will loop back to the end when calling [`previous()`](#).
 
 ##### `shuffleOnLoop` (bool)
-Default: "true"
+Default: true
 
 If loop is 'loop-playlist' and shuffled is true, the playlist will shuffle when calling [`next()`](#) on the last item.
 
@@ -208,6 +208,6 @@ Their are now three settings which jPlaylist recognizes for loop:
 3. 'loop-playlist': Loops the entire playlist when calling [`next()`](#) on the last item.
 
 ##### `hidePlaylist` (bool)
-Default: "false"
+Default: false
 
 Hides or shows the playlist. Used internally with the [`<TogglePlaylist />`](#) component.

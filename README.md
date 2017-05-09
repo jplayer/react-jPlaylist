@@ -31,6 +31,7 @@ react-jPlaylist is an add-on to [react-jPlayer](https://github.com/MartinDawson/
       - [`next(id)`](#nextid)
       - [`previous(id)`](#previousid)
     + [Options](#options)
+      - [`playlist` (array: objects) : Required](#playlist-array-objects--required)
       - [`loopOnPrevious` (bool)](#looponprevious-bool)
       - [`shuffleOnLoop` (bool)](#shuffleonloop-bool)
       - [`loop` (string)](#loop-string)

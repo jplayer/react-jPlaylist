@@ -1,4 +1,4 @@
-import Repeat from 'react-jplayer/src/components/repeat/repeat';
+import Repeat from 'react-jplayer/lib/components/repeat/repeat';
 
 import { connectWithId } from 'react-jplayer-utils';
 import { setOption } from '../../actions/actions';

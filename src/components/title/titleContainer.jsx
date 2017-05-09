@@ -1,5 +1,5 @@
 import { connectWithIndex, formatArtistAndTitle } from 'react-jplayer-utils';
-import Title from 'react-jplayer/src/components/title/title';
+import Title from 'react-jplayer/lib/components/title/title';
 
 const mapStateToProps = ({ jPlaylists }, { id, index, children, ...attributes }) => ({
   children: children || formatArtistAndTitle(

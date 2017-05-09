@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import formatPropTypes from 'react-jplayer/src/util/formatPropTypes';
+import formatPropTypes from 'react-jplayer/lib/util/formatPropTypes';
 
 import PlaylistItem from '../playlistItem/playlistItemContainer';
 

@@ -29,12 +29,11 @@ export const classes = {
 export const defaultOptions = {
   loopOnPrevious: true,
   shuffleOnLoop: true,
-  enableRemoveControls: true,
   loop: 'loop-playlist',
   hidePlaylist: false,
-  shuffled: false,
 };
 
 export const defaultStatus = {
   current: 0,
+  shuffled: false,
 };

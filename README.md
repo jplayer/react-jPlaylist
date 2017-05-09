@@ -81,9 +81,105 @@ Connects your jPlaylist to the jPlayer store by wrapping Redux's original connec
 2. `jPlaylistOptions`: The jPlaylist options that you passed into the `connect()`.
 
 ### Props
-jPlaylist automatically passes the following in to your jPlaylist component:
+jPlaylist automatically passes the following properties in to your jPlaylist component:
 
 - `[id]` (string): The current jPlaylist's id that you supplied through [`options.id`](https://github.com/MartinDawson/react-jPlayer#id-string--required).
 - [`[...actions]`](https://github.com/MartinDawson/react-jPlaylist#actions) (func): The actions that you can call to modify jPlaylist's properties at runtime.
 - [`jPlayers`](https://github.com/MartinDawson/react-jPlaylist#options) (object): All of the jPlayers and their options get passed in here. The names of the jPlayers are what you specified for each one in [`options.id`](https://github.com/MartinDawson/react-jPlayer#id-string--required).
 - [`jPlaylists`](https://github.com/MartinDawson/react-jPlaylist#status) (object): All of the jPlaylists and their options get passed in here. The names of the jPlaylists are what you specified for each one in [`options.id`](https://github.com/MartinDawson/react-jPlayer#id-string--required).
+
+#### Actions
+All of the actions automatically get passed into your jPlaylists for ease of use so you can just call them directly.
+
+##### `setOption(id, key, value)`
+Sets any jPlaylist [option](#).
+
+**Arguments**
+1. `id` (string): Id of the jPlaylist to apply this to.
+2. `key` (string): The name of the option that you want to set. Specifying nested keys is not supported.
+3. `value` (any): The value to set the option to.
+
+##### `setPlaylist(id, playlist)`
+Sets the playlist of the jPlaylist. You don't need to use this on jPlaylist load because this method is automatically called internally on `componentDidMount` with the playlist you supplied in [options.playlist](#).
+
+**Arguments**
+1. `id` (string): Id of the jPlaylist to apply this to.
+2. `playlist` (array of objects): The new playlist which will be set to your jPlaylist.
+Example:
+```
+[
+  {
+    title: 'Big Buck Bunny Trailer',
+    artist: 'peach.blender',
+    sources: {
+      m4v: 'http://www.jplayer.org/video/m4v/Big_Buck_Bunny_Trailer.m4v',
+      ogv: 'http://www.jplayer.org/video/ogv/Big_Buck_Bunny_Trailer.ogv',
+      webmv: 'http://www.jplayer.org/video/webm/Big_Buck_Bunny_Trailer.webm',
+    },
+    free: true,
+    poster: 'http://www.jplayer.org/video/poster/Big_Buck_Bunny_Trailer_480x270.png',
+  }
+]
+```
+
+##### `add(id, media, playNow?)`
+Adds the media to the end of the playlist.
+
+**Arguments**
+1. `id` (string): Id of the jPlaylist to apply this to.
+2. `media` (object): The media to be added to your playlist.
+Example:
+```
+{
+  title: 'Big Buck Bunny Trailer',
+  artist: 'peach.blender',
+  sources: {
+    m4v: 'http://www.jplayer.org/video/m4v/Big_Buck_Bunny_Trailer.m4v',
+    ogv: 'http://www.jplayer.org/video/ogv/Big_Buck_Bunny_Trailer.ogv',
+    webmv: 'http://www.jplayer.org/video/webm/Big_Buck_Bunny_Trailer.webm',
+  },
+  free: true,
+  poster: 'http://www.jplayer.org/video/poster/Big_Buck_Bunny_Trailer_480x270.png',
+}
+```
+3. `playNow` (bool): Optionally play the media as soon as it's added.
+
+##### `remove(id, index)`
+Removes the media from the playlist at the specified index.
+
+**Arguments**
+1. `id` (string): Id of the jPlaylist to apply this to.
+2. `index` (number): The index of the playlist array with which to remove.
+
+##### `clear(id)`
+Clears the playlist array and resets some jPlaylist values back to default.
+
+**Arguments**
+1. `id` (string): Id of the jPlaylist to apply this to.
+
+##### `play(id, index?)`
+Plays the jPlaylist. If no index is supplied then it plays the current media.
+
+**Arguments**
+1. `id` (string): Id of the jPlaylist to apply this to.
+2. `index` (number): Optionally play the media at the supplied index.
+
+##### `shuffle(id, shuffled?, playNow?)`
+Shuffles the playlist. 
+
+**Arguments**
+1. `id` (string): Id of the jPlaylist to apply this to.
+2. `shuffled` (bool): Toggles shuffled setting if no param is given. True always shuffles the playlist. False will un-shuffle if it was shuffled.
+3. `playNow` (bool): Optionally play the media as soon as it's shuffled.
+
+##### `next(id)`
+Plays the next media item in the playlist.
+
+**Arguments**
+1. `id` (string): Id of the jPlaylist to apply this to.
+
+##### `previous(id)`
+Plays the previous media item in the playlist.
+
+**Arguments**
+1. `id` (string): Id of the jPlaylist to apply this to.

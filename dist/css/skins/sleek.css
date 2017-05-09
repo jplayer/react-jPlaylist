@@ -1,0 +1,33 @@
+.jp-jplayer .jp-playlist {
+  position: absolute;
+  list-style-type: none;
+  padding: 0;
+  bottom: 100%;
+  margin: 0;
+  border: solid 1px #e5e5e5;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
+  font-size: 17px;
+  background-color: #fff;
+}
+.jp-jplayer .jp-playlist li {
+  border-bottom: solid 1px #e5e5e5;
+}
+.jp-jplayer .jp-toggle-playlist {
+  height: inherit;
+}
+.jp-jplayer .jp-current {
+  background-color: #e5e5e5;
+  border: solid 1px #d6d6d6;
+}
+.jp-jplayer.jp-state-looped-playlist .jp-repeat {
+  position: relative;
+}
+.jp-jplayer.jp-state-looped-playlist .jp-repeat i:first-child {
+  font-size: 11px;
+  right: 0;
+  position: absolute;
+}
+.jp-jplayer.jp-state-looped-playlist .jp-repeat i:first-child:before {
+  content: '\F0C9';
+}

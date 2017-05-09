@@ -104,7 +104,7 @@ Sets the playlist of the jPlaylist. You don't need to use this on jPlaylist load
 
 **Arguments**
 1. `id` (string): Id of the jPlaylist to apply this to.
-2. `playlist` (array of objects): The new playlist which will be set to your jPlaylist.
+2. `playlist` (array: objects): The new playlist which will be set to your jPlaylist.
 
 Example:
 ```
@@ -211,3 +211,50 @@ There are three settings which jPlaylist recognizes for loop:
 Default: false
 
 Hides or shows the playlist. Used internally with the [`<TogglePlaylist />`](#) component.
+
+### Components
+All components accept custom props that will be applied as attributes to the component if the names don't conflict with existing properties.
+
+**WARNING**: If the names do conflict then the custom props will overwrite any existing props that are used on that component internally, including event handlers. The exception to this is the property `className` for the `JPlaylist` component which is merged with the internal classes.
+
+E.g. `<Shuffle data-test="test" />` will render `<div className="jp-shuffle" data-test="test"></div>`
+
+#### `JPlaylist` : Required
+**props**
+1. `className` (string): Merged with the internally used classNames that jPlaylist uses. Useful for specifying the jPlaylist skin type that you want to use, e.g. `<JPlaylist className="jp-sleek">`.
+
+Needs to be at the root of any other jPlayer and jPlaylist components. You don't specify the [`JPlayer`](#) component when using jPlaylist as this component replaces that and wraps the [`JPlayer`](#) component internally.
+
+#### `Playlist`
+Any component that is a child of this component will be duplicated x number of times where x is the size of your playlist.
+
+#### `Remove`
+Default: `×`
+
+Should be nested as a child of the [`Playlist`](#) component. Renders the remove controls for each media in your playlist.
+
+#### `MediaLink`
+Should be nested as a child of the [`Playlist`](#) component. Renders the media links for the playlist and allows the user to select other media's in your playlist.
+
+#### `Title`
+Default: `media.artist` - `media.title`
+
+Should be nested as a child of the [`Playlist`](#) component. Renders the artist and title of the current media.
+
+#### `Poster`
+Should be nested as a child of the [`Playlist`](#) component. Renders the poster of the current media.
+
+#### `TogglePlaylist`
+Used in conjunction with the [`hidePlaylist`](#) property. Toggles the visiblity of the playlist `onClick`.
+
+#### `Previous`
+`onClick` calls the [`previous`](#) action internally and sets the media to the previous item.
+
+#### `Next`
+`onClick` calls the [`next`](#) action internally and sets the media to the next item.
+
+#### `Shuffle`
+`onClick` calls the [`shuffle`](#) action internally and shuffles the media.
+
+#### `Repeat`
+`onClick` calls the [`setOption`](#) action internally and sets the loop to the next state, i.e. if loop is currently 'off" then clicking on this component will set the loop state to 'loop'.

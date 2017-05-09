@@ -138,22 +138,7 @@ Adds the media to the end of the playlist.
 
 **Arguments**
 1. `id` (string): Id of the jPlaylist to apply this to.
-2. `media` (object): The media to be added to your playlist.
-
-Example:
-```
-{
-  title: 'Big Buck Bunny Trailer',
-  artist: 'peach.blender',
-  sources: {
-    m4v: 'http://www.jplayer.org/video/m4v/Big_Buck_Bunny_Trailer.m4v',
-    ogv: 'http://www.jplayer.org/video/ogv/Big_Buck_Bunny_Trailer.ogv',
-    webmv: 'http://www.jplayer.org/video/webm/Big_Buck_Bunny_Trailer.webm',
-  },
-  free: true,
-  poster: 'http://www.jplayer.org/video/poster/Big_Buck_Bunny_Trailer_480x270.png',
-}
-```
+2. [`media` (object):](https://github.com/MartinDawson/react-jPlayer#media-object) The media to be added to your playlist.
 3. `playNow` (bool): Optionally play the media as soon as it's added.
 
 ##### `remove(id, index)`

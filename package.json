@@ -29,7 +29,7 @@
   ],
   "homepage": "https://github.com/MartinDawson/react-jPlaylist",
   "license": "MIT",
-  "main": "./src/index.js",
+  "main": "./lib/index.js",
   "files": [
     "dist",
     "lib",

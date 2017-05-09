@@ -119,7 +119,7 @@ jPlaylist automatically passes the following properties in to your jPlaylist com
 All of the actions automatically get passed into your jPlaylists for ease of use so you can just call them directly.
 
 ##### `setOption(id, key, value)`
-Sets any jPlaylist [option](#).
+Sets any jPlaylist [option](https://github.com/MartinDawson/react-jPlaylist#options).
 
 **Arguments**
 1. `id` (string): Id of the jPlaylist to apply this to.

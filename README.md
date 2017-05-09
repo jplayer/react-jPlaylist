@@ -202,7 +202,7 @@ If loop is 'loop-playlist' and shuffled is true, the playlist will shuffle when 
 ##### `loop` (string)
 Default: "loop-playlist"
 
-Their are now three settings which jPlaylist recognizes for loop:
+There are three settings which jPlaylist recognizes for loop:
 1. 'off': Doesn't loop the playlist or the current media, stops on the last item when [`next()`](#) is called.
 2. 'loop': Loops the current media in the playlist.
 3. 'loop-playlist': Loops the entire playlist when calling [`next()`](#) on the last item.

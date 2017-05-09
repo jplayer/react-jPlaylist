@@ -133,23 +133,6 @@ Sets the playlist of the jPlaylist. You don't need to use this on jPlaylist load
 1. `id` (string): Id of the jPlaylist to apply this to.
 2. `playlist` (array: objects): The new playlist which will be set to your jPlaylist.
 
-Example:
-```
-[
-  {
-    title: 'Big Buck Bunny Trailer',
-    artist: 'peach.blender',
-    sources: {
-      m4v: 'http://www.jplayer.org/video/m4v/Big_Buck_Bunny_Trailer.m4v',
-      ogv: 'http://www.jplayer.org/video/ogv/Big_Buck_Bunny_Trailer.ogv',
-      webmv: 'http://www.jplayer.org/video/webm/Big_Buck_Bunny_Trailer.webm',
-    },
-    free: true,
-    poster: 'http://www.jplayer.org/video/poster/Big_Buck_Bunny_Trailer_480x270.png',
-  }
-]
-```
-
 ##### `add(id, media, playNow?)`
 Adds the media to the end of the playlist.
 
@@ -215,6 +198,9 @@ Plays the previous media item in the playlist.
 
 #### Options
 Properties in this object are used to initialize the jPlaylist. They are deep merged with the default values.
+
+##### `playlist` (array: objects) : Required
+jPlaylist will load the playlist from this option in `componentWillMount()` automatically. Each object within the array needs to the same as react-jPlayer's [media schema](https://github.com/MartinDawson/react-jPlayer#media-object).
 
 ##### `loopOnPrevious` (bool)
 Default: true

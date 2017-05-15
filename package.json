@@ -1,6 +1,6 @@
 {
   "name": "react-jplaylist",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Html5 audio and video playlist library for React that implements react-jPlayer",
   "author": "Martin Dawson <u1356770@gmail.com>",
   "repository": {

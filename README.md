@@ -10,6 +10,7 @@ react-jPlaylist is an add-on to [react-jPlayer](https://github.com/MartinDawson/
 <!-- toc -->
 
   * [Live Demo](#live-demo)
+  * [Examples](#examples)
   * [Installation](#installation)
     + [NPM](#npm)
     + [UMD](#umd)
@@ -54,6 +55,9 @@ react-jPlaylist is an add-on to [react-jPlayer](https://github.com/MartinDawson/
 ### Live Demo
 http://react-jplayer.azurewebsites.net/
 
+### Examples
+https://github.com/MartinDawson/react-jPlayerExamples
+
 ### Installation
 #### NPM
 `npm install --save react-jplaylist`
@@ -62,9 +66,12 @@ http://react-jplayer.azurewebsites.net/
 The recommended way to use this package is through npm and webpack. However if you insist on including the .js and .css files manually then it is available from the `/dist/` folder.
 For example, if you copied the `/dist/` folder to the root of your project then the src tags would look like this:
 
-`<script src="./dist/js/jPlaylist.js"></script>`
+```
+<link rel="stylesheet" type="text/css" href="./dist/css/controls/iconControls.css">
+<link rel="stylesheet" type="text/css" href="./dist/css/sleek.css">
 
-`<script src="./dist/css/sleek.css"></script>`
+<script src="./dist/js/jPlaylist.js"></script>
+```
 
 Module is exported to a global variable called `ReactJPlaylist`.
 
@@ -79,17 +86,17 @@ Same as [react-jPlayer](https://github.com/MartinDawson/react-jPlayer#supported-
 
 ## Documentation
 #### `initialState([jPlaylists])` : Required
-Deep merges the options that you passed into the [`connect`](https://github.com/MartinDawson/react-jPlaylist#connectjplaylist-options-jplaylistoptions--required) function with react-jPlayer's defaults. The result of this must be passed to your stores initial state.
+Deep merges the options that you passed into the [`connect`](https://github.com/MartinDawson/react-jPlaylist#connectjplaylist-options-jplaylistoptions--required) function with react-jPlaylist's default options. The result of this must be passed to your stores initial state.
 
 **Arguments**
 1. `jPlaylist(s)` (array or single react element): Accepts either an array of jPlaylists or a single jPlaylist. 
 
 **Returns**
 
-(object): The initial state for the jPlaylists(s) that needs to be passed to the Redux store.
+(object): The initial state for the jPlaylist(s) that needs to be passed to the Redux store.
 
 #### `reducer()` : Required
-The jPlaylist reducer that will be called whenever a jPlaylist function is dispatched. Must be passed to your store named 'jPlaylists'.
+The jPlaylist reducer that will be called whenever a jPlaylist function is dispatched. Must be passed to your store with the key named 'jPlaylists'.
 
 #### `connect(jPlaylist, options, jPlaylistOptions)` : Required
 Connects your jPlaylist to the jPlayer store by wrapping Redux's original connect.
@@ -108,13 +115,17 @@ Connects your jPlaylist to the jPlayer store by wrapping Redux's original connec
 2. `options`: The jPlayer options that you passed into the `connect()`.
 2. `jPlaylistOptions`: The jPlaylist options that you passed into the `connect()`.
 
+**Renders**
+
+The connected jPlaylist. Any additional props that you passed in are passed through to your jPlaylist so you can use them as usual.
+
 ### Props
 jPlaylist automatically passes the following properties in to your jPlaylist component:
 
 - `id` (string): The current jPlaylist's id that you supplied through [`options.id`](https://github.com/MartinDawson/react-jPlayer#id-string--required).
 - [`[...actions]`](https://github.com/MartinDawson/react-jPlaylist#actions) (func): The actions that you can call to modify jPlaylist's properties at runtime.
-- `jPlayers` (object): All of the jPlayers options get passed in here. The names of the jPlayers are what you specified for each one in [`options.id`](https://github.com/MartinDawson/react-jPlayer#id-string--required).
-- `jPlaylists` (object): All of the jPlaylists options get passed in here. The names of the jPlaylists are what you specified for each one in [`options.id`](https://github.com/MartinDawson/react-jPlayer#id-string--required).
+- `jPlayers` (object): All of the jPlayers options get passed in here. The names of the jPlayers are what you specified for each one in [`options.id`].
+- `jPlaylists` (object): All of the jPlaylists options get passed in here. The names of the jPlaylists are what you specified for each one in [`options.id`].
 
 #### Actions
 All of the actions automatically get passed into your jPlaylists for ease of use so you can just call them directly.
@@ -183,7 +194,7 @@ Plays the previous media item in the playlist.
 1. `id` (string): Id of the jPlaylist to apply this to.
 
 #### Options
-Properties in this object are used to initialize the jPlaylist. They are deep merged with the default values.
+Properties in this object are used to initialize the jPlaylist. They are deep merged with the default jPlaylist options.
 
 ##### `playlist` (array: objects) : Required
 jPlaylist will load the playlist from this option in `componentWillMount()` automatically. Each object within the array needs to the same as react-jPlayer's [media schema](https://github.com/MartinDawson/react-jPlayer#media-object).

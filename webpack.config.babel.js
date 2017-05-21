@@ -8,11 +8,16 @@ export default {
   context: __dirname,
   target: 'node',
   externals: {
+    classnames: 'classNames',
+    'lodash.maxby': '_.maxBy',
+    'lodash.merge': '_.merge',
     react: 'React',
     'react-dom': 'ReactDOM',
     'react-redux': 'ReactRedux',
+    recompose: 'Recompose',
     redux: 'Redux',
-    'lodash.merge': '_.merge',
+    'prop-types': 'PropTypes',
+    shortid: 'shortid',
   },
   entry: {
     'js/jPlaylist.js': './src/index.js',

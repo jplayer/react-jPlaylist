@@ -14,12 +14,13 @@ import MediaLink from './components/mediaLink/mediaLinkContainer';
 import Poster from './components/poster/posterContainer';
 import Title from './components/title/titleContainer';
 
+export default JPlaylist;
+
 export {
   initialState,
   reducer,
   actions,
   connect,
-  JPlaylist,
   Playlist,
   Shuffle,
   Previous,

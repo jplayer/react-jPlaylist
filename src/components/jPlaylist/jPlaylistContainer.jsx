@@ -1,6 +1,6 @@
 import React from 'react';
 import merge from 'lodash.merge';
-import { JPlayer, actions as jPlayerActions } from 'react-jplayer';
+import JPlayer, { actions as jPlayerActions } from 'react-jplayer';
 import { connectWithId } from 'react-jplayer-utils';
 import PropTypes from 'prop-types';
 

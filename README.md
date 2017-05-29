@@ -56,7 +56,7 @@ react-jPlaylist is an add-on to [react-jPlayer](https://github.com/jplayer/react
 http://react-jplayer.azurewebsites.net/
 
 ### Examples
-https://github.com/jplayer/react-jPlayerExamples
+https://github.com/jplayer/react-jPlayer-examples
 
 ### Installation
 #### NPM

@@ -5,10 +5,10 @@
   "author": "Martin Dawson <u1356770@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/MartinDawson/react-jPlaylist.git"
+    "url": "https://github.com/jPlayer/react-jPlaylist.git"
   },
   "bugs": {
-    "url": "https://github.com/MartinDawson/react-jPlaylist/issues"
+    "url": "https://github.com/jPlayer/react-jPlaylist/issues"
   },
   "keywords": [
     "audio",
@@ -27,7 +27,7 @@
     "react-jplayer",
     "react-jplaylist"
   ],
-  "homepage": "https://github.com/MartinDawson/react-jPlaylist",
+  "homepage": "https://github.com/jPlayer/react-jPlaylist",
   "license": "MIT",
   "main": "./lib/index.js",
   "files": [

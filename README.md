@@ -1,11 +1,11 @@
-[![Build Status](https://travis-ci.org/MartinDawson/react-jPlaylist.svg?branch=master)](https://travis-ci.org/MartinDawson/react-jPlaylist)
-[![Coverage Status](https://coveralls.io/repos/github/MartinDawson/react-jPlaylist/badge.svg?branch=master)](https://coveralls.io/github/MartinDawson/react-jPlaylist?branch=master)
+[![Build Status](https://travis-ci.org/jPlayer/react-jPlaylist.svg?branch=master)](https://travis-ci.org/jPlayer/react-jPlaylist)
+[![Coverage Status](https://coveralls.io/repos/github/jPlayer/react-jPlaylist/badge.svg?branch=master)](https://coveralls.io/github/jPlayer/react-jPlaylist?branch=master)
 [![dependencies Status](https://david-dm.org/martindawson/react-jPlaylist/status.svg)](https://david-dm.org/martindawson/react-jPlaylist)
 [![devDependencies Status](https://david-dm.org/martindawson/react-jPlaylist/dev-status.svg)](https://david-dm.org/martindawson/react-jPlaylist?type=dev)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 # react-jPlaylist
-react-jPlaylist is an add-on to [react-jPlayer](https://github.com/MartinDawson/react-jPlayer) that provides playlist functionality and components for you to use.
+react-jPlaylist is an add-on to [react-jPlayer](https://github.com/jPlayer/react-jPlayer) that provides playlist functionality and components for you to use.
 
 <!-- toc -->
 
@@ -56,7 +56,7 @@ react-jPlaylist is an add-on to [react-jPlayer](https://github.com/MartinDawson/
 http://react-jplayer.azurewebsites.net/
 
 ### Examples
-https://github.com/MartinDawson/react-jPlayerExamples
+https://github.com/jPlayer/react-jPlayerExamples
 
 ### Installation
 #### NPM
@@ -82,11 +82,11 @@ Module is exported to a global variable called `ReactJPlaylist`.
 * Comes with a fully reponsive css skin for your players
 
 ### Supported Browsers
-Same as [react-jPlayer](https://github.com/MartinDawson/react-jPlayer#supported-browsers)
+Same as [react-jPlayer](https://github.com/jPlayer/react-jPlayer#supported-browsers)
 
 ## Documentation
 #### `initialState([jPlaylists])` : Required
-Deep merges the options that you passed into the [`connect`](https://github.com/MartinDawson/react-jPlaylist#connectjplaylist-options-jplaylistoptions--required) function with react-jPlaylist's default options. The result of this must be passed to your stores initial state.
+Deep merges the options that you passed into the [`connect`](https://github.com/jPlayer/react-jPlaylist#connectjplaylist-options-jplaylistoptions--required) function with react-jPlaylist's default options. The result of this must be passed to your stores initial state.
 
 **Arguments**
 1. `jPlaylist(s)` (array or single react element): Accepts either an array of jPlaylists or a single jPlaylist. 
@@ -103,8 +103,8 @@ Connects your jPlaylist to the jPlayer store by wrapping Redux's original connec
 
 **Arguments**
 1. `jPlaylist` (function): Your jPlaylist with which to connect to the store.
-2. `options` (object): The [jPlayer options](https://github.com/MartinDawson/react-jPlayer#options) that you want the jPlaylist to be initialized with.
-2. `jPlaylistOptions` (object): The [jPlaylist options](https://github.com/MartinDawson/react-jPlaylist#options) that you want the jPlaylist to be initialized with.
+2. `options` (object): The [jPlayer options](https://github.com/jPlayer/react-jPlayer#options) that you want the jPlaylist to be initialized with.
+2. `jPlaylistOptions` (object): The [jPlaylist options](https://github.com/jPlayer/react-jPlaylist#options) that you want the jPlaylist to be initialized with.
 
 **Returns**
 
@@ -122,8 +122,8 @@ The connected jPlaylist. Any additional props that you passed in are passed thro
 ### Props
 jPlaylist automatically passes the following properties in to your jPlaylist component:
 
-- `id` (string): The current jPlaylist's id that you supplied through [`options.id`](https://github.com/MartinDawson/react-jPlayer#id-string--required).
-- [`[...actions]`](https://github.com/MartinDawson/react-jPlaylist#actions) (func): The actions that you can call to modify jPlaylist's properties at runtime.
+- `id` (string): The current jPlaylist's id that you supplied through [`options.id`](https://github.com/jPlayer/react-jPlayer#id-string--required).
+- [`[...actions]`](https://github.com/jPlayer/react-jPlaylist#actions) (func): The actions that you can call to modify jPlaylist's properties at runtime.
 - `jPlayers` (object): All of the jPlayers options get passed in here. The names of the jPlayers are what you specified for each one in [`options.id`].
 - `jPlaylists` (object): All of the jPlaylists options get passed in here. The names of the jPlaylists are what you specified for each one in [`options.id`].
 
@@ -131,7 +131,7 @@ jPlaylist automatically passes the following properties in to your jPlaylist com
 All of the actions automatically get passed into your jPlaylists for ease of use so you can just call them directly.
 
 ##### `setOption(id, key, value)`
-Sets any jPlaylist [option](https://github.com/MartinDawson/react-jPlaylist#options).
+Sets any jPlaylist [option](https://github.com/jPlayer/react-jPlaylist#options).
 
 **Arguments**
 1. `id` (string): Id of the jPlaylist to apply this to.
@@ -139,7 +139,7 @@ Sets any jPlaylist [option](https://github.com/MartinDawson/react-jPlaylist#opti
 3. `value` (any): The value to set the option to.
 
 ##### `setPlaylist(id, playlist)`
-Sets the playlist of the jPlaylist. You don't need to use this on jPlaylist load because this method is automatically called internally on `componentDidMount` with the playlist you supplied in [options.playlist](https://github.com/MartinDawson/react-jPlaylist#options).
+Sets the playlist of the jPlaylist. You don't need to use this on jPlaylist load because this method is automatically called internally on `componentDidMount` with the playlist you supplied in [options.playlist](https://github.com/jPlayer/react-jPlaylist#options).
 
 **Arguments**
 1. `id` (string): Id of the jPlaylist to apply this to.
@@ -150,7 +150,7 @@ Adds the media to the end of the playlist.
 
 **Arguments**
 1. `id` (string): Id of the jPlaylist to apply this to.
-2. [`media` (object):](https://github.com/MartinDawson/react-jPlayer#media-object) The media to be added to your playlist.
+2. [`media` (object):](https://github.com/jPlayer/react-jPlayer#media-object) The media to be added to your playlist.
 3. `playNow` (bool): Optionally play the media as soon as it's added.
 
 ##### `remove(id, index)`
@@ -197,35 +197,35 @@ Plays the previous media item in the playlist.
 Properties in this object are used to initialize the jPlaylist. They are deep merged with the default jPlaylist options.
 
 ##### `playlist` (array: objects) : Required
-jPlaylist will load the playlist from this option in `componentWillMount()` automatically. Each object within the array needs to the same as react-jPlayer's [media schema](https://github.com/MartinDawson/react-jPlayer#media-object).
+jPlaylist will load the playlist from this option in `componentWillMount()` automatically. Each object within the array needs to the same as react-jPlayer's [media schema](https://github.com/jPlayer/react-jPlayer#media-object).
 
 ##### `loopOnPrevious` (bool)
 Default: true
 
-The playlist will loop back to the end when calling [`previous()`](https://github.com/MartinDawson/react-jPlaylist#previousid).
+The playlist will loop back to the end when calling [`previous()`](https://github.com/jPlayer/react-jPlaylist#previousid).
 
 ##### `shuffleOnLoop` (bool)
 Default: true
 
-If loop is 'loop-playlist' and shuffled is true, the playlist will shuffle when calling [`next()`](https://github.com/MartinDawson/react-jPlaylist#nextid) on the last item.
+If loop is 'loop-playlist' and shuffled is true, the playlist will shuffle when calling [`next()`](https://github.com/jPlayer/react-jPlaylist#nextid) on the last item.
 
 ##### `loop` (string)
 Default: "loop-playlist"
 
 There are three settings which jPlaylist recognizes for loop:
-1. 'off': Doesn't loop the playlist or the current media, stops on the last item when [`next()`](https://github.com/MartinDawson/react-jPlaylist#nextid) is called.
+1. 'off': Doesn't loop the playlist or the current media, stops on the last item when [`next()`](https://github.com/jPlayer/react-jPlaylist#nextid) is called.
 2. 'loop': Loops the current media in the playlist.
-3. 'loop-playlist': Loops the entire playlist when calling [`next()`](https://github.com/MartinDawson/react-jPlaylist#nextid) on the last item.
+3. 'loop-playlist': Loops the entire playlist when calling [`next()`](https://github.com/jPlayer/react-jPlaylist#nextid) on the last item.
 
 ##### `hidePlaylist` (bool)
 Default: false
 
-Hides or shows the playlist. Used internally with the [`TogglePlaylist`](https://github.com/MartinDawson/react-jPlaylist#toggleplaylist) component.
+Hides or shows the playlist. Used internally with the [`TogglePlaylist`](https://github.com/jPlayer/react-jPlaylist#toggleplaylist) component.
 
 ### Components
 All components accept custom props that will be applied as attributes to the component if the names don't conflict with existing properties.
 
-**WARNING**: If the names do conflict then the custom props will overwrite any existing props that are used on that component internally, including event handlers. The exception to this is the property `className` for the [`JPlaylist`](https://github.com/MartinDawson/react-jPlaylist#jplaylist--required) component which is merged with the internal classes.
+**WARNING**: If the names do conflict then the custom props will overwrite any existing props that are used on that component internally, including event handlers. The exception to this is the property `className` for the [`JPlaylist`](https://github.com/jPlayer/react-jPlaylist#jplaylist--required) component which is merged with the internal classes.
 
 E.g. `<Shuffle data-test="test" />` will render `<div className="jp-shuffle" data-test="test"></div>`
 
@@ -233,7 +233,7 @@ E.g. `<Shuffle data-test="test" />` will render `<div className="jp-shuffle" dat
 **props**
 1. `className` (string): Merged with the internally used classNames that jPlaylist uses. Useful for specifying the jPlaylist skin type that you want to use, e.g. `<JPlaylist className="jp-sleek">`.
 
-Needs to be at the root of any other jPlayer and jPlaylist components. You don't specify the [`JPlayer`](https://github.com/MartinDawson/react-jPlayer#jplayer) component when using jPlaylist as this component replaces that and wraps the [`JPlayer`](https://github.com/MartinDawson/react-jPlayer#jplayer) component internally.
+Needs to be at the root of any other jPlayer and jPlaylist components. You don't specify the [`JPlayer`](https://github.com/jPlayer/react-jPlayer#jplayer) component when using jPlaylist as this component replaces that and wraps the [`JPlayer`](https://github.com/jPlayer/react-jPlayer#jplayer) component internally.
 
 #### `Playlist`
 Any component that is a child of this component will be duplicated x number of times where x is the size of your playlist.
@@ -241,30 +241,30 @@ Any component that is a child of this component will be duplicated x number of t
 #### `Remove`
 Default: `×`
 
-Should be nested as a child of the [`Playlist`](https://github.com/MartinDawson/react-jPlaylist#playlist) component. Renders the remove controls for each media in your playlist.
+Should be nested as a child of the [`Playlist`](https://github.com/jPlayer/react-jPlaylist#playlist) component. Renders the remove controls for each media in your playlist.
 
 #### `MediaLink`
-Should be nested as a child of the [`Playlist`](https://github.com/MartinDawson/react-jPlaylist#playlist) component. Renders the media links for the playlist and allows the user to select other media's in your playlist.
+Should be nested as a child of the [`Playlist`](https://github.com/jPlayer/react-jPlaylist#playlist) component. Renders the media links for the playlist and allows the user to select other media's in your playlist.
 
 #### `Title`
 Default: `media.artist` - `media.title`
 
-Should be nested as a child of the [`Playlist`](https://github.com/MartinDawson/react-jPlaylist#playlist) component. Renders the artist and title of the current media.
+Should be nested as a child of the [`Playlist`](https://github.com/jPlayer/react-jPlaylist#playlist) component. Renders the artist and title of the current media.
 
 #### `Poster`
-Should be nested as a child of the [`Playlist`](https://github.com/MartinDawson/react-jPlaylist#playlist) component. Renders the poster of the current media.
+Should be nested as a child of the [`Playlist`](https://github.com/jPlayer/react-jPlaylist#playlist) component. Renders the poster of the current media.
 
 #### `TogglePlaylist`
-Used in conjunction with the [`hidePlaylist`](https://github.com/MartinDawson/react-jPlaylist#hideplaylist-bool) property. Toggles the visiblity of the playlist `onClick`.
+Used in conjunction with the [`hidePlaylist`](https://github.com/jPlayer/react-jPlaylist#hideplaylist-bool) property. Toggles the visiblity of the playlist `onClick`.
 
 #### `Previous`
-`onClick` calls the [`previous`](https://github.com/MartinDawson/react-jPlaylist#previousid) action internally and sets the media to the previous item.
+`onClick` calls the [`previous`](https://github.com/jPlayer/react-jPlaylist#previousid) action internally and sets the media to the previous item.
 
 #### `Next`
-`onClick` calls the [`next`](https://github.com/MartinDawson/react-jPlaylist#nextid) action internally and sets the media to the next item.
+`onClick` calls the [`next`](https://github.com/jPlayer/react-jPlaylist#nextid) action internally and sets the media to the next item.
 
 #### `Shuffle`
-`onClick` calls the [`shuffle`](https://github.com/MartinDawson/react-jPlaylist#shuffleid-shuffled-playnow) action internally and shuffles the media.
+`onClick` calls the [`shuffle`](https://github.com/jPlayer/react-jPlaylist#shuffleid-shuffled-playnow) action internally and shuffles the media.
 
 #### `Repeat`
-`onClick` calls the [`setOption`](https://github.com/MartinDawson/react-jPlaylist#setoptionid-key-value) action internally and sets the loop to the next state, i.e. if loop is currently 'off" then clicking on this component will set the loop state to 'loop'.
+`onClick` calls the [`setOption`](https://github.com/jPlayer/react-jPlaylist#setoptionid-key-value) action internally and sets the loop to the next state, i.e. if loop is currently 'off" then clicking on this component will set the loop state to 'loop'.

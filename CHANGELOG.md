@@ -1,1 +1,1 @@
-All notable changes are described on the [Releases](https://github.com/MartinDawson/react-jPlaylist/releases) page.
+All notable changes are described on the [Releases](https://github.com/jPlayer/react-jPlaylist/releases) page.

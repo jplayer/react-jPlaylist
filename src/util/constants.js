@@ -31,6 +31,7 @@ export const defaultOptions = {
   shuffleOnLoop: true,
   loop: 'loop-playlist',
   hidePlaylist: false,
+  playlist: [],
 };
 
 export const defaultStatus = {

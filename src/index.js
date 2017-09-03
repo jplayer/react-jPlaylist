@@ -1,7 +1,6 @@
-import initialState from './initialState/initialState';
+import initializeOptions from './initializeOptions/initializeOptions';
 import reducer from './reducer/reducer';
 import * as actions from './actions/actions';
-import connect from './connect/connect';
 import JPlaylist from './components/jPlaylist/jPlaylistContainer';
 import Playlist from './components/playlist/playlistContainer';
 import Shuffle from './components/shuffle/shuffleContainer';
@@ -17,10 +16,9 @@ import Title from './components/title/titleContainer';
 export default JPlaylist;
 
 export {
-  initialState,
+  initializeOptions,
   reducer,
   actions,
-  connect,
   Playlist,
   Shuffle,
   Previous,

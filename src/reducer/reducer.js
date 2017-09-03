@@ -1,7 +1,7 @@
 import { updateObject } from 'react-jplayer-utils';
 import maxBy from 'lodash.maxby';
 import shortid from 'shortid';
-
+import { initialState } from '../initializeOptions/initializeOptions';
 import { actionNames } from '../util/constants';
 
 const add = (jPlaylist, { media, playNow }) => {
@@ -10,7 +10,7 @@ const add = (jPlaylist, { media, playNow }) => {
     ...media,
     id: shortid.generate(),
     shufflePosition: highestMediaShufflePosition !== undefined ?
-                      highestMediaShufflePosition.shufflePosition + 1 : 0,
+      highestMediaShufflePosition.shufflePosition + 1 : 0,
   };
   const playlist = [
     ...jPlaylist.playlist,
@@ -79,7 +79,7 @@ const shuffle = (jPlaylist, { shuffled = !jPlaylist.shuffled, playNow }) => {
     playlist = [...jPlaylist.playlist].sort(() => 0.5 - Math.random());
   } else {
     playlist = [...jPlaylist.playlist].sort((a, b) => (
-        a.shufflePosition - b.shufflePosition));
+      a.shufflePosition - b.shufflePosition));
   }
 
   return updateObject(jPlaylist, {
@@ -155,7 +155,7 @@ const updatePlaylist = (jPlaylist, action) => {
   }
 };
 
-const jPlaylistReducer = (state = {}, action) => {
+const jPlaylistReducer = (state = initialState, action) => {
   const jPlaylist = updatePlaylist(state[action.id], action);
 
   if (jPlaylist !== null) {

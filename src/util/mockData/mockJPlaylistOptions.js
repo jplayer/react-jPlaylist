@@ -1,4 +1,3 @@
-import shortid from 'shortid';
 import { defaultStatus, defaultOptions } from '../constants';
 
 export default {
@@ -13,7 +12,7 @@ export default {
         oga: 'http://jplayer.org/audio/ogg/Miaow-07-Bubble.ogg',
       },
       free: true,
-      id: shortid.generate(),
+      id: 0,
       poster: 'downinthevalley-poster.jpg',
     },
     {
@@ -23,7 +22,7 @@ export default {
         mp3: 'http://www.jplayer.org/audio/mp3/Miaow-01-Tempered-song.mp3',
         oga: 'http://www.jplayer.org/audio/ogg/Miaow-01-Tempered-song.ogg',
       },
-      id: shortid.generate(),
+      id: 1,
     },
     {
       title: 'Cro Magnon Man',
@@ -32,7 +31,7 @@ export default {
         mp3: 'http://www.jplayer.org/audio/mp3/TSP-01-Cro_magnon_man.mp3',
         oga: 'http://www.jplayer.org/audio/ogg/TSP-01-Cro_magnon_man.ogg',
       },
-      id: shortid.generate(),
+      id: 2,
     },
   ],
 };

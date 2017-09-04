@@ -1,6 +1,6 @@
-import Repeat from 'react-jplayer/lib/components/repeat/repeat';
+import { connectWithId, RepeatComponent } from 'react-jplayer-utils';
+import { compose, withHandlers } from 'recompose';
 
-import { connectWithId } from 'react-jplayer-utils';
 import { setOption } from '../../actions/actions';
 import getLoopState from '../../util/getLoopState';
 
@@ -8,6 +8,13 @@ const mapStateToProps = ({ jPlaylists }, { id }) => ({
   loop: jPlaylists[id].loop,
 });
 
-export default connectWithId(mapStateToProps, {
-  setLoop: (id, loop) => setOption(id, 'loop', getLoopState(loop)),
-})(Repeat);
+const handlers = {
+  loop: props => () => props.setOption(props.id, 'loop', getLoopState(props.loop)),
+};
+
+export default compose(
+  connectWithId(mapStateToProps, {
+    setOption,
+  }),
+  withHandlers(handlers),
+)(RepeatComponent);

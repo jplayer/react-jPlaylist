@@ -4,8 +4,8 @@ import formatPropTypes from 'react-jplayer/lib/util/formatPropTypes';
 
 import PlaylistItem from '../playlistItem/playlistItemContainer';
 
-const Playlist = ({ playlist, children, attributes }) => (
-  <ul {...attributes}>
+const Playlist = ({ playlist, children, className }) => (
+  <ul className={className}>
     {playlist.map((media, index) => (
       <PlaylistItem key={media.id} index={index}>
         {children}
@@ -15,16 +15,19 @@ const Playlist = ({ playlist, children, attributes }) => (
 );
 
 Playlist.propTypes = {
-  attributes: PropTypes.object.isRequired,
+  className: PropTypes.string.isRequired,
   playlist: PropTypes.arrayOf(
-      PropTypes.shape({
-        title: PropTypes.string,
-        artist: PropTypes.string,
-        sources: PropTypes.shape(formatPropTypes).isRequired,
-        poster: PropTypes.string,
-        id: PropTypes.string.isRequired,
-        free: PropTypes.bool,
-      }),
+    PropTypes.shape({
+      title: PropTypes.string,
+      artist: PropTypes.string,
+      sources: PropTypes.shape(formatPropTypes).isRequired,
+      poster: PropTypes.string,
+      id: PropTypes.oneOfType([
+        PropTypes.string.isRequired,
+        PropTypes.number.isRequired,
+      ]).isRequired,
+      free: PropTypes.bool,
+    }),
   ).isRequired,
   children: PropTypes.node.isRequired,
 };

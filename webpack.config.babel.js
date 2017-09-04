@@ -17,7 +17,6 @@ export default {
     recompose: 'Recompose',
     redux: 'Redux',
     'prop-types': 'PropTypes',
-    shortid: 'shortid',
   },
   entry: {
     'js/jPlaylist.js': './src/index.js',

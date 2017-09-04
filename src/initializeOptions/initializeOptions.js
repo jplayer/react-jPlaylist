@@ -9,7 +9,16 @@ const options = (jPlayerOptions, jPlaylistOptions) => {
   initialState[jPlayerOptions.id] = merge({}, defaultStatus,
     defaultOptions, jPlaylistOptions);
 
-  initializeOptions(jPlayerOptions);
+  if (Array.isArray(jPlaylistOptions.playlist)) {
+    const media = jPlaylistOptions.playlist[0];
+
+    return initializeOptions({
+      ...jPlayerOptions,
+      media,
+    });
+  }
+
+  return initializeOptions(jPlayerOptions);
 };
 
 export default options;

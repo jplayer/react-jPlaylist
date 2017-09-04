@@ -1,41 +1,33 @@
-import React from 'react';
-import { shallow } from 'enzyme';
-import expect, { createSpy } from 'expect';
+import expect from 'expect';
 
 import TogglePlaylist from './togglePlaylist';
 import { classes } from '../../util/constants';
+import componentSetup from '../../util/specHelpers/componentSetup.spec';
 
-const setup = () => {
-  const props = {
-    id: 'jPlaylist-1',
-    togglePlaylist: createSpy(),
-    hidePlaylist: false,
-    children: 'test',
-    'data-test': 'test',
-  };
-
-  const wrapper = shallow(<TogglePlaylist {...props} />);
-
-  return {
-    props,
-    wrapper,
-  };
-};
+const setup = props => componentSetup(TogglePlaylist, {
+  children: 'togglePlaylist',
+  togglePlaylist: expect.createSpy(),
+  ...props,
+});
 
 describe('TogglePlaylist', () => {
-  let wrapper;
-  let props;
+  it('has togglePlaylist class', () => {
+    const { wrapper } = setup();
 
-  it('renders', () => {
-    ({ wrapper, props } = setup());
+    expect(wrapper.hasClass(classes.TOGGLE_PLAYLIST)).toBe(true);
+  });
+
+  it('toggles the playlist on click', () => {
+    const { wrapper, props } = setup();
 
     wrapper.simulate('click');
 
+    expect(props.togglePlaylist).toHaveBeenCalled();
+  });
+
+  it('children are rendered', () => {
+    const { wrapper, props } = setup();
+
     expect(wrapper.prop('children')).toBe(props.children);
-    expect(wrapper.hasClass(classes.TOGGLE_PLAYLIST)).toBeTruthy();
-    expect(props.togglePlaylist).toHaveBeenCalledWith(props.id, !props.hidePlaylist);
-    expect(wrapper.prop('data-test')).toBe(props['data-test']);
   });
 });
-
-export default setup;

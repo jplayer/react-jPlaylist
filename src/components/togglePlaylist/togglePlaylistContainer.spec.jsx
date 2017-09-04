@@ -1,26 +1,54 @@
+import React from 'react';
 import expect from 'expect';
+import proxyquire from 'proxyquire';
 
-import mockJPlaylistOptions from '../../util/mockData/mockJPlaylistOptions';
-import { __get__ } from './togglePlaylistContainer';
+import containerSetup from '../../util/specHelpers/containerSetup.spec';
 
-const mapStateToProps = __get__('mapStateToProps');
+proxyquire.noCallThru();
 
-const id = 'jPlaylist-1';
+const id = 'TestPlayer';
+const mockTogglePlaylist = ({ togglePlaylist }) =>
+  <div onClick={togglePlaylist} />;
+const TogglePlaylistContainer = proxyquire('./togglePlaylistContainer', {
+  './togglePlaylist': mockTogglePlaylist,
+}).default;
+const setup = (jPlaylists, jPlayers, props) =>
+  containerSetup(TogglePlaylistContainer, jPlaylists, jPlayers, props);
 
-describe('RepeatContainer', () => {
+describe('TogglePlaylistContainer', () => {
+  let jPlayers;
   let jPlaylists;
 
   beforeEach(() => {
+    jPlayers = {
+      [id]: {},
+    };
     jPlaylists = {
-      [id]: mockJPlaylistOptions,
+      [id]: {},
     };
   });
 
-  it('mapStateToProps', () => {
-    const stateProps = mapStateToProps({ jPlaylists }, { id });
+  describe('togglePlaylist', () => {
+    it('toggles to true when falsy', () => {
+      const { wrapper, store } = setup(jPlaylists, jPlayers);
 
-    expect(stateProps).toEqual({
-      hidePlaylist: mockJPlaylistOptions.hidePlaylist,
+      wrapper.simulate('click');
+
+      const jPlaylist = store.getState().jPlaylists[id];
+
+      expect(jPlaylist.hidePlaylist).toBe(true);
+    });
+
+    it('toggles to false when true', () => {
+      jPlaylists[id].hidePlaylist = true;
+
+      const { wrapper, store } = setup(jPlaylists, jPlayers);
+
+      wrapper.simulate('click');
+
+      const jPlaylist = store.getState().jPlaylists[id];
+
+      expect(jPlaylist.hidePlaylist).toBe(false);
     });
   });
 });

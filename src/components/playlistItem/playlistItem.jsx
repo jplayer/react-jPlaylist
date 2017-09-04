@@ -3,15 +3,14 @@ import PropTypes from 'prop-types';
 
 import { classes } from '../../util/constants';
 
-const PlaylistItem = ({ isCurrent, children, attributes }) => (
-  <li className={isCurrent ? classes.CURRENT : null} {...attributes}>
+const PlaylistItem = ({ className, children }) => (
+  <li className={className}>
     {children}
   </li>
 );
 
 PlaylistItem.propTypes = {
-  attributes: PropTypes.object.isRequired,
-  isCurrent: PropTypes.bool.isRequired,
+  className: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired,
 };
 

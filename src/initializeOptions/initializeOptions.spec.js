@@ -14,20 +14,19 @@ const initializeOptions = proxy.default;
 const initialState = proxy.initialState;
 
 describe('initializeOptions', () => {
-  const jPlayerOptions = {
-    id: 'TestPlayer',
-    media: {
-      sources: [
-        { mp3: 'www.test.mp3' },
-      ],
-    },
-  };
+  let jPlayerOptions;
+  let jPlaylistOptions;
 
-  it('sets up initial jPlaylist options correctly', () => {
-    const jPlaylistOptions = {
+  beforeEach(() => {
+    jPlayerOptions = {
+      id: 'TestPlayer',
+    };
+    jPlaylistOptions = {
       hidePlaylist: true,
     };
+  });
 
+  it('sets up initial jPlaylist options correctly', () => {
     initializeOptions(jPlayerOptions, jPlaylistOptions);
 
     expect(initialState).toEqual({
@@ -35,10 +34,29 @@ describe('initializeOptions', () => {
     });
   });
 
-  it('calls react-jplayers initializeOptions', () => {
-    initializeOptions(jPlayerOptions);
+  describe('react-jplayers initializeOptions', () => {
+    it('is passed correct jPlayerOptions when playlist is not specified', () => {
+      initializeOptions(jPlayerOptions, jPlaylistOptions);
 
-    expect(jPlayerInitializeOptions).toHaveBeenCalledWith(jPlayerOptions);
+      expect(jPlayerInitializeOptions).toHaveBeenCalledWith(jPlayerOptions);
+    });
+
+    it('is passed correct jPlayerOptions when playlist is specified', () => {
+      jPlaylistOptions.playlist = [
+        {
+          id: 0,
+          sources: {
+            m4a: 'http://jplayer.org/audio/m4a/Miaow-07-Bubble.m4a',
+          },
+        },
+      ];
+
+      initializeOptions(jPlayerOptions, jPlaylistOptions);
+
+      jPlayerOptions.media = jPlaylistOptions.playlist[0];
+
+      expect(jPlayerInitializeOptions).toHaveBeenCalledWith(jPlayerOptions);
+    });
   });
 
   afterEach(() => {

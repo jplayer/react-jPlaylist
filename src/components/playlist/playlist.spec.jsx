@@ -1,46 +1,51 @@
 import React from 'react';
-import { shallow } from 'enzyme';
 import expect from 'expect';
 
 import Playlist from './playlist';
 import PlaylistItem from '../playlistItem/playlistItemContainer';
-import mockJPlaylistOptions from '../../util/mockData/mockJPlaylistOptions';
+import { classes } from '../../util/constants';
+import componentSetup from '../../util/specHelpers/componentSetup.spec';
 
-const setup = () => {
-  const props = {
-    playlist: mockJPlaylistOptions.playlist,
-    children: 'test',
-    attributes: {
-      'data-test': 'test',
+const setup = props => componentSetup(Playlist, {
+  children: <div />,
+  className: classes.PLAYLIST,
+  playlist: [
+    {
+      id: 0,
+      sources: {
+        mp3: 'test.mp3',
+      },
     },
-  };
-
-  const wrapper = shallow(<Playlist {...props} />);
-
-  return {
-    props,
-    wrapper,
-  };
-};
-
-describe('Playlist', () => {
-  let wrapper;
-  let props;
-
-  it('renders', () => {
-    ({ wrapper, props } = setup());
-
-    const playlistItems = wrapper.find(PlaylistItem);
-
-    playlistItems.forEach((playlistItem, index) => {
-      expect(playlistItem.key()).toBe(props.playlist[index].id);
-      expect(playlistItem.prop('index')).toBe(index);
-      expect(playlistItem.prop('children')).toBe(props.children);
-    });
-
-    expect(playlistItems.length).toBe(3);
-    expect(wrapper.prop('data-test')).toBe(props.attributes['data-test']);
-  });
+    {
+      id: 2,
+      sources: {
+        mp3: 'testTwo.mp3',
+      },
+    },
+  ],
+  ...props,
 });
 
-export default setup;
+describe('Playlist', () => {
+  it('has custom class', () => {
+    const { wrapper, props } = setup();
+
+    expect(wrapper.hasClass(props.className)).toBe(true);
+  });
+
+  describe('PlaylistItem', () => {
+    it('renders as many as playlist', () => {
+      const { wrapper, props } = setup();
+      const playlistItems = wrapper.find(PlaylistItem);
+
+      expect(playlistItems.length).toBe(props.playlist.length);
+    });
+
+    it('children are rendered in PlaylistItem', () => {
+      const { wrapper, props } = setup();
+      const playlistItem = wrapper.find(PlaylistItem).at(0);
+
+      expect(playlistItem.prop('children')).toBe(props.children);
+    });
+  });
+});

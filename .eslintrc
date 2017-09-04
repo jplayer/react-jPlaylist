@@ -4,7 +4,8 @@
         "ecmaVersion": 6,
         "sourceType": "module",
         "ecmaFeatures": {
-            "jsx": true
+            "jsx": true,
+            "modules": true
         }
     },
     "env": {
@@ -12,9 +13,6 @@
         "node": true,
         "mocha": true,
         "es6": true
-    },
-    "ecmaFeatures": {
-        "modules": true
     },
     "extends": "airbnb",
     "rules": {
@@ -29,5 +27,16 @@
     },
     "plugins": [
         "react"
+    ],
+    "overrides": [
+      {
+        "files": [
+          "**/*.spec.*{js,jsx}"
+        ],
+        "rules": {
+          "react/prop-types": "off",
+          "no-underscore-dangle": "off"
+        }
+      }
     ]
 }

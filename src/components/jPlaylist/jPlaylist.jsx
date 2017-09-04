@@ -13,10 +13,14 @@ const JPlaylist = ({ states, keyBindings, children, id }) => (
   </div>
 );
 
+JPlaylist.defaultProps = {
+  keyBindings: null,
+};
+
 JPlaylist.propTypes = {
   id: PropTypes.string.isRequired,
   states: PropTypes.object.isRequired,
-  keyBindings: PropTypes.object.isRequired,
+  keyBindings: PropTypes.object,
   children: PropTypes.element.isRequired,
 };
 

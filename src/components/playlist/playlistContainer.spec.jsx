@@ -1,57 +1,60 @@
+import React from 'react';
 import expect from 'expect';
+import proxyquire from 'proxyquire';
 import { classes as sharedClasses } from 'react-jplayer-utils';
 
+import containerSetup from '../../util/specHelpers/containerSetup.spec';
 import { classes } from '../../util/constants';
-import mockJPlaylistOptions from '../../util/mockData/mockJPlaylistOptions';
-import { __get__ } from './playlistContainer';
-import setup from './playlist.spec';
 
-const mapStateToProps = __get__('mapStateToProps');
+proxyquire.noCallThru();
 
-const id = 'jPlaylist-1';
+const id = 'TestPlayer';
+const mockPlaylist = () =>
+  <div />;
+const PlaylistContainer = proxyquire('./playlistContainer', {
+  './playlist': mockPlaylist,
+}).default;
+const setup = (jPlaylists, jPlayers, props) =>
+  containerSetup(PlaylistContainer, jPlaylists, jPlayers, props);
 
 describe('PlaylistContainer', () => {
-  let props;
+  let jPlayers;
   let jPlaylists;
 
   beforeEach(() => {
+    jPlayers = {
+      [id]: {},
+    };
     jPlaylists = {
-      [id]: mockJPlaylistOptions,
+      [id]: {},
     };
   });
 
-  it('mapStateToProps', () => {
-    ({ props } = setup());
+  describe('className', () => {
+    it('is playlist', () => {
+      const { wrapper, store } = setup(jPlaylists, jPlayers);
+      const component = wrapper.find(mockPlaylist);
 
-    props.attributes.className = 'custom-class';
-
-    const stateProps = mapStateToProps({ jPlaylists }, {
-      children: props.children,
-      id,
-      ...props.attributes,
+      expect(component.prop('className')).toBe(classes.PLAYLIST);
     });
 
-    expect(stateProps).toEqual({
-      playlist: jPlaylists[id].playlist,
-      children: props.children,
-      attributes: {
-        ...props.attributes,
-        className: `${props.attributes.className} ${classes.PLAYLIST}`,
-      },
-    });
-  });
+    it('renders custom as well as default', () => {
+      const className = 'jp-test';
+      const { wrapper, store } = setup(jPlaylists, jPlayers, { className });
+      const component = wrapper.find(mockPlaylist);
 
-  it('classname hidden is applied when hidePlaylist', () => {
-    ({ props } = setup());
-
-    jPlaylists[id].hidePlaylist = true;
-
-    const stateProps = mapStateToProps({ jPlaylists }, {
-      children: props.children,
-      id,
-      ...props.attributes,
+      expect(component.prop('className')).toContain(classes.PLAYLIST);
+      expect(component.prop('className')).toContain(className);
     });
 
-    expect(stateProps.attributes.className).toContain(`${sharedClasses.HIDDEN}`);
+    it('renders hidden when hidePlaylist is true as well as default', () => {
+      jPlaylists[id].hidePlaylist = true;
+
+      const { wrapper, store } = setup(jPlaylists, jPlayers);
+      const component = wrapper.find(mockPlaylist);
+
+      expect(component.prop('className')).toContain(classes.PLAYLIST);
+      expect(component.prop('className')).toContain(sharedClasses.HIDDEN);
+    });
   });
 });

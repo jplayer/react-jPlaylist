@@ -26,15 +26,15 @@ export const classes = {
   },
 };
 
+export const defaultStatus = {
+  current: 0,
+  shuffled: false,
+};
+
 export const defaultOptions = {
   loopOnPrevious: true,
   shuffleOnLoop: true,
   loop: 'loop-playlist',
   hidePlaylist: false,
   playlist: [],
-};
-
-export const defaultStatus = {
-  current: 0,
-  shuffled: false,
 };

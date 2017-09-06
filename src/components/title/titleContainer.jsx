@@ -1,5 +1,5 @@
+import { TitleComponent } from 'react-jplayer';
 import { connectWithIndex, formatArtistAndTitle } from 'react-jplayer-utils';
-import Title from 'react-jplayer/lib/components/title/title';
 
 const mapStateToProps = ({ jPlaylists }, { id, index }) => ({
   title: formatArtistAndTitle(
@@ -8,4 +8,4 @@ const mapStateToProps = ({ jPlaylists }, { id, index }) => ({
   ),
 });
 
-export default connectWithIndex(mapStateToProps)(Title);
+export default connectWithIndex(mapStateToProps)(TitleComponent);

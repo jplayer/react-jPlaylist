@@ -1,5 +1,5 @@
 export default (loop) => {
-  let newLoop = loop;
+  let newLoop;
 
   if (loop === 'off') {
     newLoop = 'loop';

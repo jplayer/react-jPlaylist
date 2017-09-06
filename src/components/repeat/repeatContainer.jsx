@@ -1,4 +1,5 @@
-import { connectWithId, RepeatComponent } from 'react-jplayer-utils';
+import { RepeatComponent } from 'react-jplayer';
+import { connectWithId } from 'react-jplayer-utils';
 import { compose, withHandlers } from 'recompose';
 
 import { setOption } from '../../actions/actions';

@@ -26,14 +26,14 @@ describe('Remove', () => {
 
   describe('children', () => {
     it('renders as default', () => {
-      const { wrapper, props } = setup();
+      const { wrapper } = setup();
 
       expect(wrapper.prop('children')).toExist();
     });
 
     it('renders as custom when specified', () => {
       const children = 'remove';
-      const { wrapper, props } = setup({ children });
+      const { wrapper } = setup({ children });
 
       expect(wrapper.prop('children')).toBe(children);
     });

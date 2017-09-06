@@ -13,9 +13,9 @@ const mapStateToProps = ({ jPlaylists }, { id, index }) => ({
 });
 
 export default compose(
-  connectWithId(mapStateToProps),
   withContext(
     { index: PropTypes.number },
     ({ index }) => ({ index }),
   ),
+  connectWithId(mapStateToProps),
 )(PlaylistItem);

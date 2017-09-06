@@ -1,4 +1,3 @@
-import { updateObject } from 'react-jplayer-utils';
 import maxBy from 'lodash.maxby';
 import { initialState } from '../initializeOptions/initializeOptions';
 import { actionNames } from '../util/constants';
@@ -61,11 +60,11 @@ const remove = (jPlaylist, { index }) => {
     shuffled = false;
   }
 
-  return updateObject(jPlaylist, {
+  return {
     playlist,
     current,
     shuffled,
-  });
+  };
 };
 
 const clear = () => ({
@@ -83,11 +82,11 @@ const play = (jPlaylist, { index = jPlaylist.current }) => ({
   playNow: true,
 });
 
-const shuffle = (jPlaylist, { shuffled = !jPlaylist.shuffled, playNow }) => {
+const shuffle = (jPlaylist, { shuffled = !jPlaylist.shuffled, playNow, shuffleSeed }) => {
   let playlist;
 
   if (shuffled) {
-    playlist = [...jPlaylist.playlist].sort(() => 0.5 - Math.random());
+    playlist = [...jPlaylist.playlist].sort(() => 0.5 - shuffleSeed);
   } else {
     playlist = [...jPlaylist.playlist].sort((a, b) => (
       a.shufflePosition - b.shufflePosition));

@@ -32,7 +32,7 @@ describe('PlaylistContainer', () => {
 
   describe('className', () => {
     it('is playlist', () => {
-      const { wrapper, store } = setup(jPlaylists, jPlayers);
+      const { wrapper } = setup(jPlaylists, jPlayers);
       const component = wrapper.find(mockPlaylist);
 
       expect(component.prop('className')).toBe(classes.PLAYLIST);
@@ -40,7 +40,7 @@ describe('PlaylistContainer', () => {
 
     it('renders custom as well as default', () => {
       const className = 'jp-test';
-      const { wrapper, store } = setup(jPlaylists, jPlayers, { className });
+      const { wrapper } = setup(jPlaylists, jPlayers, { className });
       const component = wrapper.find(mockPlaylist);
 
       expect(component.prop('className')).toContain(classes.PLAYLIST);
@@ -50,7 +50,7 @@ describe('PlaylistContainer', () => {
     it('renders hidden when hidePlaylist is true as well as default', () => {
       jPlaylists[id].hidePlaylist = true;
 
-      const { wrapper, store } = setup(jPlaylists, jPlayers);
+      const { wrapper } = setup(jPlaylists, jPlayers);
       const component = wrapper.find(mockPlaylist);
 
       expect(component.prop('className')).toContain(classes.PLAYLIST);

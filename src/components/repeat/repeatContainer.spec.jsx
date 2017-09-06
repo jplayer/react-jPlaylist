@@ -8,7 +8,7 @@ const id = 'TestPlayer';
 const mockRepeat = ({ loop }) =>
   <div onClick={loop} />;
 const RepeatContainer = proxyquire('./repeatContainer', {
-  'react-jplayer-utils': { RepeatComponent: mockRepeat },
+  'react-jplayer': { RepeatComponent: mockRepeat },
 }).default;
 const setup = (jPlaylists, jPlayers, props) =>
   containerSetup(RepeatContainer, jPlaylists, jPlayers, props);

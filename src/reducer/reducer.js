@@ -2,11 +2,11 @@ import maxBy from 'lodash.maxby';
 import { initialState } from '../initializeOptions/initializeOptions';
 import { actionNames } from '../util/constants';
 
-const setOption = ({ key, value }) => ({
+const setOption = (_, { key, value }) => ({
   [key]: value,
 });
 
-const setPlaylist = ({ playlist }) => ({
+const setPlaylist = (_, { playlist }) => ({
   current: 0,
   shuffled: false,
   playlist: playlist.map((media, index) => ({
@@ -82,11 +82,11 @@ const play = (jPlaylist, { index = jPlaylist.current }) => ({
   playNow: true,
 });
 
-const shuffle = (jPlaylist, { shuffled = !jPlaylist.shuffled, playNow, shuffleSeed }) => {
+const shuffle = (jPlaylist, { shuffled = !jPlaylist.shuffled, playNow, shuffleSort }) => {
   let playlist;
 
   if (shuffled) {
-    playlist = [...jPlaylist.playlist].sort(() => 0.5 - shuffleSeed);
+    playlist = [...jPlaylist.playlist].sort(() => shuffleSort);
   } else {
     playlist = [...jPlaylist.playlist].sort((a, b) => (
       a.shufflePosition - b.shufflePosition));
@@ -128,7 +128,8 @@ const previous = (jPlaylist) => {
   };
 };
 
-const updateJPlaylist = (state, action, value) => {
+const updateJPlaylist = (state, action, fn) => {
+  const value = fn(state[action.id], action);
   const jPlaylist = state[action.id];
 
   return {
@@ -141,29 +142,29 @@ const updateJPlaylist = (state, action, value) => {
 };
 
 const reducer = (state = initialState, action) => {
-  const updateValue = value => updateJPlaylist(state, action, value);
+  const updateValue = fn => updateJPlaylist(state, action, fn);
 
   switch (action.type) {
     case actionNames.SET_OPTION:
-      return updateValue(setOption(action));
+      return updateValue(setOption);
     case actionNames.SET_PLAYLIST:
-      return updateValue(setPlaylist(action));
+      return updateValue(setPlaylist);
     case actionNames.ADD:
-      return updateValue(add(state[action.id], action));
+      return updateValue(add);
     case actionNames.REMOVE:
-      return updateValue(remove(state[action.id], action));
+      return updateValue(remove);
     case actionNames.CLEAR:
-      return updateValue(clear());
+      return updateValue(clear);
     case actionNames.SELECT:
-      return updateValue(select(state[action.id], action));
+      return updateValue(select);
     case actionNames.PLAY:
-      return updateValue(play(state[action.id], action));
+      return updateValue(play);
     case actionNames.SHUFFLE:
-      return updateValue(shuffle(state[action.id], action));
+      return updateValue(shuffle);
     case actionNames.NEXT:
-      return updateValue(next(state[action.id]));
+      return updateValue(next);
     case actionNames.PREVIOUS:
-      return updateValue(previous(state[action.id]));
+      return updateValue(previous);
     default:
       return state;
   }

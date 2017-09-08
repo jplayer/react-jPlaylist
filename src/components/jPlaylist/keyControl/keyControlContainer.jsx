@@ -20,7 +20,7 @@ const mergeProps = (stateProps, { dispatch }, { keyBindings, id }) => ({
     },
     shuffle: {
       key: 83, // s
-      fn: () => dispatch(shuffle(id, null, true)),
+      fn: () => dispatch(shuffle(id, undefined, true)),
     },
     loop: {
       key: 76, // l

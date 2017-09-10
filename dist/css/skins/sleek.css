@@ -1,5 +1,8 @@
 .jp-jplayer {
-  user-select: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
 }
 @media (max-width: 630px) {
   .jp-jplayer .jp-state-full-screen .jp-poster {
@@ -41,14 +44,17 @@
   position: fixed;
   display: inline-block;
 }
-.jp-state-audio.jp-jplayer.jp-state-full-screen .jp-media,
-.jp-state-video.jp-jplayer.jp-state-full-screen .jp-media {
+.jp-state-audio.jp-jplayer.jp-state-full-screen .jp-media-container,
+.jp-state-video.jp-jplayer.jp-state-full-screen .jp-media-container {
   top: 50%;
-  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+     -moz-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+          transform: translateY(-50%);
   width: 100%;
 }
-.jp-state-audio.jp-jplayer.jp-state-full-screen .jp-media video,
-.jp-state-video.jp-jplayer.jp-state-full-screen .jp-media video {
+.jp-state-audio.jp-jplayer.jp-state-full-screen .jp-media-container video,
+.jp-state-video.jp-jplayer.jp-state-full-screen .jp-media-container video {
   width: 100%;
 }
 @media (max-width: 400px) {
@@ -128,26 +134,29 @@
 .jp-state-video.jp-state-playing.jp-sleek .jp-poster {
   display: none;
 }
-.jp-state-video.jp-sleek .jp-media {
+.jp-state-video.jp-sleek .jp-media-container {
   position: relative;
 }
-.jp-state-video.jp-sleek .jp-media .jp-poster {
+.jp-state-video.jp-sleek .jp-media-container .jp-poster {
   max-height: 100%;
   max-width: 100%;
 }
-.jp-state-video.jp-sleek .jp-media {
+.jp-state-video.jp-sleek .jp-media-container {
   overflow: hidden;
   display: table;
   margin: 0 auto;
 }
-.jp-state-video.jp-sleek .jp-media video {
+.jp-state-video.jp-sleek .jp-media-container video {
   display: block;
 }
-.jp-state-video.jp-sleek .jp-media .jp-poster {
+.jp-state-video.jp-sleek .jp-media-container .jp-poster {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+     -moz-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
 }
 .jp-sleek .jp-gui {
   position: fixed;
@@ -189,10 +198,8 @@
 .jp-sleek .jp-gui .jp-controls button {
   font-size: inherit;
 }
-.jp-sleek .jp-gui .jp-controls .jp-title-container {
+.jp-sleek .jp-gui .jp-controls .jp-title {
   font-size: 12px;
-}
-.jp-sleek .jp-gui .jp-controls .jp-title-container .jp-title {
   font-weight: bold;
   max-width: 230px;
   min-width: 230px;
@@ -201,12 +208,13 @@
   display: inline-block;
   vertical-align: middle;
 }
-.jp-state-audio.jp-sleek .jp-gui .jp-controls .jp-title-container .jp-title {
+.jp-state-audio.jp-sleek .jp-gui .jp-controls .jp-title {
   margin-left: 10px;
 }
-.jp-state-audio.jp-sleek .jp-gui .jp-controls .jp-title-container .jp-poster {
+.jp-state-audio.jp-sleek .jp-gui .jp-controls .jp-poster {
   max-height: 100%;
   height: 100%;
+  vertical-align: middle;
 }
 .jp-sleek .jp-gui .jp-controls > * {
   vertical-align: middle;
@@ -228,10 +236,8 @@
 .jp-sleek .jp-gui .jp-controls .jp-progress .jp-current-time,
 .jp-sleek .jp-gui .jp-controls .jp-progress .jp-duration {
   padding: 0 12px;
-  top: 50%;
   position: relative;
   display: inline-block;
-  transform: translateY(-50%);
 }
 .jp-sleek .jp-gui .jp-controls .jp-progress .jp-duration {
   right: 0;
@@ -240,6 +246,14 @@
 .jp-sleek .jp-gui .jp-controls .jp-progress .jp-seek-bar {
   cursor: pointer;
   height: 100%;
+}
+.jp-sleek .jp-gui .jp-controls .jp-progress .jp-seek-bar .jp-current-time,
+.jp-sleek .jp-gui .jp-controls .jp-progress .jp-seek-bar .jp-duration {
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+     -moz-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+          transform: translateY(-50%);
 }
 .jp-sleek .jp-gui .jp-controls .jp-progress .jp-seek-bar .jp-play-bar {
   background-color: #71a6fc;
@@ -258,7 +272,9 @@
 }
 .jp-sleek .jp-gui .jp-controls .jp-volume-container:hover .jp-volume-slider .jp-volume-bar-container {
   height: 100px;
-  transition-duration: 0.3s;
+  -webkit-transition-duration: 0.3s;
+     -moz-transition-duration: 0.3s;
+          transition-duration: 0.3s;
   outline: solid 1px #cfcfcf;
 }
 .jp-sleek .jp-gui .jp-controls .jp-volume-container:hover .jp-volume-slider .jp-volume-bar-container .jp-volume-bar {
@@ -283,14 +299,19 @@
   width: 24px;
   left: 8px;
   bottom: 100%;
-  transition-duration: 0.3s;
+  -webkit-transition-duration: 0.3s;
+     -moz-transition-duration: 0.3s;
+          transition-duration: 0.3s;
 }
 .jp-sleek .jp-gui .jp-controls .jp-volume-container .jp-volume-slider .jp-volume-bar-container .jp-volume-bar {
   background-color: #a1c1f4;
   cursor: pointer;
   border-radius: 1px;
   display: none;
-  transform: translateX(-50%) rotate(180deg);
+  -webkit-transform: translateX(-50%) rotate(180deg);
+     -moz-transform: translateX(-50%) rotate(180deg);
+      -ms-transform: translateX(-50%) rotate(180deg);
+          transform: translateX(-50%) rotate(180deg);
   width: 8px;
   height: 80px;
   position: absolute;
@@ -301,7 +322,7 @@
   background-color: #71a6fc;
   border-radius: inherit;
 }
-.jp-jplayer .jp-playlist {
+.jp-jplayer.jp-sleek .jp-playlist {
   position: absolute;
   list-style-type: none;
   padding: 0;
@@ -313,24 +334,27 @@
   font-size: 17px;
   background-color: #fff;
 }
-.jp-jplayer .jp-playlist li {
+.jp-jplayer.jp-sleek .jp-playlist li {
   border-bottom: solid 1px #e5e5e5;
 }
-.jp-jplayer .jp-toggle-playlist {
-  height: inherit;
+.jp-jplayer.jp-sleek .jp-playlist li .jp-title {
+  min-width: 0;
 }
-.jp-jplayer .jp-current {
+.jp-jplayer.jp-sleek .jp-playlist .jp-current {
   background-color: #e5e5e5;
   border: solid 1px #d6d6d6;
 }
-.jp-jplayer.jp-state-looped-playlist .jp-repeat {
+.jp-jplayer.jp-sleek .jp-toggle-playlist {
+  height: inherit;
+}
+.jp-jplayer.jp-sleek.jp-state-looped-playlist .jp-repeat {
   position: relative;
 }
-.jp-jplayer.jp-state-looped-playlist .jp-repeat i:first-child {
+.jp-jplayer.jp-sleek.jp-state-looped-playlist .jp-repeat i:first-child {
   font-size: 11px;
   right: 0;
   position: absolute;
 }
-.jp-jplayer.jp-state-looped-playlist .jp-repeat i:first-child:before {
+.jp-jplayer.jp-sleek.jp-state-looped-playlist .jp-repeat i:first-child:before {
   content: '\F0C9';
 }

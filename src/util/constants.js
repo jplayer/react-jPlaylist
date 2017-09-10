@@ -1,14 +1,14 @@
 export const actionNames = {
-  SET_PLAYLIST: 'SET_PLAYLIST',
-  SET_OPTION: 'SET_PLAYLIST_OPTION',
-  ADD: 'PLAYLIST_ADD',
-  REMOVE: 'PLAYLIST_REMOVE',
-  CLEAR: 'PLAYLIST_CLEAR',
-  SELECT: 'PLAYLIST_SELECT',
-  PLAY: 'PLAYLIST_PLAY',
-  SHUFFLE: 'PLAYLIST_SHUFFLE',
-  NEXT: 'PLAYLIST_NEXT',
-  PREVIOUS: 'PLAYLIST_PREVIOUS',
+  SET_PLAYLIST: 'JPLAYLIST_SET_PLAYLIST',
+  SET_OPTION: 'JPLAYLIST_SET_PLAYLIST_OPTION',
+  ADD: 'JPLAYLIST_ADD',
+  REMOVE: 'JPLAYLIST_REMOVE',
+  CLEAR: 'JPLAYLIST_CLEAR',
+  SELECT: 'JPLAYLIST_SELECT',
+  PLAY: 'JPLAYLIST_PLAY',
+  SHUFFLE: 'JPLAYLIST_SHUFFLE',
+  NEXT: 'JPLAYLIST_NEXT',
+  PREVIOUS: 'JPLAYLIST_PREVIOUS',
 };
 
 export const classes = {
@@ -26,14 +26,15 @@ export const classes = {
   },
 };
 
+export const defaultStatus = {
+  current: 0,
+  shuffled: false,
+};
+
 export const defaultOptions = {
   loopOnPrevious: true,
   shuffleOnLoop: true,
   loop: 'loop-playlist',
   hidePlaylist: false,
-};
-
-export const defaultStatus = {
-  current: 0,
-  shuffled: false,
+  playlist: [],
 };

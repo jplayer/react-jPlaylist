@@ -1,46 +1,65 @@
 import React from 'react';
-import { shallow } from 'enzyme';
 import expect from 'expect';
 
 import Playlist from './playlist';
 import PlaylistItem from '../playlistItem/playlistItemContainer';
-import mockJPlaylistOptions from '../../util/mockData/mockJPlaylistOptions';
+import { classes } from '../../util/constants';
+import componentSetup from '../../util/specHelpers/componentSetup.spec';
 
-const setup = () => {
-  const props = {
-    playlist: mockJPlaylistOptions.playlist,
-    children: 'test',
-    attributes: {
-      'data-test': 'test',
-    },
-  };
+const setup = (props) => {
+  const values = componentSetup(Playlist, {
+    children: <div />,
+    className: classes.PLAYLIST,
+    playlist: [
+      {
+        id: 0,
+        sources: {
+          mp3: 'test.mp3',
+        },
+      },
+      {
+        id: 2,
+        sources: {
+          mp3: 'testTwo.mp3',
+        },
+      },
+    ],
+    ...props,
+  });
 
-  const wrapper = shallow(<Playlist {...props} />);
+  values.playlist = values.wrapper.dive();
 
-  return {
-    props,
-    wrapper,
-  };
+  return values;
 };
 
 describe('Playlist', () => {
-  let wrapper;
-  let props;
+  describe('when the playlist is not empty', () => {
+    it('has custom class', () => {
+      const { playlist, props } = setup();
 
-  it('renders', () => {
-    ({ wrapper, props } = setup());
-
-    const playlistItems = wrapper.find(PlaylistItem);
-
-    playlistItems.forEach((playlistItem, index) => {
-      expect(playlistItem.key()).toBe(props.playlist[index].id);
-      expect(playlistItem.prop('index')).toBe(index);
-      expect(playlistItem.prop('children')).toBe(props.children);
+      expect(playlist.hasClass(props.className)).toBe(true);
     });
 
-    expect(playlistItems.length).toBe(3);
-    expect(wrapper.prop('data-test')).toBe(props.attributes['data-test']);
+    describe('PlaylistItem', () => {
+      it('renders as many as playlist', () => {
+        const { playlist, props } = setup();
+        const playlistItems = playlist.dive().find(PlaylistItem);
+
+        expect(playlistItems.length).toBe(props.playlist.length);
+      });
+
+      it('children are rendered in PlaylistItem', () => {
+        const { playlist, props } = setup();
+        const playlistItem = playlist.dive().find(PlaylistItem).at(0);
+
+        expect(playlistItem.prop('children')).toBe(props.children);
+      });
+    });
+  });
+
+  it('renders nothing if the playlist is empty', () => {
+    const { playlist } = setup({ playlist: [] });
+
+    expect(playlist.type()).toBe(null);
   });
 });
-
-export default setup;

@@ -1,38 +1,33 @@
-import React from 'react';
-import { shallow } from 'enzyme';
-import expect, { createSpy } from 'expect';
+import expect from 'expect';
 
 import Shuffle from './shuffle';
 import { classes } from '../../util/constants';
+import componentSetup from '../../util/specHelpers/componentSetup.spec';
 
-const setup = () => {
-  const props = {
-    id: 'jPlaylist-1',
-    shuffle: createSpy(),
-    children: 'test',
-    'data-test': 'test',
-  };
-
-  const wrapper = shallow(<Shuffle {...props} />);
-
-  return {
-    props,
-    wrapper,
-  };
-};
+const setup = props => componentSetup(Shuffle, {
+  children: 'shuffle',
+  shuffle: expect.createSpy(),
+  ...props,
+});
 
 describe('Shuffle', () => {
-  let wrapper;
-  let props;
+  it('has shuffle class', () => {
+    const { wrapper } = setup();
 
-  it('renders', () => {
-    ({ wrapper, props } = setup());
+    expect(wrapper.hasClass(classes.SHUFFLE)).toBe(true);
+  });
+
+  it('shuffles the media on click', () => {
+    const { wrapper, props } = setup();
 
     wrapper.simulate('click');
 
+    expect(props.shuffle).toHaveBeenCalled();
+  });
+
+  it('children are rendered', () => {
+    const { wrapper, props } = setup();
+
     expect(wrapper.prop('children')).toBe(props.children);
-    expect(wrapper.hasClass(classes.SHUFFLE)).toBeTruthy();
-    expect(props.shuffle).toHaveBeenCalledWith(props.id, undefined, true);
-    expect(wrapper.prop('data-test')).toBe(props['data-test']);
   });
 });

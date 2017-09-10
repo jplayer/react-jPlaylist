@@ -1,46 +1,50 @@
+import React from 'react';
 import expect from 'expect';
+import proxyquire from 'proxyquire';
 
-import mockJPlaylistOptions from '../../util/mockData/mockJPlaylistOptions';
-import { __get__ } from './playlistItemContainer';
-import setup from './playlistItem.spec';
+import containerSetup from '../../util/specHelpers/containerSetup.spec';
+import { classes } from '../../util/constants';
 
-const mapStateToProps = __get__('mapStateToProps');
+proxyquire.noCallThru();
 
-const id = 'jPlaylist-1';
+const id = 'TestPlayer';
+const mockPlaylistItem = () =>
+  <li />;
+const PlaylistItemContainer = proxyquire('./playlistItemContainer', {
+  './playlistItem': mockPlaylistItem,
+}).default;
+const setup = (jPlaylists, jPlayers, props) =>
+  containerSetup(PlaylistItemContainer, jPlaylists, jPlayers, props);
 
 describe('PlaylistItemContainer', () => {
-  let props;
+  let jPlayers;
   let jPlaylists;
 
   beforeEach(() => {
+    jPlayers = {
+      [id]: {},
+    };
     jPlaylists = {
-      [id]: mockJPlaylistOptions,
+      [id]: {},
     };
   });
 
-  it('mapStateToProps', () => {
-    ({ props } = setup());
+  describe('className', () => {
+    it('does not contain jp-current when not current playlistItem', () => {
+      const index = 1;
+      const { wrapper } = setup(jPlaylists, jPlayers, { index });
+      const component = wrapper.find(mockPlaylistItem);
 
-    const stateProps = mapStateToProps({ jPlaylists }, {
-      id,
-      index: 0,
-      ...props.attributes,
+      expect(component.prop('className')).toNotContain(classes.CURRENT);
     });
 
-    expect(stateProps).toEqual({
-      isCurrent: true,
-      attributes: props.attributes,
+    it('contains jp-current when current playlistItem', () => {
+      jPlaylists[id].current = 1;
+      const index = 1;
+      const { wrapper } = setup(jPlaylists, jPlayers, { index });
+      const component = wrapper.find(mockPlaylistItem);
+
+      expect(component.prop('className')).toContain(classes.CURRENT);
     });
-  });
-
-  it('isCurrent is false when index doen\'t equal current', () => {
-    ({ props } = setup());
-
-    const stateProps = mapStateToProps({ jPlaylists }, {
-      id,
-      index: 10,
-    });
-
-    expect(stateProps.isCurrent).toBe(false);
   });
 });

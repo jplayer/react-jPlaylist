@@ -4,16 +4,18 @@ import proxyquire from 'proxyquire';
 
 import containerSetup from '../../util/specHelpers/containerSetup.spec';
 
+proxyquire.noCallThru();
+
 const id = 'TestPlayer';
-const mockRepeat = ({ loop }) =>
-  <div onClick={loop} />;
-const RepeatContainer = proxyquire('./repeatContainer', {
-  'react-jplayer': { RepeatComponent: mockRepeat },
+const mockRemove = ({ remove }) =>
+  <div onClick={remove} />;
+const RemoveContainer = proxyquire('./removeContainer', {
+  './remove': mockRemove,
 }).default;
 const setup = (jPlaylists, jPlayers, props) =>
-  containerSetup(RepeatContainer, jPlaylists, jPlayers, props);
+  containerSetup(RemoveContainer, jPlaylists, jPlayers, props);
 
-describe('RepeatContainer', () => {
+describe('RemoveContainer', () => {
   let jPlayers;
   let jPlaylists;
 
@@ -23,18 +25,26 @@ describe('RepeatContainer', () => {
     };
     jPlaylists = {
       [id]: {
-        loop: 'off',
+        current: 0,
+        playlist: [
+          {
+            id: 0,
+            sources: {
+              mp3: 'test.mp3',
+            },
+          },
+        ],
       },
     };
   });
 
-  it('loops media onClick', () => {
+  it('removes media onClick', () => {
     const { wrapper, store } = setup(jPlaylists, jPlayers);
 
     wrapper.simulate('click');
 
     const jPlaylist = store.getState().jPlaylists[id];
 
-    expect(jPlaylist.loop).toBe('loop');
+    expect(jPlaylist.playlist.length).toBe(0);
   });
 });

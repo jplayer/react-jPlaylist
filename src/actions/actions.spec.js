@@ -88,6 +88,8 @@ describe('jPlaylist actions', () => {
   });
 
   it('handles shuffle', () => {
+    expect.spyOn(Math, 'random').andReturn(0.2);
+
     const shuffled = true;
     const playNow = true;
 
@@ -95,6 +97,7 @@ describe('jPlaylist actions', () => {
       type: actionNames.SHUFFLE,
       id,
       shuffled,
+      shuffleSort: 0.3,
       playNow,
     };
 
@@ -117,5 +120,9 @@ describe('jPlaylist actions', () => {
     };
 
     expect(actions.previous(id)).toEqual(expectedAction);
+  });
+
+  afterEach(() => {
+    expect.restoreSpies();
   });
 });

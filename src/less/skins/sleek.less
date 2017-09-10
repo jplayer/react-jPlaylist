@@ -1,7 +1,7 @@
 @import '~react-jplayer/src/less/jPlayer.less';
 @import '~react-jplayer/src/less/skins/sleek.less';
 
-.jp-jplayer {
+.jp-jplayer.jp-sleek {
   .jp-playlist {
     position: absolute;
     list-style-type:none;
@@ -15,14 +15,18 @@
     background-color: #fff;
     li {
       border-bottom: solid 1px #e5e5e5;
+
+      .jp-title {
+        min-width: 0;
+      }
+    }
+    .jp-current {
+      background-color: #e5e5e5;
+      border: solid 1px #d6d6d6;
     }
   }
   .jp-toggle-playlist {
     height: inherit;
-  }
-  .jp-current {
-    background-color: #e5e5e5;
-    border: solid 1px #d6d6d6;
   }
   &.jp-state-looped-playlist {
     .jp-repeat {

@@ -48,6 +48,7 @@ export const shuffle = (id, shuffled, playNow) => ({
   id,
   shuffled,
   playNow,
+  shuffleSort: 0.5 - Math.random(),
 });
 
 export const next = id => ({

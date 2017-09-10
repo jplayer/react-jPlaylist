@@ -1,38 +1,34 @@
 import React from 'react';
-import { shallow } from 'enzyme';
-import expect, { createSpy } from 'expect';
+import expect from 'expect';
 
 import Previous from './previous';
 import { classes } from '../../util/constants';
+import componentSetup from '../../util/specHelpers/componentSetup.spec';
 
-const setup = () => {
-  const props = {
-    id: 'jPlaylist-1',
-    previous: createSpy(),
-    children: 'test',
-    'data-test': 'test',
-  };
-
-  const wrapper = shallow(<Previous {...props} />);
-
-  return {
-    props,
-    wrapper,
-  };
-};
+const setup = props => componentSetup(Previous, {
+  children: <div />,
+  previous: expect.createSpy(),
+  ...props,
+});
 
 describe('Previous', () => {
-  let wrapper;
-  let props;
+  it('has previous class', () => {
+    const { wrapper } = setup();
 
-  it('renders', () => {
-    ({ wrapper, props } = setup());
+    expect(wrapper.hasClass(classes.PREVIOUS)).toBe(true);
+  });
+
+  it('goes to previous media on click', () => {
+    const { wrapper, props } = setup();
 
     wrapper.simulate('click');
 
+    expect(props.previous).toHaveBeenCalled();
+  });
+
+  it('children are rendered', () => {
+    const { wrapper, props } = setup();
+
     expect(wrapper.prop('children')).toBe(props.children);
-    expect(wrapper.hasClass(classes.PREVIOUS)).toBeTruthy();
-    expect(props.previous).toHaveBeenCalledWith(props.id);
-    expect(wrapper.prop('data-test')).toBe(props['data-test']);
   });
 });

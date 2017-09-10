@@ -4,7 +4,7 @@ import proxyquire from 'proxyquire';
 import { constants } from 'react-jplayer';
 
 import containerSetup from '../../util/specHelpers/containerSetup.spec';
-import { setOption, setPlaylist, next } from '../../actions/actions';
+import { setOption, setPlaylist } from '../../actions/actions';
 
 proxyquire.noCallThru();
 

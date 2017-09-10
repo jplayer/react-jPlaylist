@@ -9,18 +9,13 @@ react-jPlaylist is an add-on to [react-jPlayer](https://github.com/jplayer/react
 
 <!-- toc -->
 
-  * [Live Demo](#live-demo)
   * [Examples](#examples)
   * [Installation](#installation)
-    + [NPM](#npm)
-    + [UMD](#umd)
   * [Features](#features)
   * [Supported Browsers](#supported-browsers)
 - [Documentation](#documentation)
-    + [`initialState([jPlaylists])` : Required](#initialstatejplaylists--required)
+    + [`initializeOptions(jPlayerOptions, jPlaylistOptions)` : Required](#initializeoptionsjplayeroptions-jplaylistoptions--required)
     + [`reducer()` : Required](#reducer--required)
-    + [`connect(jPlaylist, options, jPlaylistOptions)` : Required](#connectjplaylist-options-jplaylistoptions--required)
-  * [Props](#props)
     + [Actions](#actions)
       - [`setOption(id, key, value)`](#setoptionid-key-value)
       - [`setPlaylist(id, playlist)`](#setplaylistid-playlist)

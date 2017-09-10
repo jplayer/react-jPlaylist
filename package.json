@@ -29,7 +29,7 @@
   ],
   "homepage": "https://github.com/jplayer/react-jPlaylist",
   "license": "MIT",
-  "main": "./src/index.js",
+  "main": "./lib/index.js",
   "files": [
     "dist",
     "lib",

@@ -69,7 +69,7 @@ Same as [react-jPlayer](https://github.com/jplayer/react-jPlayer#supported-brows
 
 ## Documentation
 #### `initializeOptions(jPlayerOptions, jPlaylistOptions)` : Required
-Used for setting up the default options for your jPlaylist. Deep merges the options that you pass in with react-jPlaylist's default options. The result of this is used as the reducers initial state internally.
+Used for setting up the default options for your jPlaylist. Deep merges the options that you pass in with react-jPlayer's and react-jPlaylist's default options. The result of this is used as the initial state for your jPlaylist.
 
 **Arguments**
 1. `jPlayerOptions` (object): The [jPlayer options](https://github.com/jplayer/react-jPlayer#options) to specify for your jPlaylist.
@@ -189,8 +189,9 @@ Hides or shows the playlist. Used internally with the [`TogglePlaylist`](https:/
 **props**
 1. `children` (element) : Required: Must be the [JPlayer](https://github.com/jplayer/react-jPlayer#jplayer) component.
 2. `id` (string) : Required: Must be the same as the one you supplied to the [jPlayer options](https://github.com/jplayer/react-jPlayer#id-string--required).
-3. `keyBindings` (object): Specifies the keyBindings to be applied when that key is pressed. Deep merges these props with the jPlayer components default keyBindings.
-See [react-jPlayer's keyBindings]() for more information.
+3. `keyBindings` (object): Specifies the keyBindings to be applied when that key is pressed. Deep merges these props with the jPlaylist's default keyBindings.
+See [react-jPlayer's keyBindings](https://github.com/jplayer/react-jPlayer#jplayer) for more information.
+
 Default:
 ```
 keyBindings: {
@@ -217,15 +218,26 @@ keyBindings: {
 }
 ```
 
+This component needs to wrap the [JPlayer component](https://github.com/jplayer/react-jPlayer#jplayer)
+
 #### `Playlist`
+**props**
+1. `children` (node) : Required
+
 Any component that is a child of this component will be duplicated x number of times where x is the size of your playlist.
 
 #### `Remove`
+**props**
+1. `children` (node) : Required
+
 Default: `×`
 
 Should be nested as a child of the [`Playlist`](https://github.com/jplayer/react-jPlaylist#playlist) component. Renders the remove controls for each media in your playlist.
 
 #### `MediaLink`
+**props**
+1. `children` (node) : Required
+
 Should be nested as a child of the [`Playlist`](https://github.com/jplayer/react-jPlaylist#playlist) component. Renders the media links for the playlist and allows the user to select other media's in your playlist.
 
 #### `Title`
@@ -237,16 +249,31 @@ Should be nested as a child of the [`Playlist`](https://github.com/jplayer/react
 Should be nested as a child of the [`Playlist`](https://github.com/jplayer/react-jPlaylist#playlist) component. Renders the poster of the current media.
 
 #### `TogglePlaylist`
+**props**
+1. `children` (node) : Required
+
 Used in conjunction with the [`hidePlaylist`](https://github.com/jplayer/react-jPlaylist#hideplaylist-bool) property. Toggles the visiblity of the playlist `onClick`.
 
 #### `Previous`
+**props**
+1. `children` (node) : Required
+
 `onClick` calls the [`previous`](https://github.com/jplayer/react-jPlaylist#previousid) action internally and sets the media to the previous item.
 
 #### `Next`
+**props**
+1. `children` (node) : Required
+
 `onClick` calls the [`next`](https://github.com/jplayer/react-jPlaylist#nextid) action internally and sets the media to the next item.
 
 #### `Shuffle`
+**props**
+1. `children` (node) : Required
+
 `onClick` calls the [`shuffle`](https://github.com/jplayer/react-jPlaylist#shuffleid-shuffled-playnow) action internally and shuffles the media.
 
 #### `Repeat`
+**props**
+1. `children` (node) : Required
+
 `onClick` calls the [`setOption`](https://github.com/jplayer/react-jPlaylist#setoptionid-key-value) action internally and sets the loop to the next state, i.e. if loop is currently 'off" then clicking on this component will set the loop state to 'loop'.

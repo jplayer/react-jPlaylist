@@ -7,7 +7,7 @@ import JPlaylist from './jPlaylist';
 import { classes } from '../../util/constants';
 import { setOption, setPlaylist, next, shuffle } from '../../actions/actions';
 
-const mapStateToProps = ({ jPlayers, jPlaylists }, { id, states }) => ({
+const mapStateToProps = ({ jPlayers, jPlaylists }, { id }) => ({
   playNow: jPlaylists[id].playNow,
   shuffled: jPlaylists[id].shuffled,
   loop: jPlaylists[id].loop,
@@ -19,7 +19,6 @@ const mapStateToProps = ({ jPlayers, jPlaylists }, { id, states }) => ({
   states: {
     [classes.states.LOOPED_PLAYLIST]: jPlaylists[id].loop === 'loop-playlist',
     [classes.states.SHUFFLED]: jPlaylists[id].shuffled,
-    ...states,
   },
 });
 

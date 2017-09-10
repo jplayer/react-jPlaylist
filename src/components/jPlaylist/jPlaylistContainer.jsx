@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { actions as jPlayerActions, constants } from 'react-jplayer';
+import { actions as jPlayerActions } from 'react-jplayer';
 import { connect } from 'react-redux';
 import { compose, lifecycle as setLifecycle, withHandlers, withContext, withProps } from 'recompose';
 
@@ -61,16 +61,25 @@ const handlers = {
   },
 };
 
+const contextTypes = {
+  id: PropTypes.string,
+  internalEvents: PropTypes.shape({
+    onEnded: PropTypes.func,
+  }),
+};
+
+const childContext = ({ id, playNext }) => ({
+  id,
+  internalEvents: {
+    onEnded: playNext,
+  },
+});
+
 const lifecycle = {
   componentDidMount() {
     if (this.props.playlist.length > 0) {
       this.props.dispatch(setPlaylist(this.props.id, this.props.playlist));
     }
-
-    const jPlaylist = document.getElementById(this.props.id);
-
-    this.media = jPlaylist.getElementsByClassName(constants.classes.MEDIA)[0];
-    this.media.addEventListener('ended', this.props.playNext);
   },
   componentDidUpdate(prevProps) {
     if (this.props.currentMediaId !== prevProps.currentMediaId) {
@@ -94,15 +103,12 @@ const lifecycle = {
       this.props.shufflePlaylistOnLoopPlaylist();
     }
   },
-  componentWillUnmount() {
-    this.media.removeEventListener('ended', this.props.playNext);
-  },
 };
 
 export default compose(
-  withContext({ id: PropTypes.string }, ({ id }) => ({ id })),
   connect(mapStateToProps),
   withProps(createProps),
   withHandlers(handlers),
+  withContext(contextTypes, childContext),
   setLifecycle(lifecycle),
 )(JPlaylist);

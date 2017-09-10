@@ -4,13 +4,12 @@ import PropTypes from 'prop-types';
 import KeyControl from './keyControl/keyControlContainer';
 
 const JPlaylist = ({ states, keyBindings, children, id }) => (
-  <div>
-    <KeyControl keyBindings={keyBindings} />
-    {React.cloneElement(children, {
+  <KeyControl keyBindings={keyBindings}>
+    {React.cloneElement(React.Children.only(children), {
       states,
       id,
     })}
-  </div>
+  </KeyControl>
 );
 
 JPlaylist.defaultProps = {

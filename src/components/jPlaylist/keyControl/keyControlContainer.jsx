@@ -1,6 +1,7 @@
-import { KeyControl, connectWithId } from 'react-jplayer-utils';
+import { connectWithId } from 'react-jplayer-utils';
 import merge from 'lodash.merge';
 
+import KeyControl from './keyControl';
 import { setOption, next, previous, shuffle } from '../../../actions/actions';
 import getLoopState from '../../../util/getLoopState';
 
@@ -8,7 +9,7 @@ const mapStateToProps = ({ jPlaylists }, { id }) => ({
   loop: jPlaylists[id].loop,
 });
 
-const mergeProps = (stateProps, { dispatch }, { keyBindings, id }) => ({
+const mergeProps = (stateProps, { dispatch }, { keyBindings, children, id }) => ({
   keyBindings: merge({
     next: {
       key: 221, // ]
@@ -31,6 +32,7 @@ const mergeProps = (stateProps, { dispatch }, { keyBindings, id }) => ({
       },
     },
   }, keyBindings),
+  children,
 });
 
 export default connectWithId(mapStateToProps, null, mergeProps)(KeyControl);

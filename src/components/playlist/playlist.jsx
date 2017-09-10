@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { compose, branch, renderComponent, renderNothing } from 'recompose';
 
 import PlaylistItem from '../playlistItem/playlistItemContainer';
 
@@ -31,4 +32,9 @@ Playlist.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-export default Playlist;
+export default compose(
+  branch(
+    props => props.playlist.length > 0,
+    renderComponent(Playlist),
+  ),
+)(renderNothing(null));

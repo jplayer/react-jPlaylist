@@ -3,7 +3,7 @@ import { connectWithId } from 'react-jplayer-utils';
 import { compose, withHandlers } from 'recompose';
 
 import { setOption } from '../../actions/actions';
-import getLoopState from '../../util/getLoopState';
+import getLoopState from '../../util/loop/getLoopState';
 
 const mapStateToProps = ({ jPlaylists }, { id }) => ({
   loop: jPlaylists[id].loop,

@@ -3,7 +3,7 @@ import merge from 'lodash.merge';
 
 import KeyControl from './keyControl';
 import { setOption, next, previous, shuffle } from '../../../actions/actions';
-import getLoopState from '../../../util/getLoopState';
+import getLoopState from '../../../util/loop/getLoopState';
 
 const mapStateToProps = ({ jPlaylists }, { id }) => ({
   loop: jPlaylists[id].loop,

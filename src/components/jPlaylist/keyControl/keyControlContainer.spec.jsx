@@ -1,135 +1,137 @@
-// import React from 'react';
-// import expect from 'expect';
-// import proxyquire from 'proxyquire';
+import React from 'react';
+import expect from 'expect';
+import proxyquire from 'proxyquire';
 
-// import containerSetup from '../../../util/specHelpers/containerSetup.spec';
+import containerSetup from '../../../util/specHelpers/containerSetup.spec';
 
-// let onKeyDown;
-// const id = 'TestPlayer';
-// const mockKeyControl = ({ keyBindings }) =>
-//   <div onKeyDown={() => onKeyDown(keyBindings)} />;
-// const keyControlContainer = proxyquire('./keyControlContainer', {
-//   'react-jplayer-utils': { KeyControl: mockKeyControl },
-// }).default;
-// const setup = (jPlaylists, jPlayers, props) =>
-//   containerSetup(keyControlContainer, jPlaylists, jPlayers, props);
+proxyquire.noCallThru();
 
-// describe('keyControlContainer', () => {
-//   let jPlaylists;
-//   let jPlayers;
+let onKeyDown;
+const id = 'TestPlayer';
+const mockKeyControl = ({ keyBindings }) =>
+  <div onKeyDown={() => onKeyDown(keyBindings)} />;
+const keyControlContainer = proxyquire('./keyControlContainer', {
+  './keyControl': mockKeyControl,
+}).default;
+const setup = (jPlaylists, jPlayers, props) =>
+  containerSetup(keyControlContainer, jPlaylists, jPlayers, props);
 
-//   beforeEach(() => {
-//     jPlaylists = {
-//       [id]: {
-//         current: 0,
-//         loop: 'off',
-//         playlist: [
-//           {
-//             id: 0,
-//             sources: {
-//               mp3: 'test.mp3',
-//             },
-//           },
-//           {
-//             id: 1,
-//             sources: {
-//               mp3: 'testTwo.mp3',
-//             },
-//           },
-//         ],
-//       },
-//     };
-//     jPlayers = {
-//       [id]: {},
-//     };
-//   });
+describe('keyControlContainer', () => {
+  let jPlaylists;
+  let jPlayers;
 
-//   describe('custom keyBindings', () => {
-//     it('merges custom keyBinding with different name', () => {
-//       onKeyDown = ({ test }) => test.fn();
+  beforeEach(() => {
+    jPlaylists = {
+      [id]: {
+        current: 0,
+        loop: 'off',
+        playlist: [
+          {
+            id: 0,
+            sources: {
+              mp3: 'test.mp3',
+            },
+          },
+          {
+            id: 1,
+            sources: {
+              mp3: 'testTwo.mp3',
+            },
+          },
+        ],
+      },
+    };
+    jPlayers = {
+      [id]: {},
+    };
+  });
 
-//       const customKeySpy = expect.createSpy();
-//       const customKeyBindings = {
-//         test: {
-//           key: 20,
-//           fn: customKeySpy,
-//         },
-//       };
-//       const { wrapper } = setup(jPlaylists, jPlayers, { keyBindings: customKeyBindings });
+  describe('custom keyBindings', () => {
+    it('merges custom keyBinding with different name', () => {
+      onKeyDown = ({ test }) => test.fn();
 
-//       wrapper.simulate('keydown');
+      const customKeySpy = expect.createSpy();
+      const customKeyBindings = {
+        test: {
+          key: 20,
+          fn: customKeySpy,
+        },
+      };
+      const { wrapper } = setup(jPlaylists, jPlayers, { keyBindings: customKeyBindings });
 
-//       expect(customKeySpy).toHaveBeenCalled();
-//     });
+      wrapper.simulate('keydown');
 
-//     it('custom keyBinding overwrite default function with same name', () => {
-//       onKeyDown = ({ shuffle }) => shuffle.fn();
+      expect(customKeySpy).toHaveBeenCalled();
+    });
 
-//       const customKeySpy = expect.createSpy();
-//       const customKeyBindings = {
-//         shuffle: {
-//           fn: customKeySpy,
-//         },
-//       };
-//       const { wrapper } = setup(jPlaylists, jPlayers, { keyBindings: customKeyBindings });
+    it('custom keyBinding overwrite default function with same name', () => {
+      onKeyDown = ({ shuffle }) => shuffle.fn();
 
-//       wrapper.simulate('keydown');
+      const customKeySpy = expect.createSpy();
+      const customKeyBindings = {
+        shuffle: {
+          fn: customKeySpy,
+        },
+      };
+      const { wrapper } = setup(jPlaylists, jPlayers, { keyBindings: customKeyBindings });
 
-//       expect(customKeySpy).toHaveBeenCalled();
-//     });
-//   });
+      wrapper.simulate('keydown');
 
-//   describe('next', () => {
-//     it('plays next media', () => {
-//       onKeyDown = ({ next }) => next.fn();
-//       const { wrapper, store } = setup(jPlaylists, jPlayers);
+      expect(customKeySpy).toHaveBeenCalled();
+    });
+  });
 
-//       wrapper.simulate('keydown');
+  describe('next', () => {
+    it('plays next media', () => {
+      onKeyDown = ({ next }) => next.fn();
+      const { wrapper, store } = setup(jPlaylists, jPlayers);
 
-//       const jPlaylist = store.getState().jPlaylists[id];
+      wrapper.simulate('keydown');
 
-//       expect(jPlaylist.current).toBe(1);
-//     });
-//   });
+      const jPlaylist = store.getState().jPlaylists[id];
 
-//   describe('next', () => {
-//     it('plays previous media', () => {
-//       jPlaylists[id].current = 1;
+      expect(jPlaylist.current).toBe(1);
+    });
+  });
 
-//       onKeyDown = ({ previous }) => previous.fn();
-//       const { wrapper, store } = setup(jPlaylists, jPlayers);
+  describe('next', () => {
+    it('plays previous media', () => {
+      jPlaylists[id].current = 1;
 
-//       wrapper.simulate('keydown');
+      onKeyDown = ({ previous }) => previous.fn();
+      const { wrapper, store } = setup(jPlaylists, jPlayers);
 
-//       const jPlaylist = store.getState().jPlaylists[id];
+      wrapper.simulate('keydown');
 
-//       expect(jPlaylist.current).toBe(0);
-//     });
-//   });
+      const jPlaylist = store.getState().jPlaylists[id];
 
-//   describe('shuffle', () => {
-//     it('shuffles the media', () => {
-//       onKeyDown = ({ shuffle }) => shuffle.fn();
-//       const { wrapper, store } = setup(jPlaylists, jPlayers);
+      expect(jPlaylist.current).toBe(0);
+    });
+  });
 
-//       wrapper.simulate('keydown');
+  describe('shuffle', () => {
+    it('shuffles the media', () => {
+      onKeyDown = ({ shuffle }) => shuffle.fn();
+      const { wrapper, store } = setup(jPlaylists, jPlayers);
 
-//       const jPlaylist = store.getState().jPlaylists[id];
+      wrapper.simulate('keydown');
 
-//       expect(jPlaylist.shuffled).toBe(true);
-//     });
-//   });
+      const jPlaylist = store.getState().jPlaylists[id];
 
-//   describe('loop', () => {
-//     it('loops the media', () => {
-//       onKeyDown = ({ loop }) => loop.fn();
-//       const { wrapper, store } = setup(jPlaylists, jPlayers);
+      expect(jPlaylist.shuffled).toBe(true);
+    });
+  });
 
-//       wrapper.simulate('keydown');
+  describe('loop', () => {
+    it('loops the media', () => {
+      onKeyDown = ({ loop }) => loop.fn();
+      const { wrapper, store } = setup(jPlaylists, jPlayers);
 
-//       const jPlaylist = store.getState().jPlaylists[id];
+      wrapper.simulate('keydown');
 
-//       expect(jPlaylist.loop).toBe('loop');
-//     });
-//   });
-// });
+      const jPlaylist = store.getState().jPlaylists[id];
+
+      expect(jPlaylist.loop).toBe('loop');
+    });
+  });
+});

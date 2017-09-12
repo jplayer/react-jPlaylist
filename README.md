@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/jplayer/react-jPlaylist.svg?branch=master)](https://travis-ci.org/jplayer/react-jPlaylist)
 [![Coverage Status](https://coveralls.io/repos/github/jplayer/react-jPlaylist/badge.svg?branch=master)](https://coveralls.io/github/jplayer/react-jPlaylist?branch=master)
-[![dependencies Status](https://david-dm.org/martindawson/react-jPlaylist/status.svg)](https://david-dm.org/martindawson/react-jPlaylist)
-[![devDependencies Status](https://david-dm.org/martindawson/react-jPlaylist/dev-status.svg)](https://david-dm.org/martindawson/react-jPlaylist?type=dev)
+[![dependencies Status](https://david-dm.org/martindawson/react-jPlaylist/status.svg)](https://david-dm.org/jPlayer/react-jPlaylist)
+[![devDependencies Status](https://david-dm.org/martindawson/react-jPlaylist/dev-status.svg)](https://david-dm.org/jPlayer/react-jPlaylist?type=dev)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 # react-jPlaylist

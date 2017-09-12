@@ -29,7 +29,7 @@
   ],
   "homepage": "https://github.com/jplayer/react-jPlaylist",
   "license": "MIT",
-  "main": "./lib/index.js",
+  "main": "./src/index.js",
   "files": [
     "dist",
     "lib",
@@ -106,7 +106,6 @@
     "enzyme-redux": "^0.1.6",
     "eslint": "^4.3.0",
     "eslint-config-airbnb": "^15.1.0",
-    "eslint-config-defaults": "^9.0.0",
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jsx-a11y": "^5.1.1",
     "eslint-plugin-react": "^7.1.0",
@@ -139,8 +138,8 @@
     "prop-types": "^15.5.8",
     "react": "^15.4.1",
     "react-dom": "^15.4.1",
-    "react-jplayer": "^6.0.0",
-    "react-jplayer-utils": "^2.0.0",
+    "react-jplayer": "latest",
+    "react-jplayer-utils": "latest",
     "react-redux": "^5.0.2",
     "recompose": "^0.25.0",
     "redux": "^3.6.0"

@@ -12,11 +12,10 @@ export default {
     'lodash.maxby': '_.maxBy',
     'lodash.merge': '_.merge',
     react: 'React',
-    'react-dom': 'ReactDOM',
     'react-redux': 'ReactRedux',
     recompose: 'Recompose',
-    redux: 'Redux',
     'prop-types': 'PropTypes',
+    'react-jplayer': 'ReactJPlayer',
   },
   entry: {
     'js/react-jPlaylist.js': './src/index.js',
@@ -31,9 +30,6 @@ export default {
     filename: '[name]',
     libraryTarget: 'var',
     library: 'ReactJPlaylist',
-  },
-  devServer: {
-    historyApiFallback: true,
   },
   module: {
     rules: [

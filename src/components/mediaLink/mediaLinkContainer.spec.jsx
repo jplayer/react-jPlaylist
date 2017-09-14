@@ -8,7 +8,7 @@ proxyquire.noCallThru();
 
 const id = 'TestPlayer';
 const mockMediaLink = ({ play }) =>
-  <div onClick={play} />;
+  <button onClick={play} />;
 const MediaLinkContainer = proxyquire('./mediaLinkContainer', {
   './mediaLink': mockMediaLink,
 }).default;

@@ -8,7 +8,7 @@ proxyquire.noCallThru();
 
 const id = 'TestPlayer';
 const mockTogglePlaylist = ({ togglePlaylist }) =>
-  <div onClick={togglePlaylist} />;
+  <button onClick={togglePlaylist} />;
 const TogglePlaylistContainer = proxyquire('./togglePlaylistContainer', {
   './togglePlaylist': mockTogglePlaylist,
 }).default;

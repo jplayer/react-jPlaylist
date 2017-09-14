@@ -8,7 +8,7 @@ proxyquire.noCallThru();
 
 const id = 'TestPlayer';
 const mockRemove = ({ remove }) =>
-  <div onClick={remove} />;
+  <button onClick={remove} />;
 const RemoveContainer = proxyquire('./removeContainer', {
   './remove': mockRemove,
 }).default;

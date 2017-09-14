@@ -8,7 +8,7 @@ proxyquire.noCallThru();
 
 const id = 'TestPlayer';
 const mockPrevious = ({ previous }) =>
-  <div onClick={previous} />;
+  <button onClick={previous} />;
 const PreviousContainer = proxyquire('./previousContainer', {
   './previous': mockPrevious,
 }).default;

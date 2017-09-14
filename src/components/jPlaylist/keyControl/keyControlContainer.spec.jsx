@@ -9,7 +9,7 @@ proxyquire.noCallThru();
 let onKeyDown;
 const id = 'TestPlayer';
 const mockKeyControl = ({ keyBindings }) =>
-  <div onKeyDown={() => onKeyDown(keyBindings)} />;
+  <button onKeyDown={() => onKeyDown(keyBindings)} />;
 const keyControlContainer = proxyquire('./keyControlContainer', {
   './keyControl': mockKeyControl,
 }).default;

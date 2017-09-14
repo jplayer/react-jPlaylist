@@ -8,7 +8,7 @@ proxyquire.noCallThru();
 
 const id = 'TestPlayer';
 const mockShuffle = ({ shuffle }) =>
-  <div onClick={shuffle} />;
+  <button onClick={shuffle} />;
 const ShuffleContainer = proxyquire('./shuffleContainer', {
   './shuffle': mockShuffle,
 }).default;

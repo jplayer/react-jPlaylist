@@ -11,6 +11,8 @@ react-jPlaylist is an add-on to [react-jPlayer](https://github.com/jplayer/react
 
   * [Examples](#examples)
   * [Installation](#installation)
+    + [NPM](#npm)
+    + [UMD](#umd)
   * [Features](#features)
   * [Supported Browsers](#supported-browsers)
 - [Documentation](#documentation)
@@ -51,7 +53,13 @@ react-jPlaylist is an add-on to [react-jPlayer](https://github.com/jplayer/react
 https://github.com/jplayer/react-jPlayer-examples
 
 ### Installation
+#### NPM
 `npm install --save react-jplaylist`
+
+#### UMD
+The recommended way to use this package is through npm and webpack. However if you insist on including the .js and .css files manually then both the unminified and minified versions are available from the `/dist/` folder. The dependencies of this package have been excluded for the UMD build so you will need to include them manually as shown in the react-jPlayer-example's [UMDPlayer](https://github.com/jplayer/react-jPlayer-examples/tree/master/jPlayers/UMDPlayer) and [UMDPlaylist](https://github.com/jplayer/react-jPlayer-examples/tree/master/jPlaylists/UMDPlaylist).
+
+This module is exported to a variable called `ReactJPlaylist`.
 
 ### Features
 * Cross compatible with many legacy different Html5 browsers

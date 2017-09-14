@@ -391,7 +391,7 @@ var JPlaylist = function JPlaylist(_ref) {
       id: id
     })
   );
-};
+}; /* eslint-disable react/forbid-prop-types */
 
 JPlaylist.defaultProps = {
   keyBindings: null
@@ -1564,6 +1564,8 @@ var _propTypes = __webpack_require__(0);
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/* eslint-disable react/forbid-prop-types */
 
 var KeyControl = function KeyControl(_ref) {
   var keyBindings = _ref.keyBindings,

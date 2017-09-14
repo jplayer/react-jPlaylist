@@ -19,8 +19,8 @@ export default {
     'prop-types': 'PropTypes',
   },
   entry: {
-    'js/jPlaylist.js': './src/index.js',
-    'js/jPlaylist.min.js': './src/index.js',
+    'js/react-jPlaylist.js': './src/index.js',
+    'js/react-jPlaylist.min.js': './src/index.js',
     'css/controls/iconControls.css': './src/less/controls/iconControls.less',
     'css/controls/iconControls.min.css': './src/less/controls/iconControls.less',
     'css/skins/sleek.css': './src/less/skins/sleek.less',

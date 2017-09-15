@@ -1,6 +1,7 @@
 import initializeOptions from './initializeOptions/initializeOptions';
 import reducer from './reducer/reducer';
 import * as actions from './actions/actions';
+import * as constants from './util/constants';
 
 // Containers
 import JPlaylist from './components/jPlaylist/jPlaylistContainer';
@@ -42,6 +43,7 @@ export {
   initializeOptions,
   reducer,
   actions,
+  constants,
   Playlist,
   Shuffle,
   Previous,

@@ -987,7 +987,7 @@ var clear = function clear() {
 var select = function select(jPlaylist, _ref6) {
   var index = _ref6.index;
   return {
-    current: index < 0 ? jPlaylist.original.length + index : index
+    current: index < 0 ? jPlaylist.playlist.length + index : index
   };
 };
 
@@ -996,7 +996,7 @@ var play = function play(jPlaylist, _ref7) {
   var _ref7$index = _ref7.index,
       index = _ref7$index === undefined ? jPlaylist.current : _ref7$index;
   return {
-    current: index < 0 ? jPlaylist.original.length + index : index,
+    current: index < 0 ? jPlaylist.playlist.length + index : index,
     playNow: true
   };
 };

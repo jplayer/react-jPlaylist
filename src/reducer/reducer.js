@@ -73,12 +73,12 @@ const clear = () => ({
 
 // Negative index relates to the end of the array
 const select = (jPlaylist, { index }) => ({
-  current: (index < 0) ? jPlaylist.original.length + index : index,
+  current: (index < 0) ? jPlaylist.playlist.length + index : index,
 });
 
 // Negative index relates to the end of the array
 const play = (jPlaylist, { index = jPlaylist.current }) => ({
-  current: (index < 0) ? jPlaylist.original.length + index : index,
+  current: (index < 0) ? jPlaylist.playlist.length + index : index,
   playNow: true,
 });
 

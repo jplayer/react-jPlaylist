@@ -136,10 +136,13 @@
     "lodash.maxby": "^4.6.0",
     "lodash.merge": "^4.6.0",
     "prop-types": "^15.5.8",
-    "react": "^15.4.1",
-    "react-jplayer": "latest",
+    "react-jplayer": "^7.0.0",
     "react-jplayer-utils": "latest",
+    "react": "^15.4.1",
     "react-redux": "^5.0.2",
     "recompose": "^0.25.0"
+  },
+  "peerDependencies": {
+    "react-jplayer": "^7.0.0"
   }
 }

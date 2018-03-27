@@ -1400,12 +1400,12 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = function (artist, title) {
   var titleText = '';
 
-  if (artist !== null) {
+  if (artist) {
     titleText += '' + artist;
   }
 
-  if (title !== null) {
-    if (artist !== null) {
+  if (title) {
+    if (artist) {
       titleText += ' - ';
     }
     titleText += '' + title;

@@ -935,7 +935,7 @@ var add = function add(jPlaylist, _ref4) {
     shufflePosition: highestMediaShufflePosition !== undefined ? highestMediaShufflePosition.shufflePosition + 1 : 0
   });
   var playlist = [].concat(_toConsumableArray(jPlaylist.playlist), [newMedia]);
-  var current = void 0;
+  var current = jPlaylist.current;
 
   if (playNow) {
     current = playlist.length - 1;

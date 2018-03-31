@@ -26,7 +26,7 @@ const add = (jPlaylist, { media, playNow }) => {
     ...jPlaylist.playlist,
     newMedia,
   ];
-  let current;
+  let current = jPlaylist.current;
 
   if (playNow) {
     current = playlist.length - 1;
